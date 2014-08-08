@@ -15,7 +15,7 @@ define([
     'ui.dashboard',
     'btford.markdown',
     'angularjs-dropdown-multiselect',
-  ])
+  ]);
   app.init = function () {
     angular.bootstrap(document, ['app']);
   };
@@ -40,10 +40,7 @@ define([
         redirectTo: '/'
       });
   });
-  app.controller('navigationController', function ($scope, $route) {
-    $scope.$route = $route;
-  })
-    .factory('widgetDefinitions', function (RandomDataModel) {
+  app.factory('widgetDefinitions', function (RandomDataModel) {
       return [
         {
           name: 'time',
@@ -89,79 +86,6 @@ define([
       { name: 'time'}
     ])
 
-    .controller('ahDashboard', function ($scope, $rootScope, $interval, $window, widgetDefinitions, defaultWidgets) {
-
-      $scope.dashboardOptions = {
-        widgetButtons: true,
-        widgetDefinitions: widgetDefinitions,
-        defaultWidgets: defaultWidgets,
-        hideWidgetName: true,
-        hideToolbar: true,
-        storage: $window.localStorage,
-        storageId: 'demo',
-        sortableOptions: {
-          handle: '.box-header'
-        }
-      };
-      $rootScope.$on('ahDashboardWidgetAdded', function (srcevent, event, widget) {
-        $scope.addWidgetInternal(event, widget);
-      });
-      $scope.randomValue = Math.random();
-      $interval(function () {
-        $scope.randomValue = Math.random();
-      }, 500);
-
-    })
-    .controller('ahDashboardAddWidgets', function ($scope, $rootScope, $window, widgetDefinitions, defaultWidgets) {
-
-      $scope.widgetDefinitions = widgetDefinitions;
-      $scope.addWidget = function (event, widget) {
-        $rootScope.$emit('ahDashboardWidgetAdded', event, widget);
-      };
-
-    })
-    .controller('ahDashboardActions', function ($scope) {
-      $.get('/api/getDocumentation', function (data) {
-        $scope.actionDefinitions = [];
-        for (var action in data.documentation) {
-          for (var details in data.documentation[action]) {
-            var actionDefinition = {};
-            actionDefinition = data.documentation[action][details];
-            $scope.actionDefinitions.push(actionDefinition);
-          }
-        }
-      });
-
-    })
-    .controller('ahDashboardLogging', function ($scope) {
-      var ahClient = new actionheroClient;
-      $scope.logMessages = [];
-      ahClient.on('connected', function () {
-        console.log('connected!')
-      });
-      ahClient.on('disconnected', function () {
-        console.log('disconnected :(')
-      });
-      ahClient.on('say', function (logMessage) {
-        try {
-          var logmessages = logMessage.message.split('\n');
-          for (var message in logmessages) {
-            var logObj = JSON.parse(logmessages[message]);
-            $scope.$apply(function () {
-              $scope.logMessages.push(logObj);
-            });
-          }
-        } catch (e) {
-          console.log("Cant parse log object : " + logMessage.message + " Details: " + e);
-        }
-
-      });
-
-      ahClient.connect(function (err, details) {
-        ahClient.roomAdd("logMessages");
-      });
-
-    })
     .directive('ahStats', function ($interval) {
       return {
         restrict: 'A',

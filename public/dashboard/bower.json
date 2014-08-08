@@ -27,8 +27,8 @@
     "angularjs-dropdown-multiselect": "~1.4.0",
     "raphael": "~2.1.2",
     "requirejs": "~2.1.14",
-    "underscore": "~1.6.0",
     "morrisjs": "~0.5.1",
-    "jquery-knob": "~1.2.9"
+    "jquery-knob": "~1.2.9",
+    "lodash": "~2.4.1"
   }
 }
