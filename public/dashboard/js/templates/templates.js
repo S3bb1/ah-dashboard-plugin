@@ -1,0 +1,1 @@
+define(['templates/ah-dashboard', 'templates/widget-settings-stats-template']);

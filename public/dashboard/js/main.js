@@ -56,6 +56,6 @@ require.config({
   }
 });
 
-require(['app', 'jquery', 'jquery-ui', 'jquery-knob', 'morris', 'lodash', 'AHclient', 'raphael', 'controllers/navigationController', 'controllers/ahDashboardController', 'controllers/ahDashboardAddWidgetsController' , 'controllers/ahDashboardActionsController', 'controllers/ahDashboardLoggingController'], function (app) {
+require(['app', 'jquery', 'jquery-ui', 'jquery-knob', 'morris', 'lodash', 'AHclient', 'raphael','directives/directives', 'templates/templates','controllers/controllers'], function (app) {
   app.init();
 });
