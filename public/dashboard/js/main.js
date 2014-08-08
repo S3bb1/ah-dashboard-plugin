@@ -11,8 +11,8 @@ require.config({
     'jquery' : '../bower_components/jquery/dist/jquery.min',
     'bootstrap' : '../bower_components/bootstrap/dist/js/bootstrap.min',
     'jquery-ui' : '../bower_components/jquery-ui/jquery-ui',
-    'jquery-knob' : 'jqueryKnob/jquery.knob',
-    'morris' : 'morris/morris',
+    'jquery-knob' : '../bower_components/jquery-knob/dist/jquery.knob.min',
+    'morris' : '../bower_components/morrisjs/morris',
     'raphael' : '../bower_components/raphael/raphael-min',
     'AHclient' : '/public/javascript/actionheroClient',
     'angular-dashboard' : 'angular-ui-dashboard'

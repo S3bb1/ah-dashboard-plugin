@@ -1,0 +1,34 @@
+{
+  "name": "ah-dashboard-plugin",
+  "version": "0.0.1",
+  "homepage": "https://github.com/S3bb1/ah-dashboard-plugin",
+  "authors": [
+    "Sebastian Dechant <sebshome@web.de>"
+  ],
+  "description": "Provides a powerful Dashboard for ActionHero",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "~0.11.0",
+    "angular-markdown-directive": "~0.3.0",
+    "angular-mocks": "~1.2.21",
+    "angular-ui-sortable": "~0.12.8",
+    "angularjs-dropdown-multiselect": "~1.4.0",
+    "raphael": "~2.1.2",
+    "requirejs": "~2.1.14",
+    "underscore": "~1.6.0",
+    "morrisjs": "~0.5.1",
+    "jquery-knob": "~1.2.9"
+  }
+}
