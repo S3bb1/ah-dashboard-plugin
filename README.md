@@ -1,6 +1,8 @@
 ah-dashboard-plugin
 ===================
 
+# CURRENTLY WORK IN PROGRESS! Come back soon for updates
+
 This Plugin should provdie a simple powerful administration dashboard for the ActionHero
 
 first features :
