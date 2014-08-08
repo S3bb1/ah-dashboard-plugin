@@ -29,6 +29,7 @@
     "requirejs": "~2.1.14",
     "morrisjs": "~0.5.1",
     "jquery-knob": "~1.2.9",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "admin-lte": "~1.2.1"
   }
 }
