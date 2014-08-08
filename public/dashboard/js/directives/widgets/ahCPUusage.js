@@ -4,7 +4,7 @@ define(['app'], function (app) {
       restrict: 'A',
       scope: true,
       replace: true,
-      template: '<div><input type="text" class="knob" value="" data-width="80" data-height="90" data-readOnly="true" data-fgColor="#39CCCC"/><div class="knob-label">CPU</div></div>',
+      template: '<div><div style="position: relative; left: 100px"><input type="text" class="knob" value="" data-width="80" data-height="90" data-readOnly="true" data-fgColor="#39CCCC"/></div><div class="knob-label">CPU</div></div>',
       link: function (scope) {
         $(".knob").knob({inline: false});
         function update() {

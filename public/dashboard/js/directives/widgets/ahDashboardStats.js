@@ -19,40 +19,41 @@ define(['app'], function (app) {
         };
 
         scope.retrieveStats = function (changes) {
+          if (!changes.timerange) {
+            changes.timerange = 'hour';
+          }
           $.get('/api/getStats?timerange=' + changes.timerange + '&key=bla', function (data) {
             var result = [];
             var selectedKeys = _.pluck(changes.stats, 'id');
-            if (selectedKeys.length > 0) {
-              _.each(data.timeseries, function (value, key) {
-                if (_.indexOf(selectedKeys, key) != -1) {
-                  for (var index in value) {
-                    var resultObj = {y: value[index][2]};
-                    resultObj[key] = value[index][1];
+            _.each(data.timeseries, function (value, key) {
+              if (_.indexOf(selectedKeys, key) != -1) {
+                for (var index in value) {
+                  var resultObj = {y: value[index][2]};
+                  resultObj[key] = value[index][1];
 
-                    result[index] = _.extend(resultObj, result[index]);
-                  }
+                  result[index] = _.extend(resultObj, result[index]);
+                }
+              }
+            });
+            if (scope.chart) {
+              scope.chart.options.ykeys = selectedKeys;
+              scope.chart.options.labels = selectedKeys;
+              scope.chart.setData(result);
+
+            } else {
+              // LINE CHART
+              scope.chart = new Morris.Line({
+                element: scope.directiveId,
+                resize: true,
+                data: result,
+                xkey: 'y',
+                ykeys: selectedKeys,
+                labels: selectedKeys,
+                hideHover: 'auto',
+                dateFormat: function (x) {
+                  return new Date(x).toLocaleString();
                 }
               });
-              if (scope.chart) {
-                scope.chart.options.ykeys = selectedKeys;
-                scope.chart.options.labels = selectedKeys;
-                scope.chart.setData(result);
-
-              } else {
-                // LINE CHART
-                scope.chart = new Morris.Line({
-                  element: scope.directiveId,
-                  resize: true,
-                  data: result,
-                  xkey: 'y',
-                  ykeys: selectedKeys,
-                  labels: selectedKeys,
-                  hideHover: 'auto',
-                  dateFormat: function (x) {
-                    return new Date(x).toLocaleString();
-                  }
-                });
-              }
             }
           });
         }
