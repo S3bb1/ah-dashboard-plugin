@@ -85,17 +85,22 @@
             <ul class="sidebar-menu"  ng-controller="navigationController">
                 <li ng-class="{ 'active': $route.current.$$route === route}">
                     <a href="#/">
-                        <i class="fa fa-dashboard"></i> <span>Dashboard</span> <small class="badge pull-right bg-green">new</small>
+                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     </a>
                 </li>
                 <li ng-class="{ 'active': $route.current.$$route === route}">
                     <a href="#/actions">
-                        <i class="fa fa-dashboard"></i> <span>Actions</span> <small class="badge pull-right bg-green">new</small>
+                        <i class="fa fa-cogs"></i> <span>Actions</span>
                     </a>
                 </li>
                 <li ng-class="{ 'active': $route.current.$$route === route}">
                     <a href="#/logging">
-                        <i class="fa fa-dashboard"></i> <span>Log</span> <small class="badge pull-right bg-green">new</small>
+                        <i class="fa fa-terminal"></i> <span>Log</span>
+                    </a>
+                </li>
+                <li ng-class="{ 'active': $route.current.$$route === route}">
+                    <a href="#/routes">
+                        <i class="fa fa-link"></i> <span>Routes</span>
                     </a>
                 </li>
             </ul>

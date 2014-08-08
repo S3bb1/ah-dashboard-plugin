@@ -36,6 +36,10 @@ define([
         templateUrl: 'views/logging.html',
         controller: 'ahDashboardLogging'
       })
+      .when('/routes', {
+        templateUrl: 'views/routes.html',
+        controller: 'ahDashboardRoutes'
+      })
       .otherwise({
         redirectTo: '/'
       });

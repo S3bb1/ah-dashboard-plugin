@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Registered Routes</h3>
+            </div>
+            <div class="box-body">
+                <div ng-repeat="(key, value) in routes" class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><span class="label label-default" style="text-transform: uppercase">{{key}}</span> Routes</div>
+
+                    <!-- Table -->
+                    <table class="table">
+                        <tr>
+                            <th>Path</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr ng-repeat="route in value">
+                            <td style="width: 75%">{{route.path}}</td>
+                            <td style="width: 25%">{{route.action}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div><!-- /.box-body -->
+            <div ng-hide="routes" class="overlay"></div>
+            <div ng-hide="routes" class="loading-img"></div>
+            <div class="box-footer">
+
+            </div><!-- /.box-footer-->
+        </div>
+    </div>
+</div>
