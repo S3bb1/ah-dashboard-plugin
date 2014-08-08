@@ -8,6 +8,13 @@ first features :
 - Drag and Drop Dashboard with custom widgets ( Time, CPU usage, ... )
 - Overview of all registered Actions
 - Real Time Logs from ActionHero over Chat functionality
+- Overview of all registered Routes
+
+Todos:
+
+- Create/Update/Delete Routes
+- more Widgets for Dashboard
+- REDIS viewer
 
 first screenshots :
 
@@ -16,3 +23,5 @@ first screenshots :
 ![](https://github.com/S3bb1/ah-dashboard-plugin/blob/static_repo_files/readme/dashboard2.PNG)
 
 ![](https://github.com/S3bb1/ah-dashboard-plugin/blob/static_repo_files/readme/dashboard3.PNG)
+
+![](https://github.com/S3bb1/ah-dashboard-plugin/blob/static_repo_files/readme/dashboard4.PNG)
