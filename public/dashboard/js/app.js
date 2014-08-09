@@ -48,6 +48,7 @@ define([
       return [
         {
           name: 'time',
+          displayName : 'Current Time',
           directive: 'ah-time',
           title: 'Current Time',
           style: {
@@ -56,6 +57,7 @@ define([
         },
         {
           name: 'stats',
+          displayName : 'Statistics',
           title: 'ActionHero Stats Statistics',
           directive: 'ah-stats',
           settingsModalOptions: {
@@ -75,8 +77,30 @@ define([
         },
         {
           name: 'cpuusage',
+          displayName : 'CPU Usage',
           title: 'ActionHero CPU Usage',
-          directive: 'ah-cpuusage'
+          directive: 'ah-cpuusage',
+          style: {
+            width: '300px'
+          }
+        },
+        {
+          name: 'ramusage',
+          displayName : 'RAM Usage',
+          title: 'ActionHero RAM Usage',
+          directive: 'ah-ramusage',
+          style: {
+            width: '300px'
+          }
+        },
+        {
+          name: 'uptime',
+          displayName : 'AH Uptime',
+          title: 'ActionHero Uptime',
+          directive: 'ah-uptime',
+          style: {
+            width: '300px'
+          }
         }
       ];
     })

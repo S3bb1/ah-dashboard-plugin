@@ -47,13 +47,13 @@
                         <span class="label label-success">{{widgetDefinitions.length}}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have {{widgetDefinitions.length}} Widgets</li>
+                        <li class="header">You can add {{widgetDefinitions.length}} different Widgets</li>
                         <li>
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu">
                                 <li ng-repeat="widget in widgetDefinitions">
                                     <a  ng-click="addWidget($event, widget)" href="#">
-                                        <i class="ion ion-navicon-round info"></i>{{ widget.name }}
+                                        <i class="ion ion-navicon-round info"></i>{{ widget.displayName }}
                                     </a>
                                 </li>
                             </ul>
