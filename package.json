@@ -7,17 +7,19 @@
     "type": "git",
     "url": "git://github.com/S3bb1/ah-dashboard-plugin.git"
   },
-  "keywords": ["dashboard", "actionhero"],
+  "keywords": [
+    "dashboard",
+    "actionhero"
+  ],
   "engines": {
     "node": ">=0.8.0"
   },
   "dependencies": {
     "os-utils": "0.0.14",
+    "redis": "^0.12.1",
+    "redis-timeseries": "^0.4.0",
     "underscore": "^1.6.0"
   },
   "devDependencies": {},
-  "optionalDependencies": {},
-  "scripts": {
-    "postinstall": "scripts/postinstall.js"
-  }
+  "optionalDependencies": {}
 }

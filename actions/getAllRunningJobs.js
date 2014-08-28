@@ -17,14 +17,16 @@ action.outputExample = {
 // functional
 action.run = function (api, connection, next) {
     // Get all workers
-  api.redis.client.smembers('resque:workers', function(err, workers) {
+  api.resque.scheduler.connection.redis.smembers('resque:workers', function(err, workers) {
     var runningJobs = [];
     // Iterate through each worker strint
     async.each(workers, function( worker, callback) {
       // get the current running job for the Worker
-      api.redis.client.get('resque:worker:'+worker, function(err, runningJob) {
+      api.resque.scheduler.connection.redis.get('resque:worker:'+worker, function(err, runningJob) {
         if(runningJob){
-          runningJobs.push(JSON.parse(runningJob));
+          var runningJobJson = JSON.parse(runningJob);
+          runningJobJson.worker = worker;
+          runningJobs.push(runningJobJson);
         }
         callback();
       });

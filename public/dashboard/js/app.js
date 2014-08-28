@@ -40,6 +40,10 @@ define([
         templateUrl: 'views/routes.html',
         controller: 'ahDashboardRoutes'
       })
+      .when('/tasks', {
+        templateUrl: 'views/tasks.html',
+        controller: 'ahDashboardTasks'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -85,6 +89,15 @@ define([
           }
         },
         {
+          name: 'taskstats',
+          displayName : 'Tasks Stats',
+          title: 'ActionHero Tasks Stats',
+          directive: 'ah-tasksstats',
+          style: {
+            width: '300px'
+          }
+        },
+        {
           name: 'ramusage',
           displayName : 'RAM Usage',
           title: 'ActionHero RAM Usage',
@@ -111,7 +124,8 @@ define([
       { name: 'cpuusage', style: {
         width: '300px'
       } },
-      { name: 'time'}
+      { name: 'time'},
+      { name: 'taskstats'}
     ])
   return app;
 });

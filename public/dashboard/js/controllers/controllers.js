@@ -3,4 +3,5 @@ define(['controllers/navigationController',
         'controllers/ahDashboardController',
         'controllers/ahDashboardAddWidgetsController',
         'controllers/ahDashboardActionsController',
-        'controllers/ahDashboardRoutesController']);
+        'controllers/ahDashboardRoutesController',
+        'controllers/ahDashboardTasksController']);

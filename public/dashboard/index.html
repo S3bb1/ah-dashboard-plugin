@@ -103,6 +103,11 @@
                         <i class="fa fa-link"></i> <span>Routes</span>
                     </a>
                 </li>
+                <li ng-class="{ 'active': $route.current.$$route === route}">
+                    <a href="#/tasks">
+                        <i class="fa fa-link"></i> <span>Tasks</span>
+                    </a>
+                </li>
             </ul>
         </section>
         <!-- /.sidebar -->

@@ -17,13 +17,13 @@ action.outputExample = {
 // functional
 action.run = function (api, connection, next) {
   // Get all delyed jobs via ZRANGEBYSCORE
-  api.redis.client.zrangebyscore('resque:delayed_queue_schedule', '-inf', '+inf', function(err, scheduled) {
+  api.resque.scheduler.connection.redis.zrangebyscore('resque:delayed_queue_schedule', '-inf', '+inf', function(err, scheduled) {
     var delayedJobs = [];
     // Iterate through all scheduled timestamps
     async.each(scheduled, function( timestamp, callback) {
 
       // Request the delayed jobs list for current Timestamp
-      api.redis.client.lrange('resque:delayed:'+timestamp, 0, -1, function(err, delayedJobsRedis) {
+      api.resque.scheduler.connection.redis.lrange('resque:delayed:'+timestamp, 0, -1, function(err, delayedJobsRedis) {
         // parse every delayed job into the response array
         for(var a in delayedJobsRedis){
           var delayedJob = delayedJobsRedis[a];
