@@ -25,6 +25,7 @@ action.run = function (api, connection, next) {
       api.resque.scheduler.connection.redis.get('resque:worker:'+worker, function(err, runningJob) {
         if(runningJob){
           var runningJobJson = JSON.parse(runningJob);
+          runningJobJson.run_at = new Date(Date.parse(runningJobJson.run_at)).getTime();
           runningJobJson.worker = worker;
           runningJobs.push(runningJobJson);
         }

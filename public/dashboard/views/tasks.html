@@ -1,8 +1,25 @@
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-2">
         <div class="box">
             <div class="box-header">
+                <h3 class="box-title">Actions</h3>
+            </div>
+            <div class="box-body">
+                <a class="btn btn-app" ng-click="reloadAllTasks();" >
+                    <i class="fa fa-repeat"></i> Refresh
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-warning">
+            <div class="box-header">
                 <h3 class="box-title">Running Jobs ({{runningJobs.length}})</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
             </div>
             <div class="box-body">
                 <table class="table table-bordered">
@@ -15,7 +32,7 @@
                     </tr>
                     <tr ng-repeat="runningJob in runningJobs">
                         <td>{{runningJob.payload.class}}</td>
-                        <td>{{runningJob.run_at}}</td>
+                        <td>{{runningJob.run_at | date:'medium'}}</td>
                         <td>{{runningJob.queue}}</td>
                         <td>{{runningJob.worker}}</td>
                         <td><pre>{{runningJob.payload.args | json}}</pre></td>
@@ -24,18 +41,17 @@
             </div><!-- /.box-body -->
             <div ng-hide="runningJobsLoadingDone" class="overlay"></div>
             <div ng-hide="runningJobsLoadingDone" class="loading-img"></div>
-            <div class="box-footer">
-                <div ng-click="reloadRunningTasks();" class=\"pull-left\">Refresh Running Jobs: <div class="glyphicon glyphicon-refresh"></div></div>
-
-            </div><!-- /.box-footer-->
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="box">
+        <div class="box box-info">
             <div class="box-header">
                 <h3 class="box-title">Delayed Jobs ({{delayedJobs.length}})</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
             </div>
             <div class="box-body">
                 <table class="table table-bordered">
@@ -47,7 +63,7 @@
                     </tr>
                     <tr ng-repeat="delayedJob in delayedJobs">
                         <td>{{delayedJob.class}}</td>
-                        <td>{{delayedJob.delayedAt}}</td>
+                        <td>{{delayedJob.delayedAt*1000 | date:'medium'}}</td>
                         <td>{{delayedJob.queue}}</td>
                         <td><pre>{{delayedJob.args | json}}</pre></td>
                     </tr>
@@ -55,17 +71,17 @@
             </div><!-- /.box-body -->
             <div ng-hide="delayedJobsLoadingDone" class="overlay"></div>
             <div ng-hide="delayedJobsLoadingDone" class="loading-img"></div>
-            <div class="box-footer">
-                <div ng-click="reloadDelayedTasks();" class=\"pull-left\">Refresh Delayed Jobs: <div class="glyphicon glyphicon-refresh"></div></div>
-            </div><!-- /.box-footer-->
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="box">
+        <div class="box box-danger">
             <div class="box-header">
                 <h3 class="box-title">Failed Jobs ({{failedJobs.length}})</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>                
             </div>
             <div class="box-body">
                 <table class="table table-bordered">
@@ -73,21 +89,22 @@
                         <th>JobName</th>
                         <th>Failed at</th>
                         <th>Queue</th>
+                        <th>Params</th>
                         <th>Error</th>
+                        <th>Reenqueue</th>
                     </tr>
                     <tr ng-repeat="failedJob in failedJobs">
                         <td>{{failedJob.payload.class}}</td>
                         <td>{{failedJob.failed_at}}</td>
                         <td>{{failedJob.queue}}</td>
+                        <td><pre>{{failedJob.payload.args | json}}</pre></td>
                         <td>{{failedJob.exception}} - {{failedJob.error}}</td>
+                        <td><button ng-click="reEnqueueTask(failedJob);" class="btn btn-primary btn-sm">Reenqueue Task</button></td>
                     </tr>
                     </tbody></table>
             </div><!-- /.box-body -->
             <div ng-hide="failedTasksLoadingDone" class="overlay"></div>
             <div ng-hide="failedTasksLoadingDone" class="loading-img"></div>
-            <div class="box-footer">
-                <div ng-click="reloadFailedTasks();" class=\"pull-left\">Refresh Delayed Jobs: <div class="glyphicon glyphicon-refresh"></div></div>
-            </div><!-- /.box-footer-->
         </div>
     </div>
 </div>

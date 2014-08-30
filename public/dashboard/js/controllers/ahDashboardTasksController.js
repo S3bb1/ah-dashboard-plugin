@@ -28,12 +28,20 @@ define(['app'], function (app) {
     $scope.reloadDelayedTasks = function () {
       loadDelayedTasks();
     };
+    $scope.reloadAllTasks = function () {
+      $scope.reloadDelayedTasks();
+      $scope.reloadFailedTasks();
+      $scope.reloadRunningTasks();
+    };
     function loadFailedTasks(){
       $scope.failedTasksLoadingDone = false;
       $.get('/api/getAllFailedJobs', function (data) {
         $scope.failedJobs = [];
         for (var failedJob in data.failedJobs) {
-          $scope.failedJobs.push(data.failedJobs[failedJob]);
+          var tempFailedJob = JSON.parse(data.failedJobs[failedJob]);
+          tempFailedJob.plain = data.failedJobs[failedJob];
+          tempFailedJob.failed_at = new Date(Date.parse(tempFailedJob.failed_at)).getTime();
+          $scope.failedJobs.push(tempFailedJob);
         }
         $scope.failedTasksLoadingDone = true;
       });
@@ -42,5 +50,40 @@ define(['app'], function (app) {
     $scope.reloadFailedTasks = function () {
       loadFailedTasks();
     };
+
+    $scope.reEnqueueTask = function(taskDefinition){
+      delete taskDefinition.failed_at_millis;
+      $.ajax({
+        type: "POST",
+        url: '/api/reEnqueueTask',
+        data:  JSON.stringify({taskdefinition: taskDefinition.plain}),
+        success:  function (data) {
+          console.log("DONE");
+        },
+        contentType: 'application/json'
+      });
+    };
+
+
+    /*     
+     * Add collapse and remove events to boxes
+     */
+    $("[data-widget='collapse']").click(function() {
+        //Find the box parent        
+        var box = $(this).parents(".box").first();
+        //Find the body and the footer
+        var bf = box.find(".box-body, .box-footer");
+        if (!box.hasClass("collapsed-box")) {
+            box.addClass("collapsed-box");
+            //Convert minus into plus
+            $(this).children(".fa-minus").removeClass("fa-minus").addClass("fa-plus");
+            bf.slideUp();
+        } else {
+            box.removeClass("collapsed-box");
+            //Convert plus into minus
+            $(this).children(".fa-plus").removeClass("fa-plus").addClass("fa-minus");
+            bf.slideDown();
+        }
+    });
   });
 });
