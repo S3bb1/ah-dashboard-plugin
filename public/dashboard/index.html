@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>My Dashboard | Dashboard</title>
+    <title>ActionHero Admin Dashboard</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- bootstrap 3.0.2 -->
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -33,6 +33,7 @@
 <body class="skin-blue">
 <!-- header logo: style can be found in header.less -->
 <header class="header">
+
     <a href="index.html" class="logo">
         <!-- Add the class icon to your logo image or logo icon to add the margining -->
         ActionHero Admin Dashboard
@@ -41,7 +42,7 @@
     <nav class="navbar navbar-static-top" role="navigation">
         <div class="navbar-right">
             <ul class="nav navbar-nav">
-                <li class="dropdown notifications-menu" ng-controller="ahDashboardAddWidgets">
+                <li class="dropdown notifications-menu" ng-controller="ahDashboardAddWidgets" ng-show="isActive('/')">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-plus-square-o"></i>
                         <span class="label label-success">{{widgetDefinitions.length}}</span>
@@ -58,8 +59,13 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="footer"><a href="#">View all</a></li>
                     </ul>
+                </li>
+                <li>
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="glyphicon glyphicon-flash"></i>
+                        <span>  BETA  </span>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -105,7 +111,7 @@
                 </li>
                 <li ng-class="{ 'active': $route.current.$$route === route}">
                     <a href="#/tasks">
-                        <i class="fa fa-link"></i> <span>Tasks</span>
+                        <i class="fa fa-repeat"></i> <span>Tasks</span>
                     </a>
                 </li>
             </ul>
@@ -115,12 +121,6 @@
 
     <!-- Right side column. Contains the navbar and content of the page -->
     <aside class="right-side">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h1>
-                Welcome to your Dashboard
-            </h1>
-        </section>
 
         <!-- Main content -->
         <section class="content">

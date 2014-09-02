@@ -22,9 +22,16 @@ define(['app'], function (app) {
       }
 
     });
-
     ahClient.connect(function (err, details) {
-      ahClient.roomAdd("logMessages");
+      ahClient.roomLeave("logMessages", function(err, response){
+        ahClient.roomAdd("logMessages");
+      });
+    });
+
+    $scope.$on("$destroy", function() {
+      if(ahClient.state != "disconnected"){
+        ahClient.disconnect();
+      }
     });
 
   });
