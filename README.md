@@ -3,8 +3,8 @@ ah-dashboard-plugin
 
 ## Install
 
-- `npm install ah-dashboard-plugin`
-- `bower install`
+- `npm install ah-dashboard-plugin --save`
+- `( previously navigate to node_modules/ah-dashboard-plugin ) bower install`
 
 This Plugin should provdie a simple powerful administration dashboard for the ActionHero
 
