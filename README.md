@@ -1,7 +1,10 @@
 ah-dashboard-plugin
 ===================
 
-# CURRENTLY WORK IN PROGRESS! Come back soon for updates
+## Install
+
+- `npm install ah-dashboard-plugin`
+- `bower install`
 
 This Plugin should provdie a simple powerful administration dashboard for the ActionHero
 
@@ -11,6 +14,7 @@ first features :
 - Overview of all registered Actions
 - Real Time Logs from ActionHero over Chat functionality
 - Overview of all registered Routes
+- Overview of Tasks
 
 Todos:
 
