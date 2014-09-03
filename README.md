@@ -1,12 +1,20 @@
-ah-dashboard-plugin
+ActionHero Dashboard
 ===================
 
 ## Install
 
 - `npm install ah-dashboard-plugin --save`
-- `( previously navigate to node_modules/ah-dashboard-plugin ) bower install`
 
-This Plugin should provdie a simple powerful administration dashboard for the ActionHero
+
+## Configuration
+
+To use full functionalities, make sure a task scheduler is running!
+
+## Running
+
+after including into ActionHero and running ActionHero, goto http://localhost:8080/dashboard/index.html
+
+This Plugin should provide a simple powerful administration dashboard for the ActionHero
 
 first features :
 - Show statistics over time for all created stats from actionhero
