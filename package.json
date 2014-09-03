@@ -20,7 +20,6 @@
     "os-utils": "0.0.14",
     "redis": "^0.12.1",
     "redis-timeseries": "^0.4.0",
-    "tail": "^0.4.0",
     "underscore": "^1.6.0",
     "bower" : "latest"
   },
