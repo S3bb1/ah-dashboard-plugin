@@ -16,6 +16,12 @@ action.outputExample = {
 /////////////////////////////////////////////////////////////////////
 // functional
 action.run = function (api, connection, next) {
+  // we cant process any tasks if no scheduler runs... abort action with error
+  if(!api.resque.scheduler){
+    connection.response.errorMessage = "No Scheduler running!";
+    next(connection, true);
+    return;
+  }  
   // Get all delyed jobs via ZRANGEBYSCORE
   api.resque.scheduler.connection.redis.zrangebyscore('resque:delayed_queue_schedule', '-inf', '+inf', function(err, scheduled) {
     var delayedJobs = [];

@@ -1,12 +1,13 @@
 var action = {};
 var _ = require('underscore');
+var async = require('async');
 
 /////////////////////////////////////////////////////////////////////
 // metadata
 action.name = 'getStats';
 action.description = 'I will return the timeseries for all or specific keys';
 action.inputs = {
-  'required' : ['key', 'timerange'],
+  'required' : ['timerange'],
   'optional' : ['allKeys', 'specificKeys']
 };
 action.blockedConnectionTypes = [];
@@ -17,6 +18,14 @@ action.outputExample = {
 // functional
 action.run = function(api, connection, next){
   connection.response.id = api.id;
+
+  // we cant process any timeseries if no scheduler runs... abort action with error
+  if(!api.resque.scheduler){
+    connection.response.errorMessage = "No Scheduler running!";
+    next(connection, true);
+    return;
+  }
+  
   connection.response.timeseries = {};
   var now = new Date().getTime();
   api.stats.getAll(function(err, stats) {
@@ -51,19 +60,20 @@ action.run = function(api, connection, next){
 
     }
     // now calculate the differences between the old stats value and the new Stats value
-    for (var a in allStats) {
-      api.ahDashboard.timesSeries.getHits(a, timeInterval, timechunks, function(err, key, data){
+    async.each(_.keys(allStats), function( stat, callback) {
+      api.ahDashboard.timesSeries.getHits(stat, timeInterval, timechunks, function(err, data){
         for(var a in data){
           data[a].push(new Date((data[a][0]*1000)));
         }
-        connection.response.timeseries[key] = data;
-        curCount++;
-        if(curCount == allStatsCount){
-          next(connection, true);
-        }
+        connection.response.timeseries[stat] = data;
+        callback();
 
       });
-    }
+    }, function(err){
+      // At the end return all calculated stats to the frontend
+      console.log('All stats have been processed successfully');
+      next(connection, true);
+    });
   });
 
 };

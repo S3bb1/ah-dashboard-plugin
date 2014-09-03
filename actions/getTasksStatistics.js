@@ -16,7 +16,13 @@ action.outputExample = {
 /////////////////////////////////////////////////////////////////////
 // functional
 action.run = function (api, connection, next) {
-    // Get all workers
+  // we cant process any tasks if no scheduler runs... abort action with error
+  if(!api.resque.scheduler){
+    connection.response.errorMessage = "No Scheduler running!";
+    next(connection, true);
+    return;
+  }  
+  // Get all workers
   api.resque.scheduler.connection.redis.smembers('resque:workers', function(err, workers) {
     var processedJobs = {};
     api.resque.scheduler.connection.redis.get('resque:stat:processed', function(err, processedOverallJob) {
