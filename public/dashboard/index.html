@@ -22,6 +22,7 @@
     <link href="bower_components/morrisjs/morris.css" rel="stylesheet" type="text/css" />
     <link href="css/angular-ui-dashboard.css" rel="stylesheet" type="text/css" />
     <link href="css/dashboard.css" rel="stylesheet" type="text/css" />
+    <link href="bower_components/fancytree/dist/skin-win8/ui.fancytree.min.css" rel="stylesheet" type="text/css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -112,6 +113,11 @@
                 <li ng-class="{ 'active': $route.current.$$route === route}">
                     <a href="#/tasks">
                         <i class="fa fa-repeat"></i> <span>Tasks</span>
+                    </a>
+                </li>
+                <li ng-class="{ 'active': $route.current.$$route === route}">
+                    <a href="#/redis">
+                        <i class="fa fa-repeat"></i> <span>Redis</span>
                     </a>
                 </li>
             </ul>
