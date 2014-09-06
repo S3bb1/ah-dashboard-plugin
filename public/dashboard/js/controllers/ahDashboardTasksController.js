@@ -15,6 +15,7 @@ define(['app'], function (app) {
           $scope.runningJobs.push(data.runningJobs[runningJob]);
         }
         $scope.runningJobsLoadingDone = true;
+        $scope.$apply();
       });
     }
     loadRunningTasks();
@@ -35,6 +36,7 @@ define(['app'], function (app) {
           $scope.delayedJobs.push(data.delayedJobs[delayedJob]);
         }
         $scope.delayedJobsLoadingDone = true;
+        $scope.$apply();
       });
     };
     loadDelayedTasks();
@@ -63,6 +65,7 @@ define(['app'], function (app) {
           $scope.failedJobs.push(tempFailedJob);
         }
         $scope.failedTasksLoadingDone = true;
+        $scope.$apply();
       });
     };
     loadFailedTasks();

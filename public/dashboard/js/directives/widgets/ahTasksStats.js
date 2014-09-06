@@ -23,8 +23,9 @@ define(['app'], function(app){
                            '  <h4>Error:</h4>'+
                            '  <p>'+data.errorMessage+'</p>'+
                            '</div>';
+          } else {
+            scope.runningJobs = data.runningJobs.length;
           }
-          scope.runningJobs = data.runningJobs.length;
         });
         $.get('/api/getDelayedJobs', function (data) {
           if(data.errorMessage){
@@ -32,8 +33,9 @@ define(['app'], function(app){
                            '  <h4>Error:</h4>'+
                            '  <p>'+data.errorMessage+'</p>'+
                            '</div>';
+          } else {
+            scope.delayedJobs = data.delayedJobs.length;
           }
-          scope.delayedJobs = data.delayedJobs.length;
         });
         $.get('/api/getAllFailedJobs', function (data) {
           if(data.errorMessage){
@@ -41,8 +43,9 @@ define(['app'], function(app){
                            '  <h4>Error:</h4>'+
                            '  <p>'+data.errorMessage+'</p>'+
                            '</div>';
-          }          
-          scope.failedJobs = data.failedJobs.length;
+          } else {         
+            scope.failedJobs = data.failedJobs.length;
+          }
         });
         $.get('/api/getTasksStatistics', function (data) {
           if(data.errorMessage){
@@ -50,8 +53,9 @@ define(['app'], function(app){
                            '  <h4>Error:</h4>'+
                            '  <p>'+data.errorMessage+'</p>'+
                            '</div>';
-          }          
-          scope.processedJobs = data.processedJobs;
+          } else {          
+            scope.processedJobs = data.processedJobs;
+          }
         });
       }
     };
