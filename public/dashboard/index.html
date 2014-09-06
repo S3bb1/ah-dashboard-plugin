@@ -133,6 +133,11 @@
 <!-- ./wrapper -->
 
 <script src="bower_components/requirejs/require.js" data-main="js/main.js"></script>
+<script type="text/javascript">
+    if(window.location.pathname == "/dashboard"){
+        window.location.href = "/dashboard/";
+    }
+</script>
 </body>
 
 </html>
