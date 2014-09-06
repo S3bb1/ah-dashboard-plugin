@@ -1,8 +1,5 @@
 define(['app'], function (app) {
   app.controller('ahDashboardRedisViewer', function ($scope) {
-
-    /* Load tree from Ajax JSON
-     */
     $("#redisKeys").fancytree({
       source: {
         url: "/api/getAllRedisKeys"
@@ -11,7 +8,12 @@ define(['app'], function (app) {
         data.result = data.response.redisKeys
       },
       lazyLoad: function(event, data){
-        data.result = {url: "/api/getAllRedisKeys?prefix="+data.node.data.attr.id}
+        var keyPath = data.node.getKeyPath();
+        if(keyPath[0] == '/'){
+          keyPath = keyPath.substr(1);
+        }
+        keyPath = keyPath.replace(/\//, ':');
+        data.result = {url: "/api/getAllRedisKeys?prefix="+keyPath}
       }
     });
   });
