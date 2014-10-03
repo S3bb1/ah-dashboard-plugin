@@ -26,10 +26,8 @@ action.run = function(api, connection, next){
 	}
 	api.redis.client.keys(query, function (err, keys) {
     if (err) {
-
       console.error('getKeys', err);
     } else {
-    	console.dir(keys);
 			var lookup = {};
       var reducedKeys = [];
       keys.forEach(function (key) {
@@ -72,7 +70,7 @@ action.run = function(api, connection, next){
               return callback(err);
             }
             keyData.attr.rel = type;
-            keyData.icon = type;
+            keyData.icon = type+".png";
             var sizeCallback = function (err, count) {
               if (err) {
                 return callback(err);

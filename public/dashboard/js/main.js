@@ -16,7 +16,8 @@ require.config({
     'raphael': '../bower_components/raphael/raphael-min',
     'AHclient': '/public/javascript/actionheroClient',
     'angular-dashboard': 'angular-ui-dashboard',
-    'fancytree' : '../bower_components/fancytree/dist/jquery.fancytree'
+    'fancytree' : '../bower_components/fancytree/dist/jquery.fancytree',
+    'jqueryContextMenu' : '../bower_components/jQuery-contextMenu/src/jquery.contextMenu'
 
 
   },
@@ -56,6 +57,12 @@ require.config({
     },
     'fancytree': {
       deps: ['jquery-ui']
+    },
+    'jqueryContextMenu': {
+      deps: ['jquery']
+    },
+    'libs/jquery.fancytree.contextmenu':{
+      deps: ['fancytree']
     }
   }
 });
@@ -69,6 +76,8 @@ require([ 'app',
           'AHclient', 
           'raphael',
           'fancytree',
+          'jqueryContextMenu',
+          'libs/jquery.fancytree.contextmenu',
           'directives/directives', 
           'templates/templates',
           'controllers/controllers'

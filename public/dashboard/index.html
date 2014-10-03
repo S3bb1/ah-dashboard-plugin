@@ -8,11 +8,12 @@
     <!-- bootstrap 3.0.2 -->
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- font Awesome -->
-    <link href="bower_components/admin-lte/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="bower_components/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Ionicons -->
     <link href="bower_components/admin-lte/css/ionicons.min.css" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
     <link href="bower_components/admin-lte/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+    <link href="bower_components/jQuery-contextMenu/src/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         .uname,.info,.content-header {
             text-transform: uppercase;
@@ -117,7 +118,7 @@
                 </li>
                 <li ng-class="{ 'active': $route.current.$$route === route}">
                     <a href="#/redis">
-                        <i class="fa fa-repeat"></i> <span>Redis</span>
+                        <i class="fa fa-database"></i> <span>Redis</span>
                     </a>
                 </li>
             </ul>
@@ -139,6 +140,11 @@
 <!-- ./wrapper -->
 
 <script src="bower_components/requirejs/require.js" data-main="js/main.js"></script>
+<script type="text/javascript">
+    if(window.location.pathname == "/dashboard"){
+        window.location.href = "/dashboard/";
+    }
+</script>
 </body>
 
 </html>
