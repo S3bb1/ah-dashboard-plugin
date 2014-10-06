@@ -2,6 +2,8 @@ ActionHero Dashboard
 ===================
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/S3bb1/ah-dashboard-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[![NPM](https://nodei.co/npm/ah-dashboard-plugin.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/ah-dashboard-plugin/)
+
 ## Install
 
 - `npm install ah-dashboard-plugin --save`
