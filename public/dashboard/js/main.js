@@ -15,7 +15,9 @@ require.config({
     'morris': '../bower_components/morrisjs/morris',
     'raphael': '../bower_components/raphael/raphael-min',
     'AHclient': '/public/javascript/actionheroClient',
-    'angular-dashboard': 'angular-ui-dashboard'
+    'angular-dashboard': 'angular-ui-dashboard',
+    'fancytree' : '../bower_components/fancytree/dist/jquery.fancytree',
+    'jqueryContextMenu' : '../bower_components/jQuery-contextMenu/src/jquery.contextMenu'
 
 
   },
@@ -52,10 +54,33 @@ require.config({
     },
     angular: {
       exports: 'angular'
+    },
+    'fancytree': {
+      deps: ['jquery-ui']
+    },
+    'jqueryContextMenu': {
+      deps: ['jquery']
+    },
+    'libs/jquery.fancytree.contextmenu':{
+      deps: ['fancytree']
     }
   }
 });
 
-require(['app', 'jquery', 'jquery-ui', 'jquery-knob', 'morris', 'lodash', 'AHclient', 'raphael','directives/directives', 'templates/templates','controllers/controllers'], function (app) {
+require([ 'app', 
+          'jquery', 
+          'jquery-ui', 
+          'jquery-knob', 
+          'morris', 
+          'lodash', 
+          'AHclient', 
+          'raphael',
+          'fancytree',
+          'jqueryContextMenu',
+          'libs/jquery.fancytree.contextmenu',
+          'directives/directives', 
+          'templates/templates',
+          'controllers/controllers'
+], function (app) {
   app.init();
 });

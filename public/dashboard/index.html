@@ -8,11 +8,12 @@
     <!-- bootstrap 3.0.2 -->
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- font Awesome -->
-    <link href="bower_components/admin-lte/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="bower_components/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Ionicons -->
     <link href="bower_components/admin-lte/css/ionicons.min.css" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
     <link href="bower_components/admin-lte/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+    <link href="bower_components/jQuery-contextMenu/src/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         .uname,.info,.content-header {
             text-transform: uppercase;
@@ -22,6 +23,7 @@
     <link href="bower_components/morrisjs/morris.css" rel="stylesheet" type="text/css" />
     <link href="css/angular-ui-dashboard.css" rel="stylesheet" type="text/css" />
     <link href="css/dashboard.css" rel="stylesheet" type="text/css" />
+    <link href="bower_components/fancytree/dist/skin-win8/ui.fancytree.min.css" rel="stylesheet" type="text/css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -112,6 +114,11 @@
                 <li ng-class="{ 'active': $route.current.$$route === route}">
                     <a href="#/tasks">
                         <i class="fa fa-repeat"></i> <span>Tasks</span>
+                    </a>
+                </li>
+                <li ng-class="{ 'active': $route.current.$$route === route}">
+                    <a href="#/redis">
+                        <i class="fa fa-database"></i> <span>Redis</span>
                     </a>
                 </li>
             </ul>

@@ -8,7 +8,7 @@ define(['app'], function (app) {
       hideWidgetName: true,
       hideToolbar: true,
       storage: $window.localStorage,
-      storageId: 'demo',
+      storageId: 'ahDashboard',
       sortableOptions: {
         handle: '.box-header'
       }
@@ -16,10 +16,5 @@ define(['app'], function (app) {
     $rootScope.$on('ahDashboardWidgetAdded', function (srcevent, event, widget) {
       $scope.addWidgetInternal(event, widget);
     });
-    $scope.randomValue = Math.random();
-    $interval(function () {
-      $scope.randomValue = Math.random();
-    }, 500);
-
   });
 });

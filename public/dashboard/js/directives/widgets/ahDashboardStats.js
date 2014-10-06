@@ -4,7 +4,7 @@ define(['app'], function (app) {
       restrict: 'A',
       scope: true,
       replace: true,
-      template: '<div><div class="chart" id="{{directiveId}}" style="height: 300px;"><div ng-bind-html="error"></div></div> <div ng-click=\"refreshChart();\" class=\"pull-left\">Refresh Chart: <div class=\"glyphicon glyphicon-refresh\"></div></div></div>',
+      template: '<div><div class="chart" id="{{directiveId}}" style="height: 300px;"><div ng-bind-html="error"></div></div> <div class=\"pull-left\"><button ng-click=\"refreshChart();\" type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-refresh"></span> Refresh</button></div></div>',
       link: function (scope) {
         scope.directiveId = "chart_stats_" + scope.$id;
         scope.widget.ranges = [
@@ -73,9 +73,14 @@ define(['app'], function (app) {
         $.get('/api/getStatsKeys', function (data) {
           var id = 0;
           scope.widget.statsArr = [];
+          var tempLabels = [];
           for (var stat in data.statsKeys) {
             scope.widget.statsArr.push({id: id, label: stat});
+            tempLabels.push({id: stat});
             id++;
+          }
+          if(scope.widget.attrs.stats.length == 0){
+            scope.widget.attrs.stats = tempLabels;
           }
         });
       }

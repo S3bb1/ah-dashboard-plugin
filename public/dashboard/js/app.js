@@ -44,6 +44,10 @@ define([
         templateUrl: 'views/tasks.html',
         controller: 'ahDashboardTasks'
       })
+      .when('/redis', {
+        templateUrl: 'views/redis.html',
+        controller: 'ahDashboardRedisViewer'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -118,12 +122,16 @@ define([
       ];
     })
     .value('defaultWidgets', [
-      { name: 'stats', title: 'ActionHero Stats Statistics', style: {
-        width: '100%'
-      } },
-      { name: 'cpuusage', style: {
-        width: '300px'
-      } },
+      { 
+        name: 'stats', 
+        title: 'ActionHero Stats Statistics', 
+        style: {
+          width: '100%'
+        } 
+      },
+      { name: 'cpuusage' },
+      { name: 'ramusage' },
+      { name: 'uptime' },
       { name: 'time'},
       { name: 'taskstats'}
     ])
