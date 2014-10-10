@@ -1,6 +1,6 @@
 {
   "name": "ah-dashboard-plugin",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "https://github.com/S3bb1/ah-dashboard-plugin",
   "authors": [
     "Sebastian Dechant <sebshome@web.de>"
@@ -33,6 +33,7 @@
     "admin-lte": "~1.2.1",
     "jquery-ui": "~1.11.1",
     "jQuery-contextMenu": "~1.6.6",
-    "fontawesome": "~4.2.0"
+    "fontawesome": "~4.2.0",
+    "fancytree": "~2.4.1"
   }
 }
