@@ -40,6 +40,10 @@ define([
         templateUrl: 'views/routes.html',
         controller: 'ahDashboardRoutes'
       })
+      .when('/plugins', {
+        templateUrl: 'views/plugins.html',
+        controller: 'ahDashboardPlugins'
+      })
       .when('/tasks', {
         templateUrl: 'views/tasks.html',
         controller: 'ahDashboardTasks'
