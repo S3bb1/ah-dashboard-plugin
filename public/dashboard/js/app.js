@@ -70,7 +70,7 @@ define([
         {
           name: 'stats',
           displayName : 'Statistics',
-          title: 'ActionHero Stats Statistics',
+          title: 'Stats Statistics',
           directive: 'ah-stats',
           settingsModalOptions: {
             templateUrl: 'template/widget-settings-stats-template.html',
@@ -90,7 +90,7 @@ define([
         {
           name: 'cpuusage',
           displayName : 'CPU Usage',
-          title: 'ActionHero CPU Usage',
+          title: 'CPU Usage',
           directive: 'ah-cpuusage',
           style: {
             width: '300px'
@@ -99,7 +99,7 @@ define([
         {
           name: 'taskstats',
           displayName : 'Tasks Stats',
-          title: 'ActionHero Tasks Stats',
+          title: 'Tasks Stats',
           directive: 'ah-tasksstats',
           style: {
             width: '300px'
@@ -108,7 +108,7 @@ define([
         {
           name: 'ramusage',
           displayName : 'RAM Usage',
-          title: 'ActionHero RAM Usage',
+          title: 'RAM Usage',
           directive: 'ah-ramusage',
           style: {
             width: '300px'
@@ -117,7 +117,7 @@ define([
         {
           name: 'uptime',
           displayName : 'AH Uptime',
-          title: 'ActionHero Uptime',
+          title: 'Uptime',
           directive: 'ah-uptime',
           style: {
             width: '300px'
@@ -126,13 +126,7 @@ define([
       ];
     })
     .value('defaultWidgets', [
-      { 
-        name: 'stats', 
-        title: 'ActionHero Stats Statistics', 
-        style: {
-          width: '100%'
-        } 
-      },
+      { name: 'stats' },
       { name: 'cpuusage' },
       { name: 'ramusage' },
       { name: 'uptime' },

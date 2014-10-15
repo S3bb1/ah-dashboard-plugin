@@ -1,6 +1,7 @@
 define(['app'], function (app) {
-  app.controller('ahDashboardRedisViewer', function ($scope) {
+  app.controller('ahDashboardRedisViewer', function ($scope, $rootScope) {
     $scope.details = {};
+    $scope.redisDetailsLoadingDone = true;
     $("#redisKeys").fancytree({
       extensions: ['contextMenu'],
       contextMenu: {
@@ -27,6 +28,7 @@ define(['app'], function (app) {
         data.result = {url: "/api/getAllRedisKeys?prefix="+encodeURIComponent(keyPath)}
       },
       click: function(event, data) {
+        $scope.redisDetailsLoadingDone = false;
         var node = data.node;
         var keyPath = node.getKeyPath();
         if(keyPath[0] == '/'){
@@ -36,14 +38,17 @@ define(['app'], function (app) {
         $.ajax({
           url: "/api/getRedisKeyValue?key="+encodeURIComponent(keyPath),
         }).done(function(response) {
-          $scope.details = response.details;
+          $scope.redisDetailsLoadingDone = true;
+          $scope.details = {keypath:keyPath, details:response.details};
+              
           $scope.$apply();
         });
       },
     });
   });
-  app.directive('contentItem', function ($compile) {
-    var hashTemplate = '<table class="table">'+
+  app.directive('contentItem', function ($compile, $rootScope, $modal) {
+    var hashTemplate = '<button ng-click="addUpdateHashItem()" class="btn btn-default">Add Element</button>'+
+                       '<table class="table">'+
                        '   <thead>'+
                        '       <tr>'+
                        '           <th>Field</th>'+
@@ -51,60 +56,95 @@ define(['app'], function (app) {
                        '       </tr>'+
                        '   </thead>'+
                        '   <tbody>'+
-                       '       <tr ng-repeat="(key, value) in content.data">'+
+                       '       <tr ng-repeat="(key, value) in content.details.data">'+
                        '           <td>{{key}}</td>'+
                        '           <td>{{value}}</td>'+
+                       '           <td>'+
+                       '             <button ng-click="addUpdateHashItem(key, value)" type="button" class="btn btn-success btn-xs">'+
+                       '               <span class="glyphicon glyphicon-pencil"></span>'+
+                       '             </button>'+
+                       '             <button ng-click="removeHashItem(key)" type="button" class="btn btn-danger btn-xs">'+
+                       '               <span class="glyphicon glyphicon-remove"></span>'+
+                       '             </button>'+
+                       '           </td>'+                       
                        '       </tr>'+
                        '   </tbody>'+
                        '</table>';
-    var listTemplate = '<table class="table">'+
+    var listTemplate = '<button ng-click="addUpdateListItem()" class="btn btn-default">Add Element</button>'+
+                       '<table class="table">'+
                        '   <thead>'+
                        '    <th>#</th>'+
                        '    <th>Value</th>'+
                        '  </thead>'+
                        '  <tbody>'+
-                       '    <tr ng-repeat="item in content.data">'+
+                       '    <tr ng-repeat="item in content.details.items">'+
                        '      <td>{{item.number}}</td>'+
                        '      <td>{{item.value}}</td>'+
+                       '      <td>'+
+                       '        <button ng-click="addUpdateListItem(item.number, item.value)" type="button" class="btn btn-success btn-xs">'+
+                       '          <span class="glyphicon glyphicon-pencil"></span>'+
+                       '        </button>'+
+                       '        <button ng-click="removeListItem(item.value)" type="button" class="btn btn-danger btn-xs">'+
+                       '          <span class="glyphicon glyphicon-remove"></span>'+
+                       '        </button>'+
+                       '      </td>'+
                        '    </tr>'+
                        '  </tbody>'+
                        '</table>';
-    var zSetTemplate = '<table class="table">'+
+    var zSetTemplate = '<button ng-click="addUpdateZSetItem()" class="btn btn-default">Add Element</button>'+
+                       '<table class="table">'+
                        '   <thead>'+
                        '    <th>#</th>'+
                        '    <th>Score</th>'+
                        '    <th>Value</th>'+
                        '  </thead>'+
                        '  <tbody>'+
-                       '    <tr ng-repeat="item in content.items">'+
+                       '    <tr ng-repeat="item in content.details.items">'+
                        '      <td>{{item.number}}</td>'+
                        '      <td>{{item.score}}</td>'+
                        '      <td>{{item.value}}</td>'+
+                       '      <td>'+
+                       '        <button type="button" ng-click="addUpdateZSetItem(item.score, item.value)" class="btn btn-success btn-xs">'+
+                       '          <span class="glyphicon glyphicon-pencil"></span>'+
+                       '        </button>'+
+                       '        <button type="button" ng-click="removeZSetItem(item.value)" class="btn btn-danger btn-xs">'+
+                       '          <span class="glyphicon glyphicon-remove"></span>'+
+                       '        </button>'+
+                       '      </td>'+                       
                        '    </tr>'+
                        '  </tbody>'+
                        '</table>';                       
-    var setTemplate =  '<table class="table">'+
+    var setTemplate =  '<button ng-click="addSetItem()" class="btn btn-default">Add Element</button>'+
+                       '<table class="table">'+
                        '   <thead>'+
                        '    <th>Member</th>'+
                        '  </thead>'+
                        '  <tbody>'+
-                       '    <tr ng-repeat="item in content.members">'+
+                       '    <tr ng-repeat="item in content.details.members">'+
                        '      <td>{{item}}</td>'+
+                       '      <td>'+
+                       '        <button ng-click="removeSetItem(item)" type="button" class="btn btn-danger btn-xs">'+
+                       '          <span class="glyphicon glyphicon-remove"></span>'+
+                       '        </button>'+
+                       '      </td>'+                       
                        '    </tr>'+
                        '  </tbody>'+
                        '</table>';  
 
     var strTemplate =  '<form class="form-horizontal" role="form">'+
+                       '   <button type="button" ng-click="updateStrItem(content.details.value)" class="btn btn-success btn-xs">'+
+                       '     <span class="glyphicon glyphicon-pencil"></span>'+
+                       '   </button>'+
                        '   <div class="form-group">'+
-                       '     <label for="key" class="col-sm-2 control-label">Key</label>'+
-                       '     <div class="col-sm-10">'+
-                       '       <input type="text" disabled="disabled" class="form-control" id="key" value="{{content.key}}" placeholder="Key">'+
+                       '     <label for="key" class="col-xs-2 control-label">Key</label>'+
+                       '     <div class="col-xs-10">'+
+                       '       <input type="text" disabled="disabled" class="form-control" id="key" value="{{content.details.key}}" placeholder="Key">'+
                        '     </div>'+
                        '   </div>'+
                        '   <div class="form-group">'+
-                       '     <label for="value" class="col-sm-2 control-label">Value</label>'+
-                       '     <div class="col-sm-10">'+
-                       '       <textarea class="form-control" id="value">{{content.value}}</textarea>'+
+                       '     <label for="value" class="col-xs-2 control-label">Value</label>'+
+                       '     <div class="col-xs-10">'+
+                       '       <textarea class="form-control" ng-disabled="true" id="value">{{content.details.value}}</textarea>'+
                        '     </div>'+
                        '   </div>'+
                        ' </form>';  
@@ -134,11 +174,197 @@ define(['app'], function (app) {
     }
 
     var linker = function(scope, element, attrs) {
-        scope.rootDirectory = 'images/';
-        scope.$watch('content',function(values) {
-          element.html(getTemplate(scope.content.type)).show();
-          $compile(element.contents())(scope);
-        }, true);
+      scope.rootDirectory = 'images/';
+      scope.$watch('content',function(values) {
+        if(scope.content.details){
+          element.html(getTemplate(scope.content.details.type)).show();
+        } else {
+          element.html(getTemplate("")).show();
+        }
+        $compile(element.contents())(scope);
+      }, true);
+
+      scope.removeSetItem = function(item){
+          scope.$parent.redisDetailsLoadingDone = false;
+          $.ajax({
+            url: "/api/removeRedisSetItem?item="+encodeURIComponent(item)+"&keyPath="+encodeURIComponent(scope.content.keypath),
+          }).done(function(response) {
+            scope.$parent.redisDetailsLoadingDone = true;
+            scope.content.details = response.details;
+            scope.$apply();
+          });      
+      }
+
+      scope.removeHashItem = function(item){
+          scope.$parent.redisDetailsLoadingDone = false;
+          $.ajax({
+            url: "/api/removeRedisHashItem?item="+encodeURIComponent(item)+"&keyPath="+encodeURIComponent(scope.content.keypath),
+          }).done(function(response) {
+            scope.$parent.redisDetailsLoadingDone = true;
+            scope.content.details = response.details;
+            scope.$apply();
+          });      
+      }
+
+      scope.removeZSetItem = function(item){
+          scope.$parent.redisDetailsLoadingDone = false;
+          $.ajax({
+            url: "/api/removeRedisZSetItem?item="+encodeURIComponent(item)+"&keyPath="+encodeURIComponent(scope.content.keypath),
+          }).done(function(response) {
+            scope.$parent.redisDetailsLoadingDone = true;
+            scope.content.details = response.details;
+            scope.$apply();
+          });      
+      }
+
+      scope.removeListItem = function(item){
+          scope.$parent.redisDetailsLoadingDone = false;
+          $.ajax({
+            url: "/api/removeRedisListItem?item="+encodeURIComponent(item)+"&keyPath="+encodeURIComponent(scope.content.keypath),
+          }).done(function(response) {
+            scope.$parent.redisDetailsLoadingDone = true;
+            scope.content.details = response.details;
+            scope.$apply();
+          });      
+      }
+
+      scope.addUpdateHashItem = function(key, value){
+        var modalInstance = $modal.open({
+          templateUrl: 'modalRedisHashItem.html',
+          controller: 'ahDashboardRedisModalController',
+          resolve: {
+            element: function () {
+              return {name:key, value:value} || {};
+            },
+            newItem: function (){
+              return !key;
+            }
+          }
+        });
+
+        modalInstance.result.then(function (element) {
+          $.ajax({
+            url: "/api/updateRedisHashItem?item="+encodeURIComponent(element.name)+"&value="+encodeURIComponent(element.value)+"&keyPath="+encodeURIComponent(scope.content.keypath),
+          }).done(function(response) {
+            scope.$parent.redisDetailsLoadingDone = true;
+            scope.content.details = response.details;
+            scope.$apply();
+          }); 
+        }, function () {
+          // Cancel clicked
+        });
+      }
+
+      scope.addUpdateZSetItem = function(score, value){
+        var modalInstance = $modal.open({
+          templateUrl: 'modalRedisZSetItem.html',
+          controller: 'ahDashboardRedisModalController',
+          resolve: {
+            element: function () {
+              return {score:score, value:value} || {};
+            },
+            newItem: function (){
+              return !score;
+            }
+          }
+        });
+
+        modalInstance.result.then(function (element) {
+          $.ajax({
+            url: "/api/updateRedisZSetItem?value="+encodeURIComponent(element.value)+"&score="+encodeURIComponent(element.score)+"&keyPath="+encodeURIComponent(scope.content.keypath),
+          }).done(function(response) {
+            scope.$parent.redisDetailsLoadingDone = true;
+            scope.content.details = response.details;
+            scope.$apply();
+          }); 
+        }, function () {
+          // Cancel clicked
+        });
+      }
+
+      scope.addUpdateListItem = function(number, value){
+        var modalInstance = $modal.open({
+          templateUrl: 'modalRedisListItem.html',
+          controller: 'ahDashboardRedisModalController',
+          resolve: {
+            element: function () {
+              return {number:number, value:value} || {};
+            },
+            newItem: function (){
+              return !value;
+            }
+          }
+        });
+
+        modalInstance.result.then(function (element) {
+          var url;
+          if(value){
+            url = "/api/updateRedisListItem?number="+encodeURIComponent(element.number)+"&value="+encodeURIComponent(element.value)+"&keyPath="+encodeURIComponent(scope.content.keypath);
+          } else {
+            url = "/api/addRedisListItem?value="+encodeURIComponent(element.value)+"&keyPath="+encodeURIComponent(scope.content.keypath);
+          }
+          $.ajax({
+            url: url
+          }).done(function(response) {
+            scope.$parent.redisDetailsLoadingDone = true;
+            scope.content.details = response.details;
+            scope.$apply();
+          }); 
+        }, function () {
+          // Cancel clicked
+        });
+      }
+
+      scope.updateStrItem = function(value){
+        var modalInstance = $modal.open({
+          templateUrl: 'modalRedisStrItem.html',
+          controller: 'ahDashboardRedisModalController',
+          resolve: {
+            element: function () {
+              return {value:value} || {};
+            },
+            newItem: function (){
+              return !value;
+            }
+          }
+        });
+
+        modalInstance.result.then(function (element) {
+          $.ajax({
+            url: "/api/updateRedisStrItem?value="+encodeURIComponent(element.value)+"&keyPath="+encodeURIComponent(scope.content.keypath)
+          }).done(function(response) {
+            scope.$parent.redisDetailsLoadingDone = true;
+            scope.content.details = response.details;
+            scope.$apply();
+          }); 
+        }, function () {
+          // Cancel clicked
+        });
+      }
+
+      scope.addSetItem = function(){
+        var modalInstance = $modal.open({
+          templateUrl: 'modalCreateRedisSetItem.html',
+          controller: 'ahDashboardRedisModalController',
+          resolve: {
+            element: function () {
+              return {};
+            }
+          }
+        });
+
+        modalInstance.result.then(function (element) {
+          $.ajax({
+            url: "/api/addRedisSetItem?item="+encodeURIComponent(element.name)+"&keyPath="+encodeURIComponent(scope.content.keypath),
+          }).done(function(response) {
+            scope.$parent.redisDetailsLoadingDone = true;
+            scope.content.details = response.details;
+            scope.$apply();
+          }); 
+        }, function () {
+         // Cancel clicked
+        });
+      }
     }
 
     return {
@@ -149,5 +375,105 @@ define(['app'], function (app) {
             content:'='
         }
     };
+  });
+
+  // Modal Dialog Controller and Templates
+  app.controller('ahDashboardRedisModalController', function ($scope, $modalInstance, element, newItem) {
+    $scope.element = element || {};
+    $scope.newItem = newItem;
+    $scope.ok = function () {
+      $modalInstance.close($scope.element);
+    };
+
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+  });
+
+  app.run(function($templateCache){
+    $templateCache.put("modalCreateRedisSetItem.html", 
+       '<div class="modal-header">'+
+       '    <h3 class="modal-title">Create new Set Element</h3>'+
+       '</div>'+
+       '<div class="modal-body">'+
+       '  <div class="form-group">'+
+       '      <label for="elementName">Name</label>'+
+       '      <input ng-model="element.name" class="form-control" id="elementName" placeholder="Enter value">'+
+       '  </div>'+
+       '</div>'+
+       '<div class="modal-footer">'+
+       '  <button class="btn btn-primary" ng-click="ok()">OK</button>'+
+       '  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>'+
+       '</div>'
+    );
+    $templateCache.put("modalRedisHashItem.html", 
+       '<div class="modal-header">'+
+       '    <h3 class="modal-title">Create/Update Hash Element</h3>'+
+       '</div>'+
+       '<div class="modal-body">'+
+       '  <div class="form-group">'+
+       '      <label for="elementName">Field</label>'+
+       '      <input ng-model="element.name" ng-disabled="newItem == false" class="form-control" id="elementName" placeholder="Enter value">'+
+       '  </div>'+
+       '  <div class="form-group">'+
+       '      <label for="elementName">Value</label>'+
+       '      <input ng-model="element.value" class="form-control" id="elementName" placeholder="Enter value">'+
+       '  </div>'+       
+       '</div>'+
+       '<div class="modal-footer">'+
+       '  <button class="btn btn-primary" ng-click="ok()">OK</button>'+
+       '  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>'+
+       '</div>'
+    );
+    $templateCache.put("modalRedisZSetItem.html", 
+       '<div class="modal-header">'+
+       '    <h3 class="modal-title">Create/Update ZSet Element</h3>'+
+       '</div>'+
+       '<div class="modal-body">'+
+       '  <div class="form-group">'+
+       '      <label for="elementName">Score</label>'+
+       '      <input ng-model="element.score" ng-disabled="newItem == false" class="form-control" id="elementName" placeholder="Enter value">'+
+       '  </div>'+
+       '  <div class="form-group">'+
+       '      <label for="elementName">Value</label>'+
+       '      <input ng-model="element.value" class="form-control" id="elementName" placeholder="Enter value">'+
+       '  </div>'+       
+       '</div>'+
+       '<div class="modal-footer">'+
+       '  <button class="btn btn-primary" ng-click="ok()">OK</button>'+
+       '  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>'+
+       '</div>'
+    );
+    $templateCache.put("modalRedisListItem.html", 
+       '<div class="modal-header">'+
+       '    <h3 class="modal-title">Create/Update List Element</h3>'+
+       '</div>'+
+       '<div class="modal-body">'+
+       '  <div class="form-group">'+
+       '      <label for="elementName">Value</label>'+
+       '      <input ng-model="element.value" class="form-control" id="elementName" placeholder="Enter value">'+
+       '  </div>'+       
+       '</div>'+
+       '<div class="modal-footer">'+
+       '  <button class="btn btn-primary" ng-click="ok()">OK</button>'+
+       '  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>'+
+       '</div>'
+    );
+
+    $templateCache.put("modalRedisStrItem.html", 
+       '<div class="modal-header">'+
+       '    <h3 class="modal-title">Update String Element</h3>'+
+       '</div>'+
+       '<div class="modal-body">'+
+       '  <div class="form-group">'+
+       '      <label for="elementName">Value</label>'+
+       '      <textarea ng-model="element.value" class="form-control" id="elementName" placeholder="Enter value"></textarea>'+
+       '  </div>'+       
+       '</div>'+
+       '<div class="modal-footer">'+
+       '  <button class="btn btn-primary" ng-click="ok()">OK</button>'+
+       '  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>'+
+       '</div>'
+    );    
   });
 });
