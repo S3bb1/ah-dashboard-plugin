@@ -33,10 +33,12 @@ action.run = function(api, connection, next){
         var readme = String(pluginPackageBase + '/README.md');
         var changelog = String(pluginPackageBase + '/VERSIONS.md');
 
+        plugin.readme = 'n.a.';
         if (fs.existsSync(readme)) {
           plugin.readme = markdown.toHTML(fs.readFileSync(readme, 'utf8'));
         }
 
+        plugin.changelog = 'n.a.';
         if (fs.existsSync(changelog)) {
           plugin.changelog = markdown.toHTML(fs.readFileSync(changelog, 'utf8'));
         }
