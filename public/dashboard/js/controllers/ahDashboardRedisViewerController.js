@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.controller('ahDashboardRedisViewer', function ($scope, $rootScope) {
+  app.controller('ahDashboardRedisViewer', function ($scope, $rootScope, $modal) {
     $scope.details = {};
     $scope.redisDetailsLoadingDone = true;
     $("#redisKeys").fancytree({
@@ -7,9 +7,14 @@ define(['app'], function (app) {
       contextMenu: {
         menu: {
           'reload': { 'name': 'Refresh', 'icon': 'edit' },
+          'createKey': { 'name': 'Create Key', 'icon': 'edit' }
         },
         actions: function(node, action, options) {
-          node.load();
+          if(action === 'createKey'){
+            $scope.createNewKey(node);
+          } else if(action === 'reload') {
+            node.load();
+          }
         }
       },
       imagePath: "img/",
@@ -45,6 +50,37 @@ define(['app'], function (app) {
         });
       },
     });
+
+    $scope.createNewKey = function(node){
+      var keyPath = node.getKeyPath();
+      if(keyPath[0] == '/'){
+        keyPath = keyPath.substr(1);
+      }
+      keyPath = keyPath.replace(/\//g, ':');
+      keyPath = keyPath + ':';
+      var modalInstance = $modal.open({
+        templateUrl: 'modalRedisCreateKey.html',
+        controller: 'ahDashboardRedisModalController',
+        resolve: {
+          element: function () {
+            return {node:node, key:keyPath};
+          },
+          newItem: function (){
+            return false;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (element) {
+        $.ajax({
+          url: "/api/addRedisKey?key="+encodeURIComponent(element.key)+"&type="+encodeURIComponent(element.type),
+        }).done(function(response) {
+          element.node.tree.reload();
+        }); 
+      }, function () {
+        // Cancel clicked
+      });
+    }
   });
   app.directive('contentItem', function ($compile, $rootScope, $modal) {
     var hashTemplate = '<button ng-click="addUpdateHashItem()" class="btn btn-default">Add Element</button>'+
@@ -474,6 +510,32 @@ define(['app'], function (app) {
        '  <button class="btn btn-primary" ng-click="ok()">OK</button>'+
        '  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>'+
        '</div>'
-    );    
+    );  
+
+    $templateCache.put("modalRedisCreateKey.html", 
+       '<div class="modal-header">'+
+       '    <h3 class="modal-title">Create new Key</h3>'+
+       '</div>'+
+       '<div class="modal-body">'+
+       '  <div class="form-group">'+
+       '      <label for="elementName">Key</label>'+
+       '      <input ng-model="element.key" class="form-control" id="elementName" placeholder="Enter value">'+
+       '  </div>'+
+       '  <div class="form-group">'+
+       '      <label for="elementName">Type</label>'+
+       '      <select ng-model="element.type" class="form-control">'+
+       '        <option value="string">String</option>'+
+       '        <option value="list">List</option>'+
+       '        <option value="hash">Hash</option>'+
+       '        <option value="set">Set</option>'+
+       '        <option value="zset">Sorted Set</option>'+
+       '      </select>'+
+       '  </div>'+
+       '</div>'+
+       '<div class="modal-footer">'+
+       '  <button class="btn btn-primary" ng-click="ok()">OK</button>'+
+       '  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>'+
+       '</div>'
+    );
   });
 });
