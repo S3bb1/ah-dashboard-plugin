@@ -7,7 +7,7 @@
             <div class="box-body">
                 <div class="panel panel-default">
                     <!-- Default panel contents -->
-                    <div class="panel-heading"> Plugins</div>
+                    <div class="panel-heading">Plugins</div>
 
                     <!-- Table -->
                     <table class="table">
@@ -17,8 +17,8 @@
                             <th>Description</th>
                         </tr>
                         <tr ng-repeat="plugin in plugins">
-                            <td style="width: 25%">{{plugin.name}}</td>
-                            <td style="width: 25%">{{plugin.version}}</td>
+                            <td style="width: 25%"><a href="" ng-click="open(plugin.readme)">{{plugin.name}}</a></td>
+                            <td style="width: 25%"><a href="" ng-click="open(plugin.changelog)">{{plugin.version}}</a></td>
                             <td style="width: 50%">{{plugin.description}}</td>
                         </tr>
                     </table>
@@ -32,3 +32,8 @@
         </div>
     </div>
 </div>
+
+
+
+
+

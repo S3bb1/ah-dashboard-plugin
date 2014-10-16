@@ -15,6 +15,7 @@ define([
     'ui.dashboard',
     'btford.markdown',
     'angularjs-dropdown-multiselect',
+    'ngDialog'
   ]);
   app.init = function () {
     angular.bootstrap(document, ['app']);

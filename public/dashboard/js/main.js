@@ -17,7 +17,8 @@ require.config({
     'AHclient': '/public/javascript/actionheroClient',
     'angular-dashboard': 'angular-ui-dashboard',
     'fancytree' : '../bower_components/fancytree/dist/jquery.fancytree',
-    'jqueryContextMenu' : '../bower_components/jQuery-contextMenu/src/jquery.contextMenu'
+    'jqueryContextMenu' : '../bower_components/jQuery-contextMenu/src/jquery.contextMenu',
+    'ngDialog' : '../bower_components/ngDialog/js/ngDialog.min'
 
 
   },
@@ -63,7 +64,11 @@ require.config({
     },
     'libs/jquery.fancytree.contextmenu':{
       deps: ['fancytree']
+    },
+    'ngDialog': {
+      deps: ['angular']
     }
+
   }
 });
 
@@ -74,6 +79,7 @@ require([ 'app',
           'morris', 
           'lodash', 
           'AHclient', 
+          'ngDialog',
           'raphael',
           'fancytree',
           'jqueryContextMenu',
