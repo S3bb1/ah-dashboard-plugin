@@ -24,8 +24,8 @@ action.run = function(api, connection, next){
 
 //loop over it's plugins
   api.config.general.paths.plugin.forEach(function(p){
-    api.config.general.plugins.forEach(function(plugin2){
-      var pluginPackageBase = path.normalize(p + '/' + plugin2);
+    api.config.general.plugins.forEach(function(pluginName){
+      var pluginPackageBase = path.normalize(p + '/' + pluginName);
       if(api.project_root != pluginPackageBase){
         var plugin = {};
 
