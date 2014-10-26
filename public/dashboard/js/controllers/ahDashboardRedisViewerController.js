@@ -6,8 +6,8 @@ define(['app'], function (app) {
       extensions: ['contextMenu'],
       contextMenu: {
         menu: {
-          'reload': { 'name': 'Refresh', 'icon': 'edit' },
-          'createKey': { 'name': 'Create Key', 'icon': 'edit' }
+          'reload': { 'name': 'Refresh', 'icon': 'copy' },
+          'createKey': { 'name': 'Create Key', 'icon': 'add' }
         },
         actions: function(node, action, options) {
           if(action === 'createKey'){
@@ -89,6 +89,7 @@ define(['app'], function (app) {
                        '       <tr>'+
                        '           <th>Field</th>'+
                        '           <th>Value</th>'+
+                       '           <th>Edit/Remove</th>'+
                        '       </tr>'+
                        '   </thead>'+
                        '   <tbody>'+
@@ -111,6 +112,7 @@ define(['app'], function (app) {
                        '   <thead>'+
                        '    <th>#</th>'+
                        '    <th>Value</th>'+
+                       '    <th>Edit/Remove</th>'+
                        '  </thead>'+
                        '  <tbody>'+
                        '    <tr ng-repeat="item in content.details.items">'+
@@ -133,6 +135,7 @@ define(['app'], function (app) {
                        '    <th>#</th>'+
                        '    <th>Score</th>'+
                        '    <th>Value</th>'+
+                       '    <th>Edit/Remove</th>'+
                        '  </thead>'+
                        '  <tbody>'+
                        '    <tr ng-repeat="item in content.details.items">'+
@@ -154,6 +157,7 @@ define(['app'], function (app) {
                        '<table class="table">'+
                        '   <thead>'+
                        '    <th>Member</th>'+
+                       '    <th>Remove</th>'+
                        '  </thead>'+
                        '  <tbody>'+
                        '    <tr ng-repeat="item in content.details.members">'+
@@ -385,6 +389,9 @@ define(['app'], function (app) {
           resolve: {
             element: function () {
               return {};
+            },
+            newItem: function (){
+              return true;
             }
           }
         });

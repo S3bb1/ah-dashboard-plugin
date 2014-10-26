@@ -3,7 +3,7 @@ var action = {};
 /////////////////////////////////////////////////////////////////////
 // metadata
 action.name = 'addRedisSetItem';
-action.description = 'I will remove a Item out of a Redis Set';
+action.description = 'I will add a Item into a Redis Set';
 action.inputs = {
   'required' : ['item', 'keyPath'],
   'optional' : []
@@ -18,8 +18,7 @@ action.run = function(api, connection, next){
   api.redis.client.sadd(connection.params.keyPath, connection.params.item, function(err, res){
     api.redis.client.smembers(connection.params.keyPath, function (err, members) {
       if (err) {
-        console.error('getKeyDetailsSet', err);
-        return next(err);
+        api.log('addRedisSetItem: ' + err, 'error');
       }
 
       var details = {

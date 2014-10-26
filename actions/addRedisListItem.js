@@ -23,7 +23,7 @@ action.run = function(api, connection, next){
     var endIdx = startIdx + 19;
     api.redis.client.lrange(connection.params.keyPath, startIdx, endIdx, function (err, items) {
       if (err) {
-        console.error('getKeyDetailsList', err);
+        api.log('addRedisListItem: ' + err, 'error');
       }
 
       var i = startIdx;
@@ -35,8 +35,7 @@ action.run = function(api, connection, next){
       });
       api.redis.client.llen(connection.params.keyPath, function (err, length) {
         if (err) {
-          console.error('getKeyDetailsList', err);
-          return next(err);
+          api.log('addRedisListItem: ' + err, 'error');
         }
         var details = {
           key: connection.params.keyPath,

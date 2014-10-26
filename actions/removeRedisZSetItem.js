@@ -3,7 +3,7 @@ var action = {};
 /////////////////////////////////////////////////////////////////////
 // metadata
 action.name = 'removeRedisZSetItem';
-action.description = 'I will aremove a Item out of a Redis ZSet';
+action.description = 'I will remove a Item out of a Redis ZSet';
 action.inputs = {
   'required' : ['item', 'keyPath'],
   'optional' : []
@@ -23,8 +23,7 @@ action.run = function(api, connection, next){
     var endIdx = startIdx + 19;
     api.redis.client.zrange(connection.params.keyPath, startIdx, endIdx, 'WITHSCORES', function (err, items) {
       if (err) {
-        console.error('getKeyDetailsZSet', err);
-
+        api.log('removeRedisZSetItem: ' + err, 'error');
       }
 
       items = mapZSetItems(items);
@@ -34,6 +33,9 @@ action.run = function(api, connection, next){
         item.number = i++;
       });
       api.redis.client.zcount(connection.params.keyPath, "-inf", "+inf", function (err, length) {
+        if (err) {
+          api.log('removeRedisZSetItem: ' + err, 'error');
+        }
         var details = {
           key: connection.params.keyPath,
           type: 'zset',

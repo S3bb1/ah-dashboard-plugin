@@ -20,16 +20,16 @@ action.run = function(api, connection, next){
     console.dir(res);
     api.redis.client.smembers(connection.params.keyPath, function (err, members) {
       if (err) {
-        console.error('getKeyDetailsSet', err);
-        return next(err);
+        api.log('removeRedisHashItem: ' + err, 'error');
+        connection.response.error = err;
+      } else {
+        var details = {
+          key: connection.params.keyPath,
+          type: 'set',
+          members: members
+        };
+        connection.response.details = details;
       }
-
-      var details = {
-        key: connection.params.keyPath,
-        type: 'set',
-        members: members
-      };
-      connection.response.details = details;
       next(connection, true);
     });
   });

@@ -1,9 +1,9 @@
 {
   "name": "ah-dashboard-plugin",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "homepage": "https://github.com/S3bb1/ah-dashboard-plugin",
   "authors": [
-    "Sebastian Dechant <sebshome@web.de>"
+    "Sebastian Dechant <sebbis.iphone@googlemail.com>"
   ],
   "description": "Provides a powerful Dashboard for ActionHero",
   "moduleType": [

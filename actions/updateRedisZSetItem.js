@@ -23,8 +23,7 @@ action.run = function(api, connection, next){
     var endIdx = startIdx + 19;
     api.redis.client.zrange(connection.params.keyPath, startIdx, endIdx, 'WITHSCORES', function (err, items) {
       if (err) {
-        console.error('getKeyDetailsZSet', err);
-
+        api.log('updateRedisZSetItem: ' + err, 'error');
       }
 
       items = mapZSetItems(items);

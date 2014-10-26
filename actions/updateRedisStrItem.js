@@ -18,7 +18,7 @@ action.run = function(api, connection, next){
   api.redis.client.set(connection.params.keyPath, connection.params.value, function(err, res){
     api.redis.client.get(connection.params.keyPath, function (err, val) {
       if (err) {
-        console.error('getKeyDetailsString', err);
+        api.log('updateRedisStrItem: ' + err, 'error');
       }
 
       var details = {

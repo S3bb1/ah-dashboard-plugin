@@ -18,7 +18,7 @@ action.run = function(api, connection, next){
   var key = connection.params.key;
   api.redis.client.type(key, function (err, type) {
     if (err) {
-      console.error('getKeyDetails', err);
+      api.log('Redis Type Error: ' + err, 'error');
     }
     switch (type) {
       case 'string':
@@ -59,7 +59,7 @@ exports.action = action;
 function getKeyDetailsString (key, redisConnection, connection, next) {
   redisConnection.get(key, function (err, val) {
     if (err) {
-      console.error('getKeyDetailsString', err);
+      api.log('getRedisString: ' + err, 'error');
     }
 
     var details = {
@@ -81,7 +81,7 @@ function getKeyDetailsList (key, redisConnection, connection, next) {
   var endIdx = startIdx + 19;
   redisConnection.lrange(key, startIdx, endIdx, function (err, items) {
     if (err) {
-      console.error('getKeyDetailsList', err);
+      api.log('getRedisDetailsList: ' + err, 'error');
     }
 
     var i = startIdx;
@@ -93,8 +93,7 @@ function getKeyDetailsList (key, redisConnection, connection, next) {
     });
     redisConnection.llen(key, function (err, length) {
       if (err) {
-        console.error('getKeyDetailsList', err);
-        return next(err);
+        api.log('getRedisDetailsList: ' + err, 'error');
       }
       var details = {
         key: key,
@@ -113,9 +112,8 @@ function getKeyDetailsList (key, redisConnection, connection, next) {
 function getKeyDetailsHash (key, redisConnection, connection, next) {
   redisConnection.hgetall(key, function (err, fieldsAndValues) {
     if (err) {
-      console.error('getKeyDetailsHash', err);
+      api.log('getKeyDetailsHash: ' + err, 'error');
     }
-    console.dir(fieldsAndValues);
     var details = {
       key: key,
       type: 'hash',
@@ -129,8 +127,7 @@ function getKeyDetailsHash (key, redisConnection, connection, next) {
 function getKeyDetailsSet (key, redisConnection, connection, next) {
   redisConnection.smembers(key, function (err, members) {
     if (err) {
-      console.error('getKeyDetailsSet', err);
-      return next(err);
+      api.log('getKeyDetailsSet: ' + err, 'error');
     }
 
     var details = {
@@ -151,8 +148,7 @@ function getKeyDetailsZSet (key, redisConnection, connection,  next) {
   var endIdx = startIdx + 19;
   redisConnection.zrange(key, startIdx, endIdx, 'WITHSCORES', function (err, items) {
     if (err) {
-      console.error('getKeyDetailsZSet', err);
-
+      api.log('getKeyDetailsZSet: ' + err, 'error');
     }
 
     items = mapZSetItems(items);
