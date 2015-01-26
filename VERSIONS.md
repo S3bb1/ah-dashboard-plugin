@@ -1,3 +1,8 @@
+## Version 0.3.0 (26-Jan-2015)
+* ActionHero V10 Support
+* Bugfix issue with plugins page
+* Adjusted Logfile read config to start at the end
+
 ## Version 0.2.0 (26-Oct-2014)
 * Finalization of REDIS Viewer
 ** Now you can Add/Edit/Remove Keys

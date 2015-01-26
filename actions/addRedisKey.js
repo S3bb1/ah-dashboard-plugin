@@ -5,8 +5,12 @@ var action = {};
 action.name = 'addRedisKey';
 action.description = 'I will add a empty key in redis';
 action.inputs = {
-  'required' : ['key', 'type'],
-  'optional' : []
+  key: {
+    required: true
+  },
+  type: {
+    required: true
+  }
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {

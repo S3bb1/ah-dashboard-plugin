@@ -5,10 +5,7 @@ var action = {};
 // metadata
 action.name = 'getAllFailedJobs';
 action.description = 'I will return all failed jobs';
-action.inputs = {
-  'required': [],
-  'optional': []
-};
+action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
 }

@@ -5,8 +5,9 @@ var action = {};
 action.name = 'reEnqueueTask';
 action.description = 'I will reenqueue a failed task';
 action.inputs = {
-  'required': ['taskdefinition'],
-  'optional': []
+  taskdefinition: {
+    required: true
+  }
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {

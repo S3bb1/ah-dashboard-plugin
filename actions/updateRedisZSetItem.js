@@ -5,8 +5,15 @@ var action = {};
 action.name = 'updateRedisZSetItem';
 action.description = 'I will add or update a Item out of a Redis ZSet';
 action.inputs = {
-  'required' : ['value', 'keyPath', 'score'],
-  'optional' : []
+  score: {
+    required: true
+  },
+  keyPath: {
+    required: true
+  },
+  value: {
+    required: true
+  }
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {

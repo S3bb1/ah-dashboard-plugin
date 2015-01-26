@@ -5,10 +5,7 @@ var action = {};
 // metadata
 action.name = 'getTasksStatistics';
 action.description = 'I will return all statistics for runned tasks';
-action.inputs = {
-  'required': [],
-  'optional': []
-};
+action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
 }

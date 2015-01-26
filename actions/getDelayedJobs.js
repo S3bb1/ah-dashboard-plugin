@@ -5,10 +5,7 @@ var action = {};
 // metadata
 action.name = 'getDelayedJobs';
 action.description = 'I will return all delayed jobs';
-action.inputs = {
-  'required': [],
-  'optional': []
-};
+action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
 }

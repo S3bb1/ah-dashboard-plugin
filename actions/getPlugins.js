@@ -8,10 +8,7 @@ var action = {};
 // metadata
 action.name = 'getPlugins';
 action.description = 'I will return all registered plugins';
-action.inputs = {
-  'required' : [],
-  'optional' : []
-};
+action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
 }
@@ -26,7 +23,8 @@ action.run = function(api, connection, next){
   api.config.general.paths.plugin.forEach(function(p){
     api.config.general.plugins.forEach(function(pluginName){
       var pluginPackageBase = path.normalize(p + '/' + pluginName);
-      if(api.project_root != pluginPackageBase){
+      // Check if plugin folder isnt ah root folder AND the folder exists (if multiple plugins folder are defined)
+      if(api.project_root != pluginPackageBase && fs.existsSync(pluginPackageBase)){
         var plugin = {};
 
         var package_json = String(fs.readFileSync(pluginPackageBase + '/package.json'));

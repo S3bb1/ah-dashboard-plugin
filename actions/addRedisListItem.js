@@ -5,8 +5,12 @@ var action = {};
 action.name = 'addRedisListItem';
 action.description = 'I will add a Item into a Redis List';
 action.inputs = {
-  'required' : ['value', 'keyPath'],
-  'optional' : []
+  value: {
+    required: true
+  },
+  keyPath: {
+    required: true
+  }
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {

@@ -5,8 +5,12 @@ var action = {};
 action.name = 'getRedisKeyValue';
 action.description = 'I will return a value for given redis key';
 action.inputs = {
-  'required' : ['key'],
-  'optional' : ['index']
+  key: {
+    required: true
+  },
+  index: {
+    required: false
+  }
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {
@@ -17,6 +21,7 @@ action.outputExample = {
 action.run = function(api, connection, next){
   var key = connection.params.key;
   api.redis.client.type(key, function (err, type) {
+    console.dir(type);
     if (err) {
       api.log('Redis Type Error: ' + err, 'error');
     }

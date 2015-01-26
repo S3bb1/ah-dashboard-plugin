@@ -4,10 +4,7 @@ var action = {};
 // metadata
 action.name = 'getRoutes';
 action.description = 'I will return all registered routes';
-action.inputs = {
-  'required' : [],
-  'optional' : []
-};
+action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
 }

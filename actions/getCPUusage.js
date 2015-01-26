@@ -5,10 +5,7 @@ var action = {};
 // metadata
 action.name = 'getCPUusage';
 action.description = 'I will return the current cpu usage';
-action.inputs = {
-  'required' : [],
-  'optional' : []
-};
+action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
 }

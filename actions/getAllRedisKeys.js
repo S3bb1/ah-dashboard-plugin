@@ -5,8 +5,9 @@ var action = {};
 action.name = 'getAllRedisKeys';
 action.description = 'I will return all redis keys';
 action.inputs = {
-  'required' : [],
-  'optional' : ['prefix']
+  'prefix' : {
+    required: false
+  }
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {
@@ -52,7 +53,6 @@ action.run = function(api, connection, next){
           reducedKeys.push(lookup[firstPrefix]);
         }
       });
-
       reducedKeys.forEach(function (data) {
         if (data.count === 0) {
           data.title = data.key;

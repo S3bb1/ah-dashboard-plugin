@@ -4,10 +4,7 @@ var action = {};
 // metadata
 action.name = 'getDocumentation';
 action.description = 'I will return the documentation of the actions';
-action.inputs = {
-  'required' : [],
-  'optional' : []
-};
+action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
 }

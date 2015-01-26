@@ -5,8 +5,15 @@ var action = {};
 action.name = 'updateRedisHashItem';
 action.description = 'I will update a Item of a Redis Hash';
 action.inputs = {
-  'required' : ['item', 'keyPath', 'value'],
-  'optional' : []
+  item: {
+    required: true
+  },
+  keyPath: {
+    required: true
+  },
+  value: {
+    required: true
+  }
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {

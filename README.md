@@ -1,5 +1,9 @@
 ActionHero Dashboard
 ===================
+
+## Important Note!!!
+ah-dashboard 0.3.0 is compatible with actionHero v10 ... for lower actionHero versions use 0.2.0!!!
+
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/S3bb1/ah-dashboard-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![NPM](https://nodei.co/npm/ah-dashboard-plugin.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/ah-dashboard-plugin/)

@@ -32,7 +32,7 @@ var calcStatus = {
 
       api.ahDashboard.prevStats = allStats;
 
-      next(true, null);
+      next();
     });
 
   }

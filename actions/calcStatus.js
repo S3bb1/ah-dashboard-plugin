@@ -7,8 +7,15 @@ var async = require('async');
 action.name = 'getStats';
 action.description = 'I will return the timeseries for all or specific keys';
 action.inputs = {
-  'required' : ['timerange'],
-  'optional' : ['allKeys', 'specificKeys']
+  timerange: {
+    required: true
+  },
+  allKeys: {
+    required: false
+  },
+  specificKeys: {
+    required: false
+  }
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {

@@ -5,10 +5,7 @@ var action = {};
 // metadata
 action.name = 'getRAMusage';
 action.description = 'I will return the current ram usage';
-action.inputs = {
-  'required': [],
-  'optional': []
-};
+action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
 }

@@ -5,8 +5,12 @@ var action = {};
 action.name = 'removeRedisHashItem';
 action.description = 'I will remove a Item out of a Redis Hash';
 action.inputs = {
-  'required' : ['item', 'keyPath'],
-  'optional' : []
+  item: {
+    required: true
+  },
+  keyPath: {
+    required: true
+  }
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {

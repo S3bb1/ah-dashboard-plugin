@@ -5,8 +5,12 @@ var action = {};
 action.name = 'updateRedisStrItem';
 action.description = 'I will update a Redis String';
 action.inputs = {
-  'required' : ['value', 'keyPath'],
-  'optional' : []
+  keyPath: {
+    required: true
+  },
+  value: {
+    required: true
+  }
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {

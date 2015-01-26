@@ -4,10 +4,7 @@ var action = {};
 // metadata
 action.name = 'getStatsKeys';
 action.description = 'I will return all stats keys';
-action.inputs = {
-  'required' : [],
-  'optional' : []
-};
+action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
 }
