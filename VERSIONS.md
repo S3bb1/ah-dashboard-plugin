@@ -2,6 +2,7 @@
 * ActionHero V10 Support
 * Bugfix issue with plugins page
 * Adjusted Logfile read config to start at the end
+* Added file exists for logfile if its located elsewhere (thx @JoHense)
 
 ## Version 0.2.0 (26-Oct-2014)
 * Finalization of REDIS Viewer
