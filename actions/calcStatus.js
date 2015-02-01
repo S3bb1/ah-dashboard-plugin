@@ -25,7 +25,7 @@ action.outputExample = {
 // functional
 action.run = function(api, connection, next){
   // Check authentication for current Request
-  api.session.checkAuth(connection, function(session){
+  api.ahDashboard.session.checkAuth(connection, function(session){
     connection.response.id = api.id;
 
     // we cant process any timeseries if no scheduler runs... abort action with error

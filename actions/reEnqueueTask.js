@@ -17,7 +17,7 @@ action.outputExample = {
 // functional
 action.run = function (api, connection, next) {
   // Check authentication for current Request
-  api.session.checkAuth(connection, function(session){
+  api.ahDashboard.session.checkAuth(connection, function(session){
     var taskDefinition = connection.params.taskdefinition;
     api.resque.scheduler.connection.redis.lrem('resque:failed', 0, taskDefinition.replace(/\\/g, "\\"), function(err, result){
       var taskParsed = JSON.parse(taskDefinition);

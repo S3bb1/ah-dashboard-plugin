@@ -23,7 +23,7 @@ action.outputExample = {
 // functional
 action.run = function(api, connection, next){
   // Check authentication for current Request
-  api.session.checkAuth(connection, function(session){
+  api.ahDashboard.session.checkAuth(connection, function(session){
     api.redis.client.lset(connection.params.keyPath, connection.params.number, connection.params.value, function(err, res){
       var startIdx = parseInt(connection.params.index, 10);
       if (typeof(startIdx) == 'undefined' || isNaN(startIdx) || startIdx < 0) {

@@ -20,7 +20,7 @@ action.outputExample = {
 // functional
 action.run = function(api, connection, next){
   // Check authentication for current Request
-  api.session.checkAuth(connection, function(session){
+  api.ahDashboard.session.checkAuth(connection, function(session){
     api.redis.client.hdel(connection.params.keyPath, connection.params.item, function(err, res){
       api.redis.client.hgetall(connection.params.keyPath, function (err, fieldsAndValues) {
         if (err) {

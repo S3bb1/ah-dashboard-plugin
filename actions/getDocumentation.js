@@ -13,7 +13,7 @@ action.outputExample = {
 // functional
 action.run = function(api, connection, next){
   // Check authentication for current Request
-  api.session.checkAuth(connection, function(session){
+  api.ahDashboard.session.checkAuth(connection, function(session){
     connection.response.documentation = api.documentation.documentation;
     next(connection, true);
   }, next);
