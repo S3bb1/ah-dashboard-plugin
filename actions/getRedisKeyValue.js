@@ -19,38 +19,40 @@ action.outputExample = {
 /////////////////////////////////////////////////////////////////////
 // functional
 action.run = function(api, connection, next){
-  var key = connection.params.key;
-  api.redis.client.type(key, function (err, type) {
-    console.dir(type);
-    if (err) {
-      api.log('Redis Type Error: ' + err, 'error');
-    }
-    switch (type) {
-      case 'string':
-        getKeyDetailsString(key, api.redis.client, connection, next);
-        break;
-      case 'list':
-        getKeyDetailsList(key, api.redis.client, connection, next);
-        break;
-      case 'zset':
-        getKeyDetailsZSet(key, api.redis.client, connection, next);
-        break;
-      case 'hash':
-        getKeyDetailsHash(key, api.redis.client, connection, next);
-        break;
-      case 'set':
-        getKeyDetailsSet(key, api.redis.client, connection, next);
-        break;
-      default:
-        var details = {
-          key: key,
-          type: type
-        };
-        connection.response.details = details;
-        next(connection, true);
-    }
-  });
-
+  // Check authentication for current Request
+  api.session.checkAuth(connection, function(session){
+    var key = connection.params.key;
+    api.redis.client.type(key, function (err, type) {
+      console.dir(type);
+      if (err) {
+        api.log('Redis Type Error: ' + err, 'error');
+      }
+      switch (type) {
+        case 'string':
+          getKeyDetailsString(key, api.redis.client, connection, next);
+          break;
+        case 'list':
+          getKeyDetailsList(key, api.redis.client, connection, next);
+          break;
+        case 'zset':
+          getKeyDetailsZSet(key, api.redis.client, connection, next);
+          break;
+        case 'hash':
+          getKeyDetailsHash(key, api.redis.client, connection, next);
+          break;
+        case 'set':
+          getKeyDetailsSet(key, api.redis.client, connection, next);
+          break;
+        default:
+          var details = {
+            key: key,
+            type: type
+          };
+          connection.response.details = details;
+          next(connection, true);
+      }
+    });
+  }, next);
 };
 
 /////////////////////////////////////////////////////////////////////

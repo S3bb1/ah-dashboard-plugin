@@ -22,21 +22,23 @@ action.outputExample = {
 /////////////////////////////////////////////////////////////////////
 // functional
 action.run = function(api, connection, next){
-  api.redis.client.hset(connection.params.keyPath, connection.params.item, connection.params.value, function(err, res){
-    api.redis.client.hgetall(connection.params.keyPath, function (err, fieldsAndValues) {
-      if (err) {
-        api.log('updateRedisHashItem: ' + err, 'error');
-      }
-      var details = {
-        key: connection.params.keyPath,
-        type: 'hash',
-        data: fieldsAndValues
-      };
-      connection.response.details = details;
-      next(connection, true);
+  // Check authentication for current Request
+  api.session.checkAuth(connection, function(session){
+    api.redis.client.hset(connection.params.keyPath, connection.params.item, connection.params.value, function(err, res){
+      api.redis.client.hgetall(connection.params.keyPath, function (err, fieldsAndValues) {
+        if (err) {
+          api.log('updateRedisHashItem: ' + err, 'error');
+        }
+        var details = {
+          key: connection.params.keyPath,
+          type: 'hash',
+          data: fieldsAndValues
+        };
+        connection.response.details = details;
+        next(connection, true);
+      });
     });
-  });
-
+  }, next);
 };
 
 /////////////////////////////////////////////////////////////////////

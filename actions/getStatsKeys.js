@@ -12,13 +12,15 @@ action.outputExample = {
 /////////////////////////////////////////////////////////////////////
 // functional
 action.run = function(api, connection, next){
-  api.stats.getAll(function(err, stats) {
-    // extract the stats from the configured key
-    var allStats = stats[api.config.stats.keys[0]];
-    connection.response.statsKeys = allStats;
-    next(connection, true);
-  });
-
+  // Check authentication for current Request
+  api.session.checkAuth(connection, function(session){
+    api.stats.getAll(function(err, stats) {
+      // extract the stats from the configured key
+      var allStats = stats[api.config.stats.keys[0]];
+      connection.response.statsKeys = allStats;
+      next(connection, true);
+    });
+  }, next);
 };
 
 /////////////////////////////////////////////////////////////////////

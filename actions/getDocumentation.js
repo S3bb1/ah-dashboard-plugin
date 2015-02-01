@@ -12,8 +12,11 @@ action.outputExample = {
 /////////////////////////////////////////////////////////////////////
 // functional
 action.run = function(api, connection, next){
-  connection.response.documentation = api.documentation.documentation;
-  next(connection, true);
+  // Check authentication for current Request
+  api.session.checkAuth(connection, function(session){
+    connection.response.documentation = api.documentation.documentation;
+    next(connection, true);
+  }, next);
 };
 
 /////////////////////////////////////////////////////////////////////

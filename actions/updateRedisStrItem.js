@@ -19,23 +19,25 @@ action.outputExample = {
 /////////////////////////////////////////////////////////////////////
 // functional
 action.run = function(api, connection, next){
-  api.redis.client.set(connection.params.keyPath, connection.params.value, function(err, res){
-    api.redis.client.get(connection.params.keyPath, function (err, val) {
-      if (err) {
-        api.log('updateRedisStrItem: ' + err, 'error');
-      }
+  // Check authentication for current Request
+  api.session.checkAuth(connection, function(session){
+    api.redis.client.set(connection.params.keyPath, connection.params.value, function(err, res){
+      api.redis.client.get(connection.params.keyPath, function (err, val) {
+        if (err) {
+          api.log('updateRedisStrItem: ' + err, 'error');
+        }
 
-      var details = {
-        key: connection.params.keyPath,
-        type: 'string',
-        value: val
-      };
-      
-      connection.response.details = details;
-      next(connection, true);
+        var details = {
+          key: connection.params.keyPath,
+          type: 'string',
+          value: val
+        };
+        
+        connection.response.details = details;
+        next(connection, true);
+      });
     });
-  });
-
+  }, next);
 };
 
 /////////////////////////////////////////////////////////////////////

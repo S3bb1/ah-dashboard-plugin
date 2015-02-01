@@ -13,10 +13,13 @@ action.outputExample = {
 /////////////////////////////////////////////////////////////////////
 // functional
 action.run = function(api, connection, next){
-  os.cpuUsage(function(usage){
-    connection.response.cpuusage = usage;
-    next(connection, true);
-  });
+  // Check authentication for current Request
+  api.session.checkAuth(connection, function(session){
+    os.cpuUsage(function(usage){
+      connection.response.cpuusage = usage;
+      next(connection, true);
+    });
+  }, next);
 };
 
 /////////////////////////////////////////////////////////////////////
