@@ -8,7 +8,7 @@ action.description = 'I will return all failed jobs';
 action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
-}
+};
 
 /////////////////////////////////////////////////////////////////////
 // functional

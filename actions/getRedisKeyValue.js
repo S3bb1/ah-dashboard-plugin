@@ -14,7 +14,7 @@ action.inputs = {
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {
-}
+};
 
 /////////////////////////////////////////////////////////////////////
 // functional
@@ -96,7 +96,7 @@ function getKeyDetailsList (key, redisConnection, connection, next) {
       return {
         number: i++,
         value: item
-      }
+      };
     });
     redisConnection.llen(key, function (err, length) {
       if (err) {

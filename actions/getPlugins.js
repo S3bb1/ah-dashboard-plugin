@@ -11,7 +11,7 @@ action.description = 'I will return all registered plugins';
 action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
-}
+};
 
 /////////////////////////////////////////////////////////////////////
 // functional

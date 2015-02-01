@@ -7,7 +7,7 @@ action.description = 'I will return all registered routes';
 action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
-}
+};
 
 /////////////////////////////////////////////////////////////////////
 // functional

@@ -7,7 +7,7 @@ action.description = 'I will return the documentation of the actions';
 action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
-}
+};
 
 /////////////////////////////////////////////////////////////////////
 // functional

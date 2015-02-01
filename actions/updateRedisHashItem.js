@@ -17,7 +17,7 @@ action.inputs = {
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {
-}
+};
 
 /////////////////////////////////////////////////////////////////////
 // functional

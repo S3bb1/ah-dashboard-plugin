@@ -8,7 +8,7 @@ action.description = 'I will return all statistics for runned tasks';
 action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
-}
+};
 
 /////////////////////////////////////////////////////////////////////
 // functional
@@ -25,7 +25,7 @@ action.run = function (api, connection, next) {
     api.resque.scheduler.connection.redis.smembers('resque:workers', function(err, workers) {
       var processedJobs = {};
       api.resque.scheduler.connection.redis.get('resque:stat:processed', function(err, processedOverallJob) {
-        processedJobs["All"] = processedOverallJob;
+        processedJobs.All = processedOverallJob;
         connection.response.processedJobs = processedJobs;
       });
       // Iterate through each worker strint

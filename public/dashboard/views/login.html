@@ -2,7 +2,10 @@
     <div class="header">Sign In</div>
     <form ng-controller="ahDashboardLogin" ng-submit="login(credentials)" novalidate>
         <div class="body bg-gray">
-            <div class="form-group">
+            <div class="form-group" ng-class="{ 'has-error': error}" >
+                <label ng-show="error" class="control-label" for="inputError">
+                    <i class="fa fa-times-circle-o"></i> {{error}}
+                </label>
                 <input type="text" name="userid" class="form-control" ng-model="credentials.email" placeholder="User ID"/>
             </div>
             <div class="form-group">

@@ -17,7 +17,7 @@ action.inputs = {
 };
 action.blockedConnectionTypes = [];
 action.outputExample = {
-}
+};
 
 /////////////////////////////////////////////////////////////////////
 // functional
@@ -40,7 +40,7 @@ action.run = function(api, connection, next){
           return {
             number: i++,
             value: item
-          }
+          };
         });
         api.redis.client.llen(connection.params.keyPath, function (err, length) {
           if (err) {

@@ -8,7 +8,7 @@ action.description = 'I will return the current ram usage';
 action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
-}
+};
 
 /////////////////////////////////////////////////////////////////////
 // functional

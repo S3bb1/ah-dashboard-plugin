@@ -5,5 +5,11 @@ define(['app'], function (app) {
     $scope.isLoginPage = function(){
       return "/login" === $location.path();
     };
+
+    $scope.logout = function(){
+      ahDashboardAuthService.logout().then(function(err){
+        $location.path("/login");
+      });
+    };
   });
 });

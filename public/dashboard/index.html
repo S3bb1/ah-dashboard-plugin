@@ -81,7 +81,7 @@
 </header>
 <div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="ahDashboardMain">
     <!-- Left side column. contains the logo and sidebar -->
-    <aside class="left-side sidebar-offcanvas collapse-left" ng-class="{ 'collapse-left': !session.email}" > 
+    <aside class="left-side sidebar-offcanvas collapse-left" ng-class="{ 'collapse-left': !session.email, 'panelAnimate': session.email}" > 
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
             <!-- Sidebar user panel -->
@@ -92,7 +92,7 @@
                 <div class="pull-left info">
                     <p>Hello, {{session.email}}</p>
 
-                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    <a href="#" ng-click="logout()"><i class="fa fa-power-off"></i> Logout</a>
                 </div>
             </div>
             <!-- sidebar menu: : style can be found in sidebar.less -->

@@ -17,3 +17,25 @@ body > .header .logo {
 body > .header .navbar {
     margin-left: 280px;
 }
+
+.panelAnimate {
+  -webkit-animation:0.5s slide-right;
+  animation:0.5s slide-right;
+}
+.panelAnimate.ng-hide {
+    opacity: 0;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes slide-right
+{
+  0%   {left:-320px;}
+  100%  {left:0;}
+}
+
+/* Standard syntax */
+@keyframes slide-right
+{
+  0%   {left:-320px;}
+  100%  {left:0;}
+}

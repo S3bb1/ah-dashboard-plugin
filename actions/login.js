@@ -52,11 +52,11 @@ exports.currentUser = {
       next(connection, true);
     });
   }
-}
+};
 
-exports.logIn = {
-  name: "logIn",
-  description: "logIn",
+exports.login = {
+  name: "login",
+  description: "login",
   inputs: {
     "email": {
       required: true
@@ -77,6 +77,26 @@ exports.logIn = {
         connection.response.email = user.email;
         connection.response.fingerprint = connection.fingerprint;
         connection.response.auth = true;
+        next(connection, true);
+      }
+    });
+  }
+};
+
+exports.logout = {
+  name: "logout",
+  description: "logout",
+  inputs: {},
+  blockedConnectionTypes: [],
+  outputExample: {},
+  run: function(api, connection, next){
+    connection.response.auth = false;
+    api.ahDashboard.session.delete(connection, function(err){
+      if(err){
+        connection.error = err;
+        next(connection, true);
+      } else {
+        connection.response.logout = true;
         next(connection, true);
       }
     });

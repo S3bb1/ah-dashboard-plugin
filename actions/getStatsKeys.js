@@ -7,7 +7,7 @@ action.description = 'I will return all stats keys';
 action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
-}
+};
 
 /////////////////////////////////////////////////////////////////////
 // functional

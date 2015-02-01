@@ -8,7 +8,7 @@ action.description = 'I will return all delayed jobs';
 action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
-}
+};
 
 /////////////////////////////////////////////////////////////////////
 // functional
