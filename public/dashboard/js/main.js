@@ -68,7 +68,6 @@ require.config({
     'ngDialog': {
       deps: ['angular']
     }
-
   }
 });
 
@@ -86,7 +85,8 @@ require([ 'app',
           'libs/jquery.fancytree.contextmenu',
           'directives/directives', 
           'templates/templates',
-          'controllers/controllers'
+          'controllers/controllers',
+          'services/services'
 ], function (app) {
   app.init();
 });

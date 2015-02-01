@@ -16,44 +16,41 @@ action.outputExample = {
 /////////////////////////////////////////////////////////////////////
 // functional
 action.run = function(api, connection, next){
+  api.session.checkAuth(connection, function(session){
+    var plugins = [];
+    api.config.general.paths.plugin.forEach(function(p){
+      api.config.general.plugins.forEach(function(pluginName){
+        var pluginPackageBase = path.normalize(p + '/' + pluginName);
+        // Check if plugin folder isnt ah root folder AND the folder exists (if multiple plugins folder are defined)
+        if(api.project_root != pluginPackageBase && fs.existsSync(pluginPackageBase)){
+          var plugin = {};
 
-  var plugins = [];
+          var package_json = String(fs.readFileSync(pluginPackageBase + '/package.json'));
+          var readme = String(pluginPackageBase + '/README.md');
+          var changelog = String(pluginPackageBase + '/VERSIONS.md');
 
-//loop over it's plugins
-  api.config.general.paths.plugin.forEach(function(p){
-    api.config.general.plugins.forEach(function(pluginName){
-      var pluginPackageBase = path.normalize(p + '/' + pluginName);
-      // Check if plugin folder isnt ah root folder AND the folder exists (if multiple plugins folder are defined)
-      if(api.project_root != pluginPackageBase && fs.existsSync(pluginPackageBase)){
-        var plugin = {};
+          plugin.readme = 'n.a.';
+          if (fs.existsSync(readme)) {
+            plugin.readme = markdown.toHTML(fs.readFileSync(readme, 'utf8'));
+          }
 
-        var package_json = String(fs.readFileSync(pluginPackageBase + '/package.json'));
-        var readme = String(pluginPackageBase + '/README.md');
-        var changelog = String(pluginPackageBase + '/VERSIONS.md');
+          plugin.changelog = 'n.a.';
+          if (fs.existsSync(changelog)) {
+            plugin.changelog = markdown.toHTML(fs.readFileSync(changelog, 'utf8'));
+          }
 
-        plugin.readme = 'n.a.';
-        if (fs.existsSync(readme)) {
-          plugin.readme = markdown.toHTML(fs.readFileSync(readme, 'utf8'));
+          plugin.version = JSON.parse(package_json).version;
+          plugin.name = JSON.parse(package_json).name;
+          plugin.description = JSON.parse(package_json).description;
+          plugins.push(plugin);
         }
-
-        plugin.changelog = 'n.a.';
-        if (fs.existsSync(changelog)) {
-          plugin.changelog = markdown.toHTML(fs.readFileSync(changelog, 'utf8'));
-        }
-
-        plugin.version = JSON.parse(package_json).version;
-        plugin.name = JSON.parse(package_json).name;
-        plugin.description = JSON.parse(package_json).description;
-        plugins.push(plugin);
-      }
+      });
     });
-  });
 
-  connection.response.plugins = plugins;
+    connection.response.plugins = plugins;
 
-
-
-  next(connection, true);
+    next(connection, true);
+  }, next );
 };
 
 /////////////////////////////////////////////////////////////////////

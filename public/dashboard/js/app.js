@@ -6,8 +6,7 @@ define([
   'angular-markdown',
   'angular-sanitize',
   'angular-ui-sortable',
-  'angular-bootstrap',
-  'angular-dashboard'
+  'angular-bootstrap'
 ], function (angular) {
 
   var app = angular.module('app', [
@@ -15,7 +14,8 @@ define([
     'ui.dashboard',
     'btford.markdown',
     'angularjs-dropdown-multiselect',
-    'ngDialog'
+    'ngDialog',
+    'ngCookies'
   ]);
   app.init = function () {
     angular.bootstrap(document, ['app']);
@@ -53,9 +53,21 @@ define([
         templateUrl: 'views/redis.html',
         controller: 'ahDashboardRedisViewer'
       })
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'ahDashboardLogin'
+      })
       .otherwise({
         redirectTo: '/'
       });
+  }).run(function($rootScope, ahDashboardAuthService, $location){
+    $rootScope.$on('$routeChangeStart', function (event, next) {
+      event.preventDefault();
+      ahDashboardAuthService.isAuthenticated().then(function(){
+      }, function(){
+        $location.path( "/login" );
+      });
+    });
   });
   app.factory('widgetDefinitions', function () {
       return [

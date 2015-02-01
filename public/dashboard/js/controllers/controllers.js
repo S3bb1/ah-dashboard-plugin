@@ -1,4 +1,4 @@
-define(['controllers/navigationController',
+define(['controllers/ahDashboardMainController',
         'controllers/ahDashboardLoggingController',
         'controllers/ahDashboardController',
         'controllers/ahDashboardAddWidgetsController',
@@ -6,4 +6,5 @@ define(['controllers/navigationController',
         'controllers/ahDashboardRoutesController',
         'controllers/ahDashboardPluginsController',
         'controllers/ahDashboardTasksController',
-        'controllers/ahDashboardRedisViewerController']);
+        'controllers/ahDashboardRedisViewerController',
+        'controllers/ahDashboardLoginController']);

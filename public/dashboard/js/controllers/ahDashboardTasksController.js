@@ -80,7 +80,6 @@ define(['app'], function (app) {
         url: '/api/reEnqueueTask',
         data:  JSON.stringify({taskdefinition: taskDefinition.plain}),
         success:  function (data) {
-          console.log("DONE");
         },
         contentType: 'application/json'
       });
