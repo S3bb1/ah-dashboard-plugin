@@ -7,4 +7,5 @@ define(['controllers/ahDashboardMainController',
         'controllers/ahDashboardPluginsController',
         'controllers/ahDashboardTasksController',
         'controllers/ahDashboardRedisViewerController',
-        'controllers/ahDashboardLoginController']);
+        'controllers/ahDashboardLoginController',
+        'controllers/ahDashboardUsersController']);

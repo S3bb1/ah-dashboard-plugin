@@ -6,7 +6,7 @@ define(['app'], function (app) {
       return $http
         .post('/api/login', credentials)
         .then(function (res) {
-          ahDashboardSession.create(res.data.email, res.data.fingerprint);
+          ahDashboardSession.create(res.data.username, res.data.firstName, res.data.lastName, res.data.email, res.data.fingerprint);
         });
     };
   
@@ -20,13 +20,13 @@ define(['app'], function (app) {
 
     ahDashboardAuthService.isAuthenticated = function () {
       var deferred = $q.defer();
-      if(ahDashboardSession.email){
+      if(ahDashboardSession.username){
         deferred.resolve();
       } else {
         $http
           .get('/api/currentUser')
           .then(function (res) {
-            ahDashboardSession.create(res.data.email, res.data.fingerprint);
+            ahDashboardSession.create(res.data.username, res.data.firstName, res.data.lastName, res.data.email, res.data.fingerprint);
             ahDashboardSession.authChecking = false;
             deferred.resolve();
           }, function(){
@@ -38,5 +38,5 @@ define(['app'], function (app) {
     };
    
     return ahDashboardAuthService;
-  })
-})
+  });
+});

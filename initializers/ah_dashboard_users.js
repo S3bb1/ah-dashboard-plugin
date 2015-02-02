@@ -4,6 +4,7 @@ module.exports = {
     api.log("init session handling");
 
     var crypto = require('crypto');
+    var async = require('async');
 
     api.ahDashboard.users = {};
 
@@ -14,21 +15,27 @@ module.exports = {
     api.ahDashboard.users.redisPrefix = "__users-";
 
     /**
-     * creates a new user in redis db
-     * @param {string}   email    chosen email adress
-     * @param {string}   password chosen password
-     * @param {Function} callback callback function with error param if a redis error exists
+     * creates a new user in redis
+     * @param {String}   username  new username
+     * @param {String}   email     email of the user
+     * @param {String}   password  desired password
+     * @param {String}   firstName Fristname of the User
+     * @param {String}   lastName  Lastname of the User
+     * @param {Function} callback  Callback function if user is created
      */
-    api.ahDashboard.users.addUser = function(email, password, callback){
+    api.ahDashboard.users.addUser = function(username, email, password, firstName, lastName, callback){
       var passwordSalt = api.utils.randomString(64);
       var passwordHash = api.ahDashboard.users.caluculatePasswordHash(password, passwordSalt);
       var user = {
         email: email,
+        username: username,
+        firstName: firstName,
+        lastName: lastName,
         passwordSalt: passwordSalt,
         passwordHash: passwordHash,
       };
 
-      api.cache.save(api.ahDashboard.users.cacheKey(email), user, function(error){
+      api.cache.save(api.ahDashboard.users.cacheKey(username), user, function(error){
         callback(error);
       });
     };
@@ -44,12 +51,34 @@ module.exports = {
     };
 
     /**
-     * calculates a cache key for a given email adress
-     * @param email - email adress from current user
-     * @return cache key for given email adress
+     * calculates a cache key for a given username
+     * @param username - username from current user
+     * @return cache key for given username
      */
-    api.ahDashboard.users.cacheKey = function(email){
-      return api.ahDashboard.users.redisPrefix + email.replace("@","_").replace(".","_");
+    api.ahDashboard.users.cacheKey = function(username){
+      return api.ahDashboard.users.redisPrefix + username.replace("@","_").replace(".","_");
+    };
+
+    api.ahDashboard.users.getUsers = function(callback){
+      api.redis.client.keys(api.cache.redisPrefix + api.ahDashboard.users.redisPrefix+'*', function(err, users){
+        console.dir(users);
+        async.map(users, function(item, callback){
+          api.redis.client.get(item, function (err, user) {
+            if (err) {
+              api.log('cant read user: ' + err, 'error');
+            }
+            var userObj;
+            try{
+              userObj = JSON.parse(user);
+            } catch(e){
+              api.log('cant parse user: ' + e, 'error');
+            }
+            callback(null, userObj);
+          });
+        }, function(err, users){
+          callback(err, users);
+        });
+      });
     };
 
     /**
@@ -58,10 +87,10 @@ module.exports = {
      * @param  {Function} callback   callback function with err and success param
      */
     api.ahDashboard.users.login = function(connection, callback){
-      var email = connection.params.email;
+      var username = connection.params.username;
       var password = connection.params.password;
-      // generate user cache key with email
-      var userCacheKey = api.ahDashboard.users.cacheKey(email);
+      // generate user cache key with username
+      var userCacheKey = api.ahDashboard.users.cacheKey(username);
       // load user from redis
       api.cache.load(userCacheKey, function(err, user){
         if(err){
@@ -86,7 +115,7 @@ module.exports = {
     };
     
     // initially create a temporarily admin user
-    api.ahDashboard.users.addUser("admin", "admin", function(){
+    api.ahDashboard.users.addUser("admin", "admin@ahDashboard.com", "admin", "Admin", "Istrator", function(){
       api.log("created admin user");
     });
     next();

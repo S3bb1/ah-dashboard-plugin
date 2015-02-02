@@ -56,6 +56,10 @@ define([
         templateUrl: 'views/login.html',
         controller: 'ahDashboardLogin'
       })
+      .when('/users', {
+        templateUrl: 'views/users.html',
+        controller: 'ahDashboardUsers'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -144,6 +148,6 @@ define([
       { name: 'uptime' },
       { name: 'time'},
       { name: 'taskstats'}
-    ])
+    ]);
   return app;
 });

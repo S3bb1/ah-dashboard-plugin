@@ -22,8 +22,6 @@ action.run = function(api, connection, next){
   // Check authentication for current Request
   api.ahDashboard.session.checkAuth(connection, function(session){
     api.redis.client.srem(connection.params.keyPath, connection.params.item, function(err, res){
-      console.dir(err);
-      console.dir(res);
       api.redis.client.smembers(connection.params.keyPath, function (err, members) {
         if (err) {
           api.log('removeRedisHashItem: ' + err, 'error');

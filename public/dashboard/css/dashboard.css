@@ -22,9 +22,6 @@ body > .header .navbar {
   -webkit-animation:0.5s slide-right;
   animation:0.5s slide-right;
 }
-.panelAnimate.ng-hide {
-    opacity: 0;
-}
 
 /* Chrome, Safari, Opera */
 @-webkit-keyframes slide-right

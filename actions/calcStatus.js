@@ -71,8 +71,6 @@ action.run = function(api, connection, next){
       // now calculate the differences between the old stats value and the new Stats value
       async.each(_.keys(allStats), function( stat, callback) {
         api.ahDashboard.timesSeries.getHits(stat, timeInterval, timechunks, function(err, data){
-          console.dir(data);
-          console.dir(err);
           for(var a in data){
             data[a].push(new Date((data[a][0]*1000)));
           }
