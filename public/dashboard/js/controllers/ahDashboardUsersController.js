@@ -48,12 +48,14 @@ define(['app'], function (app) {
       });
 
       modalInstance.result.then(function (element) {
-        $.get("/api/userEdit?username="+encodeURIComponent(element.username)+"&password="+encodeURIComponent(element.password)+"&email="+encodeURIComponent(element.email)+"&firstName="+encodeURIComponent(element.firstName)+"&lastName="+encodeURIComponent(element.lastName))
-        .done(function(response) {
-          $scope.$apply(function(){
-            user = element;
-          });
-        }); 
+        if(element.username && element.password){
+          $.get("/api/userEdit?username="+encodeURIComponent(element.username)+"&password="+encodeURIComponent(element.password)+"&email="+encodeURIComponent(element.email)+"&firstName="+encodeURIComponent(element.firstName)+"&lastName="+encodeURIComponent(element.lastName))
+          .done(function(response) {
+            $scope.$apply(function(){
+              user = element;
+            });
+          }); 
+        }
       }, function () {
        // Cancel clicked
       });
@@ -91,9 +93,11 @@ define(['app'], function (app) {
        '    <h3 ng-hide="!edit" class="modal-title">Edit User</h3>'+
        '</div>'+
        '<div class="modal-body">'+
+       '  <form name="element.form">'+
        '  <div class="form-group">'+
        '      <label for="elementName">Username</label>'+
-       '      <input ng-model="element.username" ng-disabled="edit" class="form-control" id="elementName" placeholder="Enter Username">'+
+       '      <input ng-model="element.username" ng-disabled="edit" name="username" class="form-control" id="elementName" placeholder="Enter Username" required>'+
+       '      <p ng-show="element.form.username.$invalid && !element.form.username.$pristine" class="help-block">Username is required.</p>'+
        '  </div>'+
        '  <div class="form-group">'+
        '      <label for="elementName">Email</label>'+
@@ -101,7 +105,8 @@ define(['app'], function (app) {
        '  </div>'+
        '  <div class="form-group" ng-hide="edit">'+
        '      <label for="elementName">Password (Min. 6 characters)</label>'+
-       '      <input ng-model="element.password" ng-minlength=6 class="form-control" id="elementName" placeholder="Enter Password">'+
+       '      <input ng-model="element.password" ng-minlength=6 class="form-control" name="password" id="elementName" placeholder="Enter Password" required>'+
+       '      <p ng-show="element.form.password.$error.minlength" class="help-block">Password is too short.</p>'+
        '  </div>'+
        '  <div class="form-group">'+
        '      <label for="elementName">First Name</label>'+
@@ -111,9 +116,10 @@ define(['app'], function (app) {
        '      <label for="elementName">Last Name</label>'+
        '      <input ng-model="element.lastName" class="form-control" id="elementName" placeholder="Enter Last Name">'+
        '  </div>'+
+       '  </form>'+
        '</div>'+
        '<div class="modal-footer">'+
-       '  <button class="btn btn-primary" ng-click="ok()">OK</button>'+
+       '  <button class="btn btn-primary" ng-disabled="element.form.$invalid || element.form.$pristine" ng-click="ok()">OK</button>'+
        '  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>'+
        '</div>'
     );
