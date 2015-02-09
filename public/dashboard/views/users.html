@@ -19,6 +19,7 @@
                         <th>Created</th>
                         <th>First Name</th>
                         <th>Last Name</th>
+                        <th>Actions</th>
                     </tr>
                     <tr ng-repeat="user in users">
                         <td>{{user.value.email}}</td>
@@ -26,6 +27,10 @@
                         <td>{{user.createdAt | date:'medium'}}</td>
                         <td>{{user.value.firstName}}</td>
                         <td>{{user.value.lastName}}</td>
+                        <td>
+                            <button class="btn btn-default btn-sm" ng-click="editUser(user)"><i class="fa fa-pencil"></i> Edit</button>
+                            <button class="btn btn-default btn-sm" ng-click="deleteUser(user.value.username, $index)"><i class="fa fa-trash"></i> Delete</button>
+                        </td>
                     </tr>
                 </tbody></table>
             </div>

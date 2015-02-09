@@ -40,6 +40,63 @@ exports.userAdd = {
   }
 };
 
+exports.userEdit = {
+  name: "userEdit",
+  description: "userEdit",
+  inputs: {
+    "password": {
+      required: true
+    },
+    "email": {
+      required: false
+    },
+    "firstName": {
+      required: false
+    },
+    "lastName": {
+      required: false
+    },
+    "username": {
+      required: true
+    }
+  },
+  blockedConnectionTypes: [],
+  outputExample: {},
+  run: function(api, connection, next){
+    // Check authentication for current Request
+    api.ahDashboard.session.checkAuth(connection, function(session){
+      api.ahDashboard.users.editUser(connection.params.username, connection.params.email, connection.params.password, connection.params.firstName, connection.params.lastName, function(err){
+        connection.error = err;
+        connection.response.userUpdated = true;
+        next(connection, true);
+      });
+    }, next);
+  }
+};
+
+exports.userDelete = {
+  name: "userDelete",
+  description: "userDelete",
+  inputs: {
+    "username": {
+      required: true
+    }
+  },
+  blockedConnectionTypes: [],
+  outputExample: {},
+  run: function(api, connection, next){
+    // Check authentication for current Request
+    api.ahDashboard.session.checkAuth(connection, function(session){
+      api.ahDashboard.users.deleteUser(connection.params.username, function(err){
+        connection.error = err;
+        connection.response.userdeleted = true;
+        next(connection, true);
+      });
+    }, next);
+  }
+};
+
+
 exports.currentUser = {
   name: "currentUser",
   description: "currentUser",

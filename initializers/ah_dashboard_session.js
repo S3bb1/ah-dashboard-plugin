@@ -55,8 +55,17 @@ module.exports = {
      */
     api.ahDashboard.session.delete = function(connection, next){
       var key = api.ahDashboard.session.connectionKey(connection);
-      api.cache.destroy(key, function(error){
-        next(error);
+      api.redis.client.del(api.cache.redisPrefix + key, function(err, count){
+        if(err){ 
+          api.log(err, 'error'); 
+        }
+        var resp = true;
+        if(count !== 1){ 
+          resp = false;
+        }
+        if(typeof next === 'function'){ 
+          next(null, resp); 
+        }
       });
     };
 
@@ -72,6 +81,7 @@ module.exports = {
         loggedInAt: new Date().getTime(),
         cacheKey: cacheKey
       };
+      console.log("generateAtLogin");
       api.ahDashboard.session.save(connection, session, function(error){
         next(error);
       });

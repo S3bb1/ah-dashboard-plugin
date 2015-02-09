@@ -41,10 +41,51 @@ module.exports = {
     };
 
     /**
+     * update a user in redis
+     * @param {String}   username  new username
+     * @param {String}   email     email of the user
+     * @param {String}   password  desired password
+     * @param {String}   firstName Fristname of the User
+     * @param {String}   lastName  Lastname of the User
+     * @param {Function} callback  Callback function if user is successfully edited
+     */
+    api.ahDashboard.users.editUser = function(username, email, password, firstName, lastName, callback){
+      api.cache.load(api.ahDashboard.users.cacheKey(username), function(error, user, expireTimestamp, createdAt, readAt){
+        var editedUser = {
+          email: email,
+          username: username,
+          firstName: firstName,
+          lastName: lastName,
+          passwordSalt: user.passwordSalt,
+          passwordHash: user.passwordHash,
+        };
+
+        api.cache.save(api.ahDashboard.users.cacheKey(username), editedUser, function(error){
+          callback(error);
+        });
+      });
+    };
+
+    /**
+     * delete a user in redis
+     * @param {String}   username  new username
+     * @param {String}   email     email of the user
+     * @param {String}   password  desired password
+     * @param {String}   firstName Fristname of the User
+     * @param {String}   lastName  Lastname of the User
+     * @param {Function} callback  Callback function if user is successfully edited
+     */
+    api.ahDashboard.users.deleteUser = function(username, callback){
+      api.cache.destroy(api.ahDashboard.users.cacheKey(username), function(error){
+        callback(error);
+      });
+    };
+
+    /**
      * creates a sha256 password hash with a given salt
      * @param  {string} password a given password
      * @param  {string} salt     a given salt for the password
-     * @return {strin}           a calculated hash for the pw + salt
+     * @return {string}           a calculated hash for the pw + salt
      */
     api.ahDashboard.users.caluculatePasswordHash = function(password, salt){
       return crypto.createHash('sha256').update(salt + password).digest("hex");
