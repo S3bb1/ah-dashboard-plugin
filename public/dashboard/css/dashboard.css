@@ -36,3 +36,8 @@ body > .header .navbar {
   0%   {left:-320px;}
   100%  {left:0;}
 }
+
+
+input.ng-invalid {
+  border: 1px solid red;
+}

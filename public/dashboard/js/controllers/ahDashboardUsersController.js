@@ -87,7 +87,8 @@ define(['app'], function (app) {
   app.run(function($templateCache){
     $templateCache.put("modalCreateNewUser.html", 
        '<div class="modal-header">'+
-       '    <h3 class="modal-title">Create new User</h3>'+
+       '    <h3 ng-hide="edit" class="modal-title">Create new User</h3>'+
+       '    <h3 ng-hide="!edit" class="modal-title">Edit User</h3>'+
        '</div>'+
        '<div class="modal-body">'+
        '  <div class="form-group">'+
@@ -99,8 +100,8 @@ define(['app'], function (app) {
        '      <input ng-model="element.email" class="form-control" id="elementName" placeholder="Enter Email">'+
        '  </div>'+
        '  <div class="form-group" ng-hide="edit">'+
-       '      <label for="elementName">Password</label>'+
-       '      <input ng-model="element.password" class="form-control" id="elementName" placeholder="Enter Password">'+
+       '      <label for="elementName">Password (Min. 6 characters)</label>'+
+       '      <input ng-model="element.password" ng-minlength=6 class="form-control" id="elementName" placeholder="Enter Password">'+
        '  </div>'+
        '  <div class="form-group">'+
        '      <label for="elementName">First Name</label>'+
