@@ -27,8 +27,8 @@
     </style>
     <!-- Morris charts -->
     <link href="bower_components/morrisjs/morris.css" rel="stylesheet" type="text/css" />
-    <link href="css/angular-ui-dashboard.css" rel="stylesheet" type="text/css" />
-    <link href="css/dashboard.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/angular-ui-dashboard.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
     <link href="bower_components/fancytree/dist/skin-win8/ui.fancytree.min.css" rel="stylesheet" type="text/css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -87,7 +87,7 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="img/avatar5.png" class="img-circle" alt="User Image" />
+                    <img src="assets/img/avatar5.png" class="img-circle" alt="User Image" />
                 </div>
                 <div class="pull-left info">
                     <p>Hello, {{session.firstName}}</p>
@@ -155,7 +155,7 @@
 </div>
 <!-- ./wrapper -->
 
-<script src="bower_components/requirejs/require.js" data-main="js/main.js"></script>
+<script src="bower_components/requirejs/require.js" data-main="app/main.js"></script>
 <script type="text/javascript">
     if(window.location.pathname == "/dashboard"){
         window.location.href = "/dashboard/";

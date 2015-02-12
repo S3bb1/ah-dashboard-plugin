@@ -1,4 +1,11 @@
-define(['app'], function (app) {
+define(['app', 
+        'components/dashboard/dashboard-template',
+        'components/dashboard/widgets/ahCPUusage',
+        'components/dashboard/widgets/dashboardStats/ahDashboardStats',
+        'components/dashboard/widgets/ahDashboardTime',
+        'components/dashboard/widgets/ahRAMusage',
+        'components/dashboard/widgets/ahTasksStats',
+        'components/dashboard/widgets/ahUptime'], function (app) {
   app.controller('ahDashboard', function ($scope, $rootScope, $interval, $window, widgetDefinitions, defaultWidgets) {
 
     $scope.dashboardOptions = {

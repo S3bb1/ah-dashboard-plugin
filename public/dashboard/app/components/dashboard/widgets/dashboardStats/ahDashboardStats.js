@@ -1,4 +1,6 @@
-define(['app'], function (app) {
+define(['app', 
+        'components/dashboard/widgets/dashboardStats/ahDashboardStatsTemplate',
+        'components/dashboard/widgets/dashboardStats/ahDashboardStats-defaultWidgets-factory'], function (app) {
   app.directive('ahStats', function ($interval) {
     return {
       restrict: 'A',

@@ -17,7 +17,7 @@ define(['app'], function (app) {
           }
         }
       },
-      imagePath: "img/",
+      imagePath: "assets/img/",
       source: {
         url: "/api/getAllRedisKeys"
       },
