@@ -2,7 +2,7 @@ ActionHero Dashboard
 ===================
 
 ## Important Note!!!
-ah-dashboard 0.3.0 is compatible with actionHero v10 ... for lower actionHero versions use 0.2.0!!!
+ah-dashboard 0.3.* is compatible with actionHero v10 ... for lower actionHero versions use 0.2.0!!!
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/S3bb1/ah-dashboard-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -21,11 +21,16 @@ To use full functionalities, make sure a task scheduler is running!
 
 after including into ActionHero and running ActionHero, goto http://localhost:8080/dashboard/index.html
 
+initally a default admin user is created with 
+**username: admin**
+**password: admin**
+
 ## Overview
 
 This Plugin should provide a simple powerful administration dashboard for the ActionHero
 
 Features :
+- Secured Actions/Dashboard by session based user system
 - Show statistics over time for all created stats from actionhero
 - Drag and Drop Dashboard with custom widgets ( Time, CPU usage, ... )
 - Overview of all registered Actions
@@ -48,7 +53,7 @@ Todos:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2014 Sebastian Dechant
+Copyright (c) 2015 Sebastian Dechant
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
