@@ -97,7 +97,7 @@ module.exports = {
       api.ahDashboard.session.load(connection, function(error, session){
         if(session === null){ session = {}; }
         if(session.loggedIn !== true){
-          connection.error = "You need to be authorized for this action";
+          connection.errorMessage = "You need to be authorized for this action";
           failureCallback(connection, true); // likley to be an action's callback
         }else{
           successCallback(session); // likley to yiled to action

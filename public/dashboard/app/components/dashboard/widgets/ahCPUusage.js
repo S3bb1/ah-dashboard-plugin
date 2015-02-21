@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.directive('ahCpuusage', function ($interval) {
+  app.directive('ahCpuusage', function ($interval, ahDashboardCommunicationService) {
     return {
       restrict: 'A',
       scope: true,
@@ -8,7 +8,7 @@ define(['app'], function (app) {
       link: function (scope) {
         scope.directiveId = "knob_cpu_" + scope.$id;
         function update() {
-          $.get('/api/getCPUusage', function (data) {
+          ahDashboardCommunicationService.action('getCPUusage', function (err, data) {
             $('#'+scope.directiveId)
               .val(Math.round(data.cpuusage * 100))
               .trigger('change');

@@ -1,14 +1,13 @@
 define(['app'], function (app) {
-  app.controller('ahDashboardLogging', function ($scope) {
-    var ahClient = new actionheroClient;
+  app.controller('ahDashboardLogging', function ($scope, ahDashboardCommunicationService) {
     $scope.logMessages = [];
-    ahClient.on('connected', function () {
-      console.log('connected!')
+    ahDashboardCommunicationService.ahClient.on('connected', function () {
+      console.log('connected!');
     });
-    ahClient.on('disconnected', function () {
-      console.log('disconnected :(')
+    ahDashboardCommunicationService.ahClient.on('disconnected', function () {
+      console.log('disconnected :(');
     });
-    ahClient.on('say', function (logMessage) {
+    ahDashboardCommunicationService.ahClient.on('say', function (logMessage) {
       try {
         var logmessages = logMessage.message.split('\n');
         for (var message in logmessages) {
@@ -22,15 +21,15 @@ define(['app'], function (app) {
       }
 
     });
-    ahClient.connect(function (err, details) {
-      ahClient.roomLeave("logMessages", function(err, response){
-        ahClient.roomAdd("logMessages");
+    ahDashboardCommunicationService.ahClient.connect(function (err, details) {
+      ahDashboardCommunicationService.ahClient.roomLeave("logMessages", function(err, response){
+        ahDashboardCommunicationService.ahClient.roomAdd("logMessages");
       });
     });
 
     $scope.$on("$destroy", function() {
-      if(ahClient.state != "disconnected"){
-        ahClient.disconnect();
+      if(ahDashboardCommunicationService.ahClient.state != "disconnected"){
+        ahDashboardCommunicationService.ahClient.disconnect();
       }
     });
 

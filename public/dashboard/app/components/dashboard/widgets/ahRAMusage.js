@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.directive('ahRamusage', function ($interval) {
+  app.directive('ahRamusage', function ($interval, ahDashboardCommunicationService) {
     return {
       restrict: 'A',
       scope: true,
@@ -8,7 +8,7 @@ define(['app'], function (app) {
       link: function (scope) {
         scope.directiveId = "knob_ram_" + scope.$id;
         function update() {
-          $.get('/api/getRAMusage', function (data) {
+          ahDashboardCommunicationService.action('getRAMusage', function (err, data) {
             var usedMem = Math.round(data.totalmem) -  Math.round(data.freemem);
             $('#'+scope.directiveId)
               .val(usedMem)

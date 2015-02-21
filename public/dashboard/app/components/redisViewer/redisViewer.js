@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.controller('ahDashboardRedisViewer', function ($scope, $rootScope, $modal) {
+  app.controller('ahDashboardRedisViewer', function ($scope, $rootScope, $modal, ahDashboardCommunicationService) {
     $scope.details = {};
     $scope.redisDetailsLoadingDone = true;
     $("#redisKeys").fancytree({
@@ -19,10 +19,10 @@ define(['app'], function (app) {
       },
       imagePath: "assets/img/",
       source: {
-        url: "/api/getAllRedisKeys"
+        url: ahDashboardCommunicationService.ahClient.options.apiPath + "/getAllRedisKeys"
       },
       postProcess: function(event, data){
-        data.result = data.response.redisKeys
+        data.result = data.response.redisKeys;
       },
       lazyLoad: function(event, data){
         var keyPath = data.node.getKeyPath();
@@ -30,7 +30,7 @@ define(['app'], function (app) {
           keyPath = keyPath.substr(1);
         }
         keyPath = keyPath.replace(/\//g, ':');
-        data.result = {url: "/api/getAllRedisKeys?prefix="+encodeURIComponent(keyPath)}
+        data.result = {url: ahDashboardCommunicationService.ahClient.options.apiPath + "/getAllRedisKeys?prefix="+encodeURIComponent(keyPath)};
       },
       click: function(event, data) {
         $scope.redisDetailsLoadingDone = false;
@@ -40,9 +40,8 @@ define(['app'], function (app) {
           keyPath = keyPath.substr(1);
         }
         keyPath = keyPath.replace(/\//g, ':');
-        $.ajax({
-          url: "/api/getRedisKeyValue?key="+encodeURIComponent(keyPath),
-        }).done(function(response) {
+        var params = {'key': keyPath};
+        ahDashboardCommunicationService.action('getRedisKeyValue', params, function(err, response){
           $scope.redisDetailsLoadingDone = true;
           $scope.details = {keypath:keyPath, details:response.details};
               
@@ -72,17 +71,17 @@ define(['app'], function (app) {
       });
 
       modalInstance.result.then(function (element) {
-        $.ajax({
-          url: "/api/addRedisKey?key="+encodeURIComponent(element.key)+"&type="+encodeURIComponent(element.type),
-        }).done(function(response) {
+        var params = {'key': element.key,
+                      'type': element.type};
+        ahDashboardCommunicationService.action('addRedisKey', params, function(){
           element.node.tree.reload();
-        }); 
+        });
       }, function () {
         // Cancel clicked
       });
-    }
+    };
   });
-  app.directive('contentItem', function ($compile, $rootScope, $modal) {
+  app.directive('contentItem', function ($compile, $rootScope, $modal, ahDashboardCommunicationService) {
     var hashTemplate = '<button ng-click="addUpdateHashItem()" class="btn btn-default">Add Element</button>'+
                        '<table class="table">'+
                        '   <thead>'+
@@ -211,7 +210,7 @@ define(['app'], function (app) {
         }
 
         return template;
-    }
+    };
 
     var linker = function(scope, element, attrs) {
       scope.rootDirectory = 'images/';
@@ -226,47 +225,47 @@ define(['app'], function (app) {
 
       scope.removeSetItem = function(item){
           scope.$parent.redisDetailsLoadingDone = false;
-          $.ajax({
-            url: "/api/removeRedisSetItem?item="+encodeURIComponent(item)+"&keyPath="+encodeURIComponent(scope.content.keypath),
-          }).done(function(response) {
+          var params = {'item': item,
+                        'keyPath': scope.content.keypath};
+          ahDashboardCommunicationService.action('removeRedisSetItem', params, function(err, response){
             scope.$parent.redisDetailsLoadingDone = true;
             scope.content.details = response.details;
             scope.$apply();
-          });      
-      }
+          });     
+      };
 
       scope.removeHashItem = function(item){
-          scope.$parent.redisDetailsLoadingDone = false;
-          $.ajax({
-            url: "/api/removeRedisHashItem?item="+encodeURIComponent(item)+"&keyPath="+encodeURIComponent(scope.content.keypath),
-          }).done(function(response) {
+          scope.$parent.redisDetailsLoadingDone = false; 
+          var params = {'item': item,
+                        'keyPath': scope.content.keypath};
+          ahDashboardCommunicationService.action('removeRedisHashItem', params, function(err, response){
             scope.$parent.redisDetailsLoadingDone = true;
             scope.content.details = response.details;
             scope.$apply();
-          });      
-      }
+          });          
+      };
 
       scope.removeZSetItem = function(item){
-          scope.$parent.redisDetailsLoadingDone = false;
-          $.ajax({
-            url: "/api/removeRedisZSetItem?item="+encodeURIComponent(item)+"&keyPath="+encodeURIComponent(scope.content.keypath),
-          }).done(function(response) {
+          scope.$parent.redisDetailsLoadingDone = false;    
+          var params = {'item': item,
+                        'keyPath': scope.content.keypath};
+          ahDashboardCommunicationService.action('removeRedisZSetItem', params, function(err, response){
             scope.$parent.redisDetailsLoadingDone = true;
             scope.content.details = response.details;
             scope.$apply();
-          });      
-      }
+          });
+      };
 
       scope.removeListItem = function(item){
-          scope.$parent.redisDetailsLoadingDone = false;
-          $.ajax({
-            url: "/api/removeRedisListItem?item="+encodeURIComponent(item)+"&keyPath="+encodeURIComponent(scope.content.keypath),
-          }).done(function(response) {
-            scope.$parent.redisDetailsLoadingDone = true;
-            scope.content.details = response.details;
-            scope.$apply();
-          });      
-      }
+        scope.$parent.redisDetailsLoadingDone = false;  
+        var params = {'item': item,
+                      'keyPath': scope.content.keypath};
+        ahDashboardCommunicationService.action('removeRedisListItem', params, function(err, response){
+          scope.$parent.redisDetailsLoadingDone = true;
+          scope.content.details = response.details;
+          scope.$apply();
+        });              
+      };
 
       scope.addUpdateHashItem = function(key, value){
         var modalInstance = $modal.open({
@@ -283,17 +282,18 @@ define(['app'], function (app) {
         });
 
         modalInstance.result.then(function (element) {
-          $.ajax({
-            url: "/api/updateRedisHashItem?item="+encodeURIComponent(element.name)+"&value="+encodeURIComponent(element.value)+"&keyPath="+encodeURIComponent(scope.content.keypath),
-          }).done(function(response) {
+          var params = {'item': element.name,
+                        'value': element.value,
+                        'keyPath': scope.content.keypath};
+          ahDashboardCommunicationService.action('updateRedisHashItem', params, function(err, response){
             scope.$parent.redisDetailsLoadingDone = true;
             scope.content.details = response.details;
             scope.$apply();
-          }); 
+          });
         }, function () {
           // Cancel clicked
         });
-      }
+      };
 
       scope.addUpdateZSetItem = function(score, value){
         var modalInstance = $modal.open({
@@ -310,17 +310,18 @@ define(['app'], function (app) {
         });
 
         modalInstance.result.then(function (element) {
-          $.ajax({
-            url: "/api/updateRedisZSetItem?value="+encodeURIComponent(element.value)+"&score="+encodeURIComponent(element.score)+"&keyPath="+encodeURIComponent(scope.content.keypath),
-          }).done(function(response) {
+          var params = {'score': element.score,
+                        'value': element.value,
+                        'keyPath': scope.content.keypath};
+          ahDashboardCommunicationService.action('updateRedisZSetItem', params, function(err, response){
             scope.$parent.redisDetailsLoadingDone = true;
             scope.content.details = response.details;
             scope.$apply();
-          }); 
+          });
         }, function () {
           // Cancel clicked
         });
-      }
+      };
 
       scope.addUpdateListItem = function(number, value){
         var modalInstance = $modal.open({
@@ -337,23 +338,29 @@ define(['app'], function (app) {
         });
 
         modalInstance.result.then(function (element) {
-          var url;
+          var params;
           if(value){
-            url = "/api/updateRedisListItem?number="+encodeURIComponent(element.number)+"&value="+encodeURIComponent(element.value)+"&keyPath="+encodeURIComponent(scope.content.keypath);
+            params = {'number': element.score,
+                          'value': element.value,
+                          'keyPath': scope.content.keypath};
+            ahDashboardCommunicationService.action('updateRedisListItem', params, function(err, response){
+              scope.$parent.redisDetailsLoadingDone = true;
+              scope.content.details = response.details;
+              scope.$apply();
+            });
           } else {
-            url = "/api/addRedisListItem?value="+encodeURIComponent(element.value)+"&keyPath="+encodeURIComponent(scope.content.keypath);
+            params = {'value': element.value,
+                      'keyPath': scope.content.keypath};
+            ahDashboardCommunicationService.action('addRedisListItem', params, function(err, response){
+              scope.$parent.redisDetailsLoadingDone = true;
+              scope.content.details = response.details;
+              scope.$apply();
+            });            
           }
-          $.ajax({
-            url: url
-          }).done(function(response) {
-            scope.$parent.redisDetailsLoadingDone = true;
-            scope.content.details = response.details;
-            scope.$apply();
-          }); 
         }, function () {
           // Cancel clicked
         });
-      }
+      };
 
       scope.updateStrItem = function(value){
         var modalInstance = $modal.open({
@@ -370,17 +377,17 @@ define(['app'], function (app) {
         });
 
         modalInstance.result.then(function (element) {
-          $.ajax({
-            url: "/api/updateRedisStrItem?value="+encodeURIComponent(element.value)+"&keyPath="+encodeURIComponent(scope.content.keypath)
-          }).done(function(response) {
+          var params = {'value': element.value,
+                        'keyPath': scope.content.keypath};
+          ahDashboardCommunicationService.action('updateRedisStrItem', params, function(err, response){
             scope.$parent.redisDetailsLoadingDone = true;
             scope.content.details = response.details;
             scope.$apply();
-          }); 
+          });
         }, function () {
           // Cancel clicked
         });
-      }
+      };
 
       scope.addSetItem = function(){
         var modalInstance = $modal.open({
@@ -397,18 +404,18 @@ define(['app'], function (app) {
         });
 
         modalInstance.result.then(function (element) {
-          $.ajax({
-            url: "/api/addRedisSetItem?item="+encodeURIComponent(element.name)+"&keyPath="+encodeURIComponent(scope.content.keypath),
-          }).done(function(response) {
+          var params = {'item': element.name,
+                        'keyPath': scope.content.keypath};
+          ahDashboardCommunicationService.action('addRedisSetItem', params, function(err, response){
             scope.$parent.redisDetailsLoadingDone = true;
             scope.content.details = response.details;
             scope.$apply();
-          }); 
+          });
         }, function () {
          // Cancel clicked
         });
-      }
-    }
+      };
+    };
 
     return {
         restrict: "E",

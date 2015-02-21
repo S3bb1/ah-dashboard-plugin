@@ -1,5 +1,5 @@
 define(['app'], function(app){
-  app.directive('ahTasksstats', function ($interval) {
+  app.directive('ahTasksstats', function ($interval, ahDashboardCommunicationService) {
     return {
       restrict: 'A',
       scope: true,
@@ -17,7 +17,7 @@ define(['app'], function(app){
                 '</div>',
       link: function (scope) {
         scope.error = '';
-        $.get('/api/getAllRunningJobs', function (data) {
+        ahDashboardCommunicationService.action('getAllRunningJobs', function (err, data) {
           if(data.errorMessage){
             scope.error = '<div class="callout callout-danger">'+
                            '  <h4>Error:</h4>'+
@@ -27,7 +27,7 @@ define(['app'], function(app){
             scope.runningJobs = data.runningJobs.length;
           }
         });
-        $.get('/api/getDelayedJobs', function (data) {
+        ahDashboardCommunicationService.action('getDelayedJobs', function (err, data) {
           if(data.errorMessage){
             scope.error = '<div class="callout callout-danger">'+
                            '  <h4>Error:</h4>'+
@@ -37,7 +37,7 @@ define(['app'], function(app){
             scope.delayedJobs = data.delayedJobs.length;
           }
         });
-        $.get('/api/getAllFailedJobs', function (data) {
+        ahDashboardCommunicationService.action('getAllFailedJobs', function (err, data) {
           if(data.errorMessage){
             scope.error = '<div class="callout callout-danger">'+
                            '  <h4>Error:</h4>'+
@@ -47,7 +47,7 @@ define(['app'], function(app){
             scope.failedJobs = data.failedJobs.length;
           }
         });
-        $.get('/api/getTasksStatistics', function (data) {
+        ahDashboardCommunicationService.action('getTasksStatistics', function (err, data) {
           if(data.errorMessage){
             scope.error = '<div class="callout callout-danger">'+
                            '  <h4>Error:</h4>'+

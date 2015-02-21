@@ -1,2 +1,3 @@
 define(['services/authService',
-        'services/session']);
+        'services/session',
+        'services/communicationService']);

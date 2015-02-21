@@ -1,7 +1,7 @@
 define(['app'], function (app) {
-  app.controller('ahDashboardActions', function ($scope) {
+  app.controller('ahDashboardActions', function ($scope, ahDashboardCommunicationService) {
     $scope.actionDefinitions = [];
-    $.get('/api/getDocumentation', function (data) {
+    ahDashboardCommunicationService.action('getDocumentation', function (err, data) {
       for (var action in data.documentation) {
         for (var details in data.documentation[action]) {
           var actionDefinition = {};

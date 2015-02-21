@@ -1,21 +1,24 @@
 define(['app'], function (app) {
-  app.factory('ahDashboardAuthService', function ($http, $q, ahDashboardSession) {
+  app.factory('ahDashboardAuthService', function ($http, $q, ahDashboardSession, ahDashboardCommunicationService) {
     var ahDashboardAuthService = {};
    
     ahDashboardAuthService.login = function (credentials) {
-      return $http
-        .post('/api/login', credentials)
-        .then(function (res) {
-          ahDashboardSession.create(res.data.username, res.data.firstName, res.data.lastName, res.data.email, res.data.fingerprint);
-        });
+      var deferred = $q.defer();
+      ahDashboardCommunicationService.action('login', credentials, function(err, response){
+        if(err || !response.auth){
+          deferred.reject();
+        } else {
+          ahDashboardSession.create(response.username, response.firstName, response.lastName, response.email, response.fingerprint);
+          deferred.resolve();
+        }
+      });
+      return deferred.promise;
     };
   
     ahDashboardAuthService.logout = function () {
-      return $http
-        .get('/api/logout')
-        .then(function (res) {
-          ahDashboardSession.destroy();
-        });
+      ahDashboardCommunicationService.action('logout', function(err, response){
+        ahDashboardSession.destroy();
+      });
     };
 
     ahDashboardAuthService.isAuthenticated = function () {
@@ -23,16 +26,16 @@ define(['app'], function (app) {
       if(ahDashboardSession.username){
         deferred.resolve();
       } else {
-        $http
-          .get('/api/currentUser')
-          .then(function (res) {
-            ahDashboardSession.create(res.data.username, res.data.firstName, res.data.lastName, res.data.email, res.data.fingerprint);
-            ahDashboardSession.authChecking = false;
-            deferred.resolve();
-          }, function(){
+        ahDashboardCommunicationService.action('currentUser', function(err, response){
+          if(err || !response.auth){
             ahDashboardSession.authChecking = false;
             deferred.reject();
-          });
+          } else {
+            ahDashboardSession.create(response.username, response.firstName, response.lastName, response.email, response.fingerprint);
+            ahDashboardSession.authChecking = false;
+            deferred.resolve();
+          }
+        });
       }
       return deferred.promise;
     };

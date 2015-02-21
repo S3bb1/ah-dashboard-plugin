@@ -1,9 +1,9 @@
 define(['app'], function (app) {
-  app.controller('ahDashboardTasks', function ($scope) {
+  app.controller('ahDashboardTasks', function ($scope, ahDashboardCommunicationService) {
     $scope.error = '';
     function loadRunningTasks() {
       $scope.runningJobsLoadingDone = false;
-      $.get('/api/getAllRunningJobs', function (data) {
+      ahDashboardCommunicationService.action('getAllRunningJobs', function(err, data){
         if(data.errorMessage){
               $scope.error = '<div class="callout callout-danger">'+
                              '  <h4>Error:</h4>'+
@@ -24,7 +24,7 @@ define(['app'], function (app) {
     };
     function loadDelayedTasks(){
       $scope.delayedJobsLoadingDone = false;
-      $.get('/api/getDelayedJobs', function (data) {
+      ahDashboardCommunicationService.action('getDelayedJobs', function(err, data){
         if(data.errorMessage){
               $scope.error = '<div class="callout callout-danger">'+
                              '  <h4>Error:</h4>'+
@@ -38,7 +38,7 @@ define(['app'], function (app) {
         $scope.delayedJobsLoadingDone = true;
         $scope.$apply();
       });
-    };
+    }
     loadDelayedTasks();
     $scope.reloadDelayedTasks = function () {
       loadDelayedTasks();
@@ -50,7 +50,7 @@ define(['app'], function (app) {
     };
     function loadFailedTasks(){
       $scope.failedTasksLoadingDone = false;
-      $.get('/api/getAllFailedJobs', function (data) {
+      ahDashboardCommunicationService.action('getAllFailedJobs', function(err, data){
         if(data.errorMessage){
               $scope.error = '<div class="callout callout-danger">'+
                              '  <h4>Error:</h4>'+
@@ -67,7 +67,7 @@ define(['app'], function (app) {
         $scope.failedTasksLoadingDone = true;
         $scope.$apply();
       });
-    };
+    }
     loadFailedTasks();
     $scope.reloadFailedTasks = function () {
       loadFailedTasks();
@@ -77,7 +77,7 @@ define(['app'], function (app) {
       delete taskDefinition.failed_at_millis;
       $.ajax({
         type: "POST",
-        url: '/api/reEnqueueTask',
+        url: ahDashboardCommunicationService.options.apiPath + '/reEnqueueTask',
         data:  JSON.stringify({taskdefinition: taskDefinition.plain}),
         success:  function (data) {
         },

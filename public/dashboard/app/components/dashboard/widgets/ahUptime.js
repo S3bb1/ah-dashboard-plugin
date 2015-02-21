@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.directive('ahUptime', function ($interval) {
+  app.directive('ahUptime', function ($interval, ahDashboardCommunicationService) {
     return {
       restrict: 'A',
       scope: true,
@@ -8,15 +8,15 @@ define(['app'], function (app) {
       link: function (scope) {
         scope.ahUptime = 0;
         function update() {
-          if(scope.ahUptime == 0){
-            $.get('/api/status', function (data) {
+          if(scope.ahUptime === 0){
+            ahDashboardCommunicationService.action('status', function (err, data) {
               var seconds = data.uptime/1000;
               scope.ahUptime = seconds;
-              parseSeconds()
-            })
+              parseSeconds();
+            });
           } else {
             scope.ahUptime++;
-            parseSeconds()
+            parseSeconds();
           }
         }
         function parseSeconds(){
