@@ -11,14 +11,14 @@ action.outputExample = {
 
 /////////////////////////////////////////////////////////////////////
 // functional
-action.run = function(api, connection, next){
+action.run = function(api, data, next){
   // Check authentication for current Request
-  api.ahDashboard.session.checkAuth(connection, function(session){
+  api.ahDashboard.session.checkAuth(data, function(session){
     api.stats.getAll(function(err, stats) {
       // extract the stats from the configured key
       var allStats = stats[api.config.stats.keys[0]];
-      connection.response.statsKeys = allStats;
-      next(connection, true);
+      data.response.statsKeys = allStats;
+      next();
     });
   }, next);
 };

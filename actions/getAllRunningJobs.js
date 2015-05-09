@@ -12,13 +12,13 @@ action.outputExample = {
 
 /////////////////////////////////////////////////////////////////////
 // functional
-action.run = function (api, connection, next) {
+action.run = function (api, data, next) {
   // Check authentication for current Request
-  api.ahDashboard.session.checkAuth(connection, function(session){
+  api.ahDashboard.session.checkAuth(data, function(session){
     // we cant process any tasks if no scheduler runs... abort action with error
     if(!api.resque.scheduler){
-      connection.response.errorMessage = "No Scheduler running!";
-      next(connection, true);
+      data.response.errorMessage = "No Scheduler running!";
+      next();
       return;
     }
     // Get all workers
@@ -38,8 +38,8 @@ action.run = function (api, connection, next) {
         });
       }, function(err){
         // At the end return all running jobs for all workers
-        connection.response.runningJobs = runningJobs;
-        next(connection, true);
+        data.response.runningJobs = runningJobs;
+        next();
       });
     });
   }, next);

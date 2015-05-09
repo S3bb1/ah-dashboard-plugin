@@ -102,7 +102,6 @@ module.exports = {
 
     api.ahDashboard.users.getUsers = function(callback){
       api.redis.client.keys(api.cache.redisPrefix + api.ahDashboard.users.redisPrefix+'*', function(err, users){
-        console.dir(users);
         async.map(users, function(item, callback){
           api.redis.client.get(item, function (err, user) {
             if (err) {
@@ -124,12 +123,12 @@ module.exports = {
 
     /**
      * log in a given connection
-     * @param  {Object}   connection current connection object
+     * @param  {Object}   data       current data object
      * @param  {Function} callback   callback function with err and success param
      */
-    api.ahDashboard.users.login = function(connection, callback){
-      var username = connection.params.username;
-      var password = connection.params.password;
+    api.ahDashboard.users.login = function(data, callback){
+      var username = data.params.username;
+      var password = data.params.password;
       // generate user cache key with username
       var userCacheKey = api.ahDashboard.users.cacheKey(username);
       // load user from redis
@@ -147,7 +146,7 @@ module.exports = {
             callback("incorrect password");
           }else{
             // password check success ... generate session for user
-            api.ahDashboard.session.generateAtLogin(connection, userCacheKey, function(){
+            api.ahDashboard.session.generateAtLogin(data, userCacheKey, function(){
               callback(null, user);
             });
           }

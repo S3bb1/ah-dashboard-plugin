@@ -12,13 +12,13 @@ action.outputExample = {
 
 /////////////////////////////////////////////////////////////////////
 // functional
-action.run = function (api, connection, next) {
+action.run = function (api, data, next) {
   // Check authentication for current Request
-  api.ahDashboard.session.checkAuth(connection, function(session){
+  api.ahDashboard.session.checkAuth(data, function(session){
     // we cant process any tasks if no scheduler runs... abort action with error
     if(!api.resque.scheduler){
-      connection.response.errorMessage = "No Scheduler running!";
-      next(connection, true);
+      data.response.errorMessage = "No Scheduler running!";
+      next();
       return;
     }  
     // Get all workers
@@ -26,7 +26,7 @@ action.run = function (api, connection, next) {
       var processedJobs = {};
       api.resque.scheduler.connection.redis.get('resque:stat:processed', function(err, processedOverallJob) {
         processedJobs.All = processedOverallJob;
-        connection.response.processedJobs = processedJobs;
+        data.response.processedJobs = processedJobs;
       });
       // Iterate through each worker strint
       async.each(workers, function( worker, callback) {
@@ -38,8 +38,8 @@ action.run = function (api, connection, next) {
         });
       }, function(err){
         // At the end return all running jobs for all workers
-        connection.response.processedJobs = processedJobs;
-        next(connection, true);
+        data.response.processedJobs = processedJobs;
+        next();
       });
     });
   }, next);

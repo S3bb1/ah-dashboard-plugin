@@ -23,19 +23,19 @@ action.outputExample = {
 
 /////////////////////////////////////////////////////////////////////
 // functional
-action.run = function(api, connection, next){
+action.run = function(api, data, next){
   // Check authentication for current Request
-  api.ahDashboard.session.checkAuth(connection, function(session){
-    connection.response.id = api.id;
+  api.ahDashboard.session.checkAuth(data, function(session){
+    data.response.id = api.id;
 
     // we cant process any timeseries if no scheduler runs... abort action with error
     if(!api.resque.scheduler){
-      connection.response.errorMessage = "No Scheduler running!";
-      next(connection, true);
+      data.response.errorMessage = "No Scheduler running!";
+      next();
       return;
     }
     
-    connection.response.timeseries = {};
+    data.response.timeseries = {};
     var now = new Date().getTime();
     api.stats.getAll(function(err, stats) {
       // extract the stats from the configured key
@@ -44,7 +44,7 @@ action.run = function(api, connection, next){
       var curCount = 0;
       var timechunks = 5;
       var timeInterval = '1minute';
-      switch(connection.params.timerange){
+      switch(data.params.timerange){
         case 'minute':
           timechunks = 60;
           timeInterval = '1second';
@@ -70,18 +70,18 @@ action.run = function(api, connection, next){
       }
       // now calculate the differences between the old stats value and the new Stats value
       async.each(_.keys(allStats), function( stat, callback) {
-        api.ahDashboard.timesSeries.getHits(stat, timeInterval, timechunks, function(err, data){
-          for(var a in data){
-            data[a].push(new Date((data[a][0]*1000)));
+        api.ahDashboard.timesSeries.getHits(stat, timeInterval, timechunks, function(err, res){
+          for(var a in res){
+            res[a].push(new Date((res[a][0]*1000)));
           }
-          connection.response.timeseries[stat] = data;
+          data.response.timeseries[stat] = res;
           callback();
 
         });
       }, function(err){
         // At the end return all calculated stats to the frontend
-        console.log('All stats have been processed successfully');
-        next(connection, true);
+        api.log('All stats have been processed successfully', 'info');
+        next();
       });
     });
   }, next);

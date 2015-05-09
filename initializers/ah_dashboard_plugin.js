@@ -23,17 +23,17 @@ module.exports = {
       // get logFile stats
       var logFileStats = fs.statSync(logFile);
       // init Tail for the logFile and start at the end
-      tail = new Tail(logFile, null, {start: logFileStats.size});
+      var tail = new Tail(logFile, null, {start: logFileStats.size});
 
       tail.on("line", function (data) {
         api.chatRoom.broadcast({room: "logMessages"}, "logMessages", data.toString());
       });
 
       tail.on("error", function (error) {
-        console.log('ERROR reading log file: ' + error);
+        api.log('ERROR reading log file: ' + error, 'error');
       });
     } else {
-      console.log('Cant locate log files, log file view in dashboard is disabled.');
+      api.log('Cant locate log files, log file view in dashboard is disabled.', 'info');
     }
     next();
   }

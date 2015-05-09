@@ -11,11 +11,11 @@ action.outputExample = {
 
 /////////////////////////////////////////////////////////////////////
 // functional
-action.run = function(api, connection, next){
+action.run = function(api, data, next){
   // Check authentication for current Request
-  api.ahDashboard.session.checkAuth(connection, function(session){
-    connection.response.documentation = api.documentation.documentation;
-    next(connection, true);
+  api.ahDashboard.session.checkAuth(data, function(session){
+    data.response.documentation = api.documentation.documentation;
+    next();
   }, next);
 };
 

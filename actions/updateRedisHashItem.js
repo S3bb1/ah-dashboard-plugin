@@ -21,21 +21,21 @@ action.outputExample = {
 
 /////////////////////////////////////////////////////////////////////
 // functional
-action.run = function(api, connection, next){
+action.run = function(api, data, next){
   // Check authentication for current Request
-  api.ahDashboard.session.checkAuth(connection, function(session){
-    api.redis.client.hset(connection.params.keyPath, connection.params.item, connection.params.value, function(err, res){
-      api.redis.client.hgetall(connection.params.keyPath, function (err, fieldsAndValues) {
+  api.ahDashboard.session.checkAuth(data, function(session){
+    api.redis.client.hset(data.params.keyPath, data.params.item, data.params.value, function(err, res){
+      api.redis.client.hgetall(data.params.keyPath, function (err, fieldsAndValues) {
         if (err) {
           api.log('updateRedisHashItem: ' + err, 'error');
         }
         var details = {
-          key: connection.params.keyPath,
+          key: data.params.keyPath,
           type: 'hash',
           data: fieldsAndValues
         };
-        connection.response.details = details;
-        next(connection, true);
+        data.response.details = details;
+        next();
       });
     });
   }, next);

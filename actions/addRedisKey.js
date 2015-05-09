@@ -18,43 +18,43 @@ action.outputExample = {
 
 /////////////////////////////////////////////////////////////////////
 // functional
-action.run = function(api, connection, next){
+action.run = function(api, data, next){
   // Check authentication for current Request
-  api.ahDashboard.session.checkAuth(connection, function(session){
-    var type = connection.params.type;
+  api.ahDashboard.session.checkAuth(data, function(session){
+    var type = data.params.type;
     switch (type) {
       case 'string':
-        api.redis.client.set(connection.params.key, '', function(err, res){
-          connection.response.err = err;
-          next(connection, true);
+        api.redis.client.set(data.params.key, '', function(err, res){
+          data.response.err = err;
+          next();
         });
         break;
       case 'list':
-        api.redis.client.lpush(connection.params.key, '', function(err, res){
-          connection.response.err = err;
-          next(connection, true);
+        api.redis.client.lpush(data.params.key, '', function(err, res){
+          data.response.err = err;
+          next();
         });
         break;
       case 'set':
-        api.redis.client.sadd(connection.params.key, '', function(err, res){
-          connection.response.err = err;
-          next(connection, true);
+        api.redis.client.sadd(data.params.key, '', function(err, res){
+          data.response.err = err;
+          next();
         });
         break;
       case 'zset':
-        api.redis.client.zadd(connection.params.key, 1, '', function(err, res){
-          connection.response.err = err;
-          next(connection, true);
+        api.redis.client.zadd(data.params.key, 1, '', function(err, res){
+          data.response.err = err;
+          next();
         });
         break;
       case 'hash':
-        api.redis.client.hset(connection.params.key, '', '', function(err, res){
-          connection.response.err = err;
-          next(connection, true);
+        api.redis.client.hset(data.params.key, '', '', function(err, res){
+          data.response.err = err;
+          next();
         });
         break;
       default:
-        next(connection, true);
+        next();
     }
   }, next );
 };

@@ -18,38 +18,37 @@ action.outputExample = {
 
 /////////////////////////////////////////////////////////////////////
 // functional
-action.run = function(api, connection, next){
+action.run = function(api, data, next){
   // Check authentication for current Request
-  api.ahDashboard.session.checkAuth(connection, function(session){
-    var key = connection.params.key;
+  api.ahDashboard.session.checkAuth(data, function(session){
+    var key = data.params.key;
     api.redis.client.type(key, function (err, type) {
-      console.dir(type);
       if (err) {
         api.log('Redis Type Error: ' + err, 'error');
       }
       switch (type) {
         case 'string':
-          getKeyDetailsString(key, api.redis.client, connection, next);
+          getKeyDetailsString(key, api.redis.client, data, next);
           break;
         case 'list':
-          getKeyDetailsList(key, api.redis.client, connection, next);
+          getKeyDetailsList(key, api.redis.client, data, next);
           break;
         case 'zset':
-          getKeyDetailsZSet(key, api.redis.client, connection, next);
+          getKeyDetailsZSet(key, api.redis.client, data, next);
           break;
         case 'hash':
-          getKeyDetailsHash(key, api.redis.client, connection, next);
+          getKeyDetailsHash(key, api.redis.client, data, next);
           break;
         case 'set':
-          getKeyDetailsSet(key, api.redis.client, connection, next);
+          getKeyDetailsSet(key, api.redis.client, data, next);
           break;
         default:
           var details = {
             key: key,
             type: type
           };
-          connection.response.details = details;
-          next(connection, true);
+          data.response.details = details;
+          next();
       }
     });
   }, next);
@@ -63,7 +62,7 @@ exports.action = action;
 /////////////////////////////////////////////////////////////////////
 // helper
 
-function getKeyDetailsString (key, redisConnection, connection, next) {
+function getKeyDetailsString (key, redisConnection, data, next) {
   redisConnection.get(key, function (err, val) {
     if (err) {
       api.log('getRedisString: ' + err, 'error');
@@ -75,13 +74,13 @@ function getKeyDetailsString (key, redisConnection, connection, next) {
       value: val
     };
     
-    connection.response.details = details;
-    next(connection, true);
+    data.response.details = details;
+    next();
   });
 }
 
-function getKeyDetailsList (key, redisConnection, connection, next) {
-  var startIdx = parseInt(connection.params.index, 10);
+function getKeyDetailsList (key, redisConnection, data, next) {
+  var startIdx = parseInt(data.params.index, 10);
   if (typeof(startIdx) == 'undefined' || isNaN(startIdx) || startIdx < 0) {
     startIdx = 0;
   }
@@ -110,13 +109,13 @@ function getKeyDetailsList (key, redisConnection, connection, next) {
         end: endIdx >= length - 1,
         length: length
       };
-      connection.response.details = details;
-      next(connection, true);
+      data.response.details = details;
+      next();
     });
   });
 }
 
-function getKeyDetailsHash (key, redisConnection, connection, next) {
+function getKeyDetailsHash (key, redisConnection, data, next) {
   redisConnection.hgetall(key, function (err, fieldsAndValues) {
     if (err) {
       api.log('getKeyDetailsHash: ' + err, 'error');
@@ -126,12 +125,12 @@ function getKeyDetailsHash (key, redisConnection, connection, next) {
       type: 'hash',
       data: fieldsAndValues
     };
-    connection.response.details = details;
-    next(connection, true);
+    data.response.details = details;
+    next();
   });
 }
 
-function getKeyDetailsSet (key, redisConnection, connection, next) {
+function getKeyDetailsSet (key, redisConnection, data, next) {
   redisConnection.smembers(key, function (err, members) {
     if (err) {
       api.log('getKeyDetailsSet: ' + err, 'error');
@@ -142,13 +141,13 @@ function getKeyDetailsSet (key, redisConnection, connection, next) {
       type: 'set',
       members: members
     };
-    connection.response.details = details;
-    next(connection, true);
+    data.response.details = details;
+    next();
   });
 }
 
-function getKeyDetailsZSet (key, redisConnection, connection,  next) {
-  var startIdx = parseInt(connection.params.index, 10);
+function getKeyDetailsZSet (key, redisConnection, data,  next) {
+  var startIdx = parseInt(data.params.index, 10);
   if (typeof(startIdx) == 'undefined' || isNaN(startIdx) || startIdx < 0) {
     startIdx = 0;
   }
@@ -173,8 +172,8 @@ function getKeyDetailsZSet (key, redisConnection, connection,  next) {
         end: endIdx >= length - 1,
         length: length
       };
-      connection.response.details = details;
-      next(connection, true);
+      data.response.details = details;
+      next();
     });
   });
 }

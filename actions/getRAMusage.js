@@ -12,12 +12,12 @@ action.outputExample = {
 
 /////////////////////////////////////////////////////////////////////
 // functional
-action.run = function (api, connection, next) {
+action.run = function (api, data, next) {
   // Check authentication for current Request
-  api.ahDashboard.session.checkAuth(connection, function(session){
-    connection.response.freemem = os.freemem();
-    connection.response.totalmem = os.totalmem();
-    next(connection, true);
+  api.ahDashboard.session.checkAuth(data, function(session){
+    data.response.freemem = os.freemem();
+    data.response.totalmem = os.totalmem();
+    next();
   }, next);
 };
 

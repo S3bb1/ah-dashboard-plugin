@@ -15,12 +15,12 @@ action.outputExample = {
 
 /////////////////////////////////////////////////////////////////////
 // functional
-action.run = function(api, connection, next){
+action.run = function(api, data, next){
   // Check authentication for current Request
-  api.ahDashboard.session.checkAuth(connection, function(session){
+  api.ahDashboard.session.checkAuth(data, function(session){
     var separator = ':';
     var query;
-    var prefix = connection.params.prefix;
+    var prefix = data.params.prefix;
     var async = require('async');
     if(prefix){
       query = prefix + separator + '*';
@@ -29,7 +29,7 @@ action.run = function(api, connection, next){
     }
     api.redis.client.keys(query, function (err, keys) {
       if (err) {
-        console.error('getKeys', err);
+        api.log('getKeys', 'error', err);
       } else {
         var lookup = {};
         var reducedKeys = [];
@@ -96,15 +96,15 @@ action.run = function(api, connection, next){
           }
         }, function (err) {
           if (err) {
-            console.error('getKeys', err);
+            api.log('getKeys', 'error', err);
             return next(err);
           }
           reducedKeys = reducedKeys.sort(function (a, b) {
             return a.data > b.data ? 1 : -1;
           });
           
-          connection.response.redisKeys = reducedKeys;
-          next(connection, true);
+          data.response.redisKeys = reducedKeys;
+          next();
         });
       }
     });

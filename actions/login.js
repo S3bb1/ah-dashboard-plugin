@@ -23,17 +23,17 @@ exports.userAdd = {
   },
   blockedConnectionTypes: [],
   outputExample: {},
-  run: function(api, connection, next){
+  run: function(api, data, next){
     // Check authentication for current Request
-    api.ahDashboard.session.checkAuth(connection, function(session){
-      if(connection.params.password.length < 6){
-        connection.error = "password must be longer than 6 chars";
-        next(connection, true);
+    api.ahDashboard.session.checkAuth(data, function(session){
+      if(data.params.password.length < 6){
+        data.connection.error = "password must be longer than 6 chars";
+        next();
       }else{
-        api.ahDashboard.users.addUser(connection.params.username, connection.params.email, connection.params.password, connection.params.firstName, connection.params.lastName, function(err){
-          connection.error = err;
-          connection.response.userCreated = true;
-          next(connection, true);
+        api.ahDashboard.users.addUser(data.params.username, data.params.email, data.params.password, data.params.firstName, data.params.lastName, function(err){
+          data.connection.error = err;
+          data.response.userCreated = true;
+          next();
         });
       }
     }, next);
@@ -62,13 +62,13 @@ exports.userEdit = {
   },
   blockedConnectionTypes: [],
   outputExample: {},
-  run: function(api, connection, next){
+  run: function(api, data, next){
     // Check authentication for current Request
-    api.ahDashboard.session.checkAuth(connection, function(session){
-      api.ahDashboard.users.editUser(connection.params.username, connection.params.email, connection.params.password, connection.params.firstName, connection.params.lastName, function(err){
-        connection.error = err;
-        connection.response.userUpdated = true;
-        next(connection, true);
+    api.ahDashboard.session.checkAuth(data, function(session){
+      api.ahDashboard.users.editUser(data.params.username, data.params.email, data.params.password, data.params.firstName, data.params.lastName, function(err){
+        data.connection.error = err;
+        data.response.userUpdated = true;
+        next();
       });
     }, next);
   }
@@ -84,13 +84,13 @@ exports.userDelete = {
   },
   blockedConnectionTypes: [],
   outputExample: {},
-  run: function(api, connection, next){
+  run: function(api, data, next){
     // Check authentication for current Request
-    api.ahDashboard.session.checkAuth(connection, function(session){
-      api.ahDashboard.users.deleteUser(connection.params.username, function(err){
-        connection.error = err;
-        connection.response.userdeleted = true;
-        next(connection, true);
+    api.ahDashboard.session.checkAuth(data, function(session){
+      api.ahDashboard.users.deleteUser(data.params.username, function(err){
+        data.connection.error = err;
+        data.response.userdeleted = true;
+        next();
       });
     }, next);
   }
@@ -103,20 +103,20 @@ exports.currentUser = {
   inputs: {},
   blockedConnectionTypes: [],
   outputExample: {},
-  run: function(api, connection, next){
-    connection.response.auth = false;
-    api.ahDashboard.session.checkAuth(connection, function(session){
+  run: function(api, data, next){
+    data.response.auth = false;
+    api.ahDashboard.session.checkAuth(data, function(session){
       api.cache.load(session.cacheKey, function(err, user){
-        connection.response.email = user.email;
-        connection.response.firstName = user.firstName;
-        connection.response.lastName = user.lastName;
-        connection.response.accountname = user.accountname;
-        connection.response.fingerprint = connection.fingerprint;
-        connection.response.auth = true;
-        next(connection, true);
+        data.response.email = user.email;
+        data.response.firstName = user.firstName;
+        data.response.lastName = user.lastName;
+        data.response.accountname = user.accountname;
+        data.response.fingerprint = data.connection.fingerprint;
+        data.response.auth = true;
+        next();
       });
     }, function(err){
-      next(connection, true);
+      next();
     });
   }
 };
@@ -134,20 +134,20 @@ exports.login = {
   },
   blockedConnectionTypes: [],
   outputExample: {},
-  run: function(api, connection, next){
-    connection.response.auth = false;
-    api.ahDashboard.users.login(connection, function(err, user){
+  run: function(api, data, next){
+    data.response.auth = false;
+    api.ahDashboard.users.login(data, function(err, user){
       if(err){
-        connection.error = err;
-        next(connection, true);
+        data.connection.error = err;
+        next();
       } else {
-        connection.response.email = user.email;
-        connection.response.firstName = user.firstName;
-        connection.response.lastName = user.lastName;
-        connection.response.accountname = user.accountname;
-        connection.response.fingerprint = connection.fingerprint;
-        connection.response.auth = true;
-        next(connection, true);
+        data.response.email = user.email;
+        data.response.firstName = user.firstName;
+        data.response.lastName = user.lastName;
+        data.response.accountname = user.accountname;
+        data.response.fingerprint = data.connection.fingerprint;
+        data.response.auth = true;
+        next();
       }
     });
   }
@@ -159,15 +159,15 @@ exports.getUsers = {
   inputs: {},
   blockedConnectionTypes: [],
   outputExample: {},
-  run: function(api, connection, next){
-    api.ahDashboard.session.checkAuth(connection, function(session){
+  run: function(api, data, next){
+    api.ahDashboard.session.checkAuth(data, function(session){
       api.ahDashboard.users.getUsers(function(err, users){
         if(err){
-          connection.error = err;
-          next(connection, true);
+          data.connection.error = err;
+          next();
         } else {
-          connection.response.users = users;
-          next(connection, true);
+          data.response.users = users;
+          next();
         }
       });
     }, next);
@@ -180,15 +180,15 @@ exports.logout = {
   inputs: {},
   blockedConnectionTypes: [],
   outputExample: {},
-  run: function(api, connection, next){
-    connection.response.auth = false;
-    api.ahDashboard.session.delete(connection, function(err){
+  run: function(api, data, next){
+    data.response.auth = false;
+    api.ahDashboard.session.delete(data, function(err){
       if(err){
-        connection.error = err;
-        next(connection, true);
+        data.connection.error = err;
+        next();
       } else {
-        connection.response.logout = true;
-        next(connection, true);
+        data.response.logout = true;
+        next();
       }
     });
   }

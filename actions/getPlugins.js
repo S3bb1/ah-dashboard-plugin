@@ -15,8 +15,8 @@ action.outputExample = {
 
 /////////////////////////////////////////////////////////////////////
 // functional
-action.run = function(api, connection, next){
-  api.ahDashboard.session.checkAuth(connection, function(session){
+action.run = function(api, data, next){
+  api.ahDashboard.session.checkAuth(data, function(session){
     var plugins = [];
     api.config.general.paths.plugin.forEach(function(p){
       api.config.general.plugins.forEach(function(pluginName){
@@ -47,9 +47,9 @@ action.run = function(api, connection, next){
       });
     });
 
-    connection.response.plugins = plugins;
+    data.response.plugins = plugins;
 
-    next(connection, true);
+    next();
   }, next );
 };
 
