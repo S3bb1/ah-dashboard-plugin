@@ -17,6 +17,8 @@ ah-dashboard 0.3.* is compatible with actionHero v10 ... for lower actionHero ve
 
 To use full functionalities, make sure a task scheduler is running!
 
+Also make sure api.config.task's minTaskProcessors and maxTaskProcessors is set to some value greater than 0.
+
 ## Running
 
 after including into ActionHero and running ActionHero, goto http://localhost:8080/dashboard/index.html
