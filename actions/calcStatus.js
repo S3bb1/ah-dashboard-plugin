@@ -37,7 +37,7 @@ action.run = function(api, data, next){
     
     data.response.timeseries = {};
     var now = new Date().getTime();
-    api.stats.getAll(function(err, stats) {
+    /*api.stats.getAll(function(err, stats) {
       // extract the stats from the configured key
       var allStats = stats[api.config.stats.keys[0]];
       var allStatsCount = _.size(allStats);
@@ -83,7 +83,8 @@ action.run = function(api, data, next){
         api.log('All stats have been processed successfully', 'info');
         next();
       });
-    });
+    });*/
+next();
   }, next);
 };
 

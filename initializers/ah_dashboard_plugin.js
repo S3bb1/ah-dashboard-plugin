@@ -13,28 +13,14 @@ module.exports = {
     api.ahDashboard = {};
     api.ahDashboard.timesSeries = timeSeries;
     api.ahDashboard.prevStats = {};
-
-    // store logfile path
-    var logFile = api.config.general.paths.log[0] + path.sep + api.pids.title + '.log';
-    // check if logfile exists
-    if(fs.existsSync(logFile)) {
-      // create logMessages chatRoom
-      api.chatRoom.add("logMessages");
-      // get logFile stats
-      var logFileStats = fs.statSync(logFile);
-      // init Tail for the logFile and start at the end
-      var tail = new Tail(logFile, null, {start: logFileStats.size});
-
-      tail.on("line", function (data) {
-        api.chatRoom.broadcast({room: "logMessages"}, "logMessages", data.toString());
-      });
-
-      tail.on("error", function (error) {
-        api.log('ERROR reading log file: ' + error, 'error');
-      });
-    } else {
-      api.log('Cant locate log files, log file view in dashboard is disabled.', 'info');
-    }
+    api.chatRoom.add("logMessages");
+    api.logger.on('logging', function (transport, level, msg, meta) {
+      if(transport.name === 'file'){
+        console.log(level+": "+msg+JSON.stringify(meta));
+        api.chatRoom.broadcast({room: "logMessages"}, "logMessages", new Date().toISOString() + ' - ' + level+": "+msg+JSON.stringify(meta));
+      }
+      
+    });
     next();
   }
 };

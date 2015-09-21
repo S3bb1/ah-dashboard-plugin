@@ -72,7 +72,7 @@ define(['app',
           scope.retrieveStats(changes);
         }, true);
         scope.widget.dropdownSettings = {displayProp: 'label', idProp: 'label'};
-        $.get('/api/getStatsKeys', function (data) {
+        /*$.get('/api/getStatsKeys', function (data) {
           var id = 0;
           scope.widget.statsArr = [];
           var tempLabels = [];
@@ -84,7 +84,7 @@ define(['app',
           if(scope.widget.attrs.stats.length == 0){
             scope.widget.attrs.stats = tempLabels;
           }
-        });
+        });*/
       }
     };
   });

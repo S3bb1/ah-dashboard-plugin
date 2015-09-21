@@ -9,13 +9,9 @@ define(['app'], function (app) {
     });
     ahDashboardCommunicationService.ahClient.on('say', function (logMessage) {
       try {
-        var logmessages = logMessage.message.split('\n');
-        for (var message in logmessages) {
-          var logObj = JSON.parse(logmessages[message]);
-          $scope.$apply(function () {
-            $scope.logMessages.push(logObj);
+        $scope.$apply(function () {
+            $scope.logMessages.push(logMessage.message);
           });
-        }
       } catch (e) {
         console.log("Cant parse log object : " + logMessage.message + " Details: " + e);
       }

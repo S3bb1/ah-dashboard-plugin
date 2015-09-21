@@ -7,8 +7,8 @@
             <div class="box-body">
                 <div class="panel panel-default">
                     <div class="panel-body pre-scrollable">
-                        <p style="margin:0;" ng-repeat="logMessage in logMessages.slice().reverse() track by $id(logMessage)">
-                            <span class="message">{{logMessage.timestamp}} -- [{{logMessage.level}}]  {{logMessage.message}} | {{logMessage.params | json}}</span>
+                        <p style="margin:0;" ng-repeat="logMessage in logMessages.slice().reverse()">
+                            <span class="message">{{logMessage}}</span>
                         </p>
                     </div>
                 </div>
