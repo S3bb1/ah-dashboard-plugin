@@ -15,7 +15,7 @@ define(['app',
           { value: 'hour5', label: 'Last Hour (in 5 minute steps)'},
           { value: 'hour10', label: 'Last Hour (in 10 minute steps)'},
           { value: 'day', label: 'Last 24 Hours (in hour steps)'}
-        ]
+        ];
         scope.refreshChart = function () {
           scope.retrieveStats(scope.widget.attrs);
         };
@@ -72,19 +72,19 @@ define(['app',
           scope.retrieveStats(changes);
         }, true);
         scope.widget.dropdownSettings = {displayProp: 'label', idProp: 'label'};
-        /*$.get('/api/getStatsKeys', function (data) {
+        $.get('/api/getStatsKeys', function (data) {
           var id = 0;
           scope.widget.statsArr = [];
           var tempLabels = [];
           for (var stat in data.statsKeys) {
-            scope.widget.statsArr.push({id: id, label: stat});
-            tempLabels.push({id: stat});
+            scope.widget.statsArr.push({id: id, label: data.statsKeys[stat]});
+            tempLabels.push({id: data.statsKeys[stat]});
             id++;
           }
           if(scope.widget.attrs.stats.length == 0){
             scope.widget.attrs.stats = tempLabels;
           }
-        });*/
+        });
       }
     };
   });
