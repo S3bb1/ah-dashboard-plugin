@@ -1,0 +1,25 @@
+<div class="box">
+  <div class="box-header with-border">
+    <h3 class="box-title">Action Statistics</h3>
+    <div class="box-tools pull-right">
+      <div class="btn-group">
+        <button class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="javascript:false;" ng-click="open()">Configuration</a></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /.box-header -->
+  <div class="box-body">
+    <div>
+      <div class="chart" id="{{directiveId}}" style="height: 300px;">
+        <div ng-bind-html="error"></div>
+      </div>
+      <div class="pull-left">
+        <button ng-click="refreshChart();" type="button" class="btn btn-default btn-xs">
+          <span class="glyphicon glyphicon-refresh"></span> Refresh
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

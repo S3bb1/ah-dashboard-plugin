@@ -1,30 +1,47 @@
 define(['app', 
         'components/dashboard/widgets/dashboardStats/ahDashboardStatsTemplate',
         'components/dashboard/widgets/dashboardStats/ahDashboardStats-defaultWidgets-factory'], function (app) {
-  app.directive('ahStats', function ($interval) {
+  app.controller('WidgetConfigController', function($scope, $modalInstance, config){
+    $scope.config = config;
+    $scope.dropdownSettings = {displayProp: 'label', idProp: 'label'};
+    $scope.ok = function () {
+
+      $modalInstance.close($scope.config);
+    };
+
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+  });
+  app.directive('ahStats', function ($interval, $modal) {
     return {
       restrict: 'A',
       scope: true,
       replace: true,
-      template: '<div><div class="chart" id="{{directiveId}}" style="height: 300px;"><div ng-bind-html="error"></div></div> <div class=\"pull-left\"><button ng-click=\"refreshChart();\" type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-refresh"></span> Refresh</button></div></div>',
+      templateUrl: 'app/components/dashboard/widgets/dashboardStats/ahDashboardStatsTemplate.html',
       link: function (scope) {
         scope.directiveId = "chart_stats_" + scope.$id;
-        scope.widget.ranges = [
+        scope.stats = [];
+        scope.ranges = [
           { value: 'minute', label: 'Last Minute (in seconds)'},
           { value: 'hour', label: 'Last Hour (in minute steps)'},
           { value: 'hour5', label: 'Last Hour (in 5 minute steps)'},
           { value: 'hour10', label: 'Last Hour (in 10 minute steps)'},
           { value: 'day', label: 'Last 24 Hours (in hour steps)'}
         ];
+        scope.currentConfig = {};
         scope.refreshChart = function () {
-          scope.retrieveStats(scope.widget.attrs);
+          scope.retrieveStats();
         };
 
-        scope.retrieveStats = function (changes) {
-          if (!changes.timerange) {
-            changes.timerange = 'hour';
+        scope.retrieveStats = function () {
+          if (!scope.currentConfig.timerange) {
+            scope.currentConfig.timerange = 'hour';
           }
-          $.get('/api/getStats?timerange=' + changes.timerange, function (data) {
+          if(!scope.currentConfig.selectedKeys){
+            scope.currentConfig.selectedKeys = [];
+          }
+          $.get('/api/getStats?timerange=' + scope.currentConfig.timerange, function (data) {
             scope.error = '';
             if(data.errorMessage){
               scope.error = '<div class="callout callout-danger">'+
@@ -33,9 +50,8 @@ define(['app',
                              '</div>';
             } else {
               var result = [];
-              var selectedKeys = _.pluck(changes.stats, 'id');
               _.each(data.timeseries, function (value, key) {
-                if (_.indexOf(selectedKeys, key) != -1) {
+                if (_.indexOf(scope.currentConfig.selectedKeys, key) != -1) {
                   for (var index in value) {
                     var resultObj = {y: value[index][2]};
                     resultObj[key] = value[index][1];
@@ -45,8 +61,8 @@ define(['app',
                 }
               });
               if (scope.chart) {
-                scope.chart.options.ykeys = selectedKeys;
-                scope.chart.options.labels = selectedKeys;
+                scope.chart.options.ykeys = scope.currentConfig.selectedKeys;
+                scope.chart.options.labels = scope.currentConfig.selectedKeys;
                 scope.chart.setData(result);
 
               } else {
@@ -56,8 +72,8 @@ define(['app',
                   resize: true,
                   data: result,
                   xkey: 'y',
-                  ykeys: selectedKeys,
-                  labels: selectedKeys,
+                  ykeys: scope.currentConfig.selectedKeys,
+                  labels: scope.currentConfig.selectedKeys,
                   hideHover: 'auto',
                   dateFormat: function (x) {
                     return new Date(x).toLocaleString();
@@ -68,22 +84,52 @@ define(['app',
           });
         }
 
-        scope.$watch('widget.attrs', function (changes) {
-          scope.retrieveStats(changes);
-        }, true);
-        scope.widget.dropdownSettings = {displayProp: 'label', idProp: 'label'};
+        scope.open = function (size) {
+
+          var modalInstance = $modal.open({
+            templateUrl: 'template/widget-settings-stats-template.html',
+            controller: 'WidgetConfigController',
+            resolve: {
+              config: function () {
+                return {
+                  statsArr:scope.statsArr,
+                  stats:scope.currentConfig.stats,
+                  ranges: scope.ranges,
+                  timerange: scope.currentConfig.timerange
+                }
+              }
+            }
+          });
+
+          modalInstance.result.then(function (config) {
+            console.dir(config);
+            scope.currentConfig.timerange = config.timerange;
+            scope.currentConfig.selectedKeys = _.pluck(config.stats, 'id');
+            scope.currentConfig.stats = config.stats;
+            scope.retrieveStats();
+          }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+          });
+        };
+
+        scope.dropdownSettings = {displayProp: 'label', idProp: 'label'};
         $.get('/api/getStatsKeys', function (data) {
           var id = 0;
-          scope.widget.statsArr = [];
+          scope.statsArr = [];
           var tempLabels = [];
+          var tempIds = [];
           for (var stat in data.statsKeys) {
-            scope.widget.statsArr.push({id: id, label: data.statsKeys[stat]});
+            scope.statsArr.push({id: id, label: data.statsKeys[stat]});
             tempLabels.push({id: data.statsKeys[stat]});
+            tempIds.push(data.statsKeys[stat]);
             id++;
           }
-          if(scope.widget.attrs.stats.length == 0){
-            scope.widget.attrs.stats = tempLabels;
+          if(scope.stats.length == 0){
+            scope.stats = tempLabels;
           }
+          scope.currentConfig.selectedKeys = tempIds;
+          scope.currentConfig.stats = tempLabels;
+          scope.retrieveStats();
         });
       }
     };
