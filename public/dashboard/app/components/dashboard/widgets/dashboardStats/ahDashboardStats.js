@@ -22,25 +22,41 @@ define(['app',
       link: function (scope) {
         scope.directiveId = "chart_stats_" + scope.$id;
         scope.stats = [];
-        scope.ranges = [
+
+        // config for timerange and keys
+        scope.currentConfig = {};
+        scope.currentConfig.ranges = [
           { value: 'minute', label: 'Last Minute (in seconds)'},
           { value: 'hour', label: 'Last Hour (in minute steps)'},
           { value: 'hour5', label: 'Last Hour (in 5 minute steps)'},
           { value: 'hour10', label: 'Last Hour (in 10 minute steps)'},
           { value: 'day', label: 'Last 24 Hours (in hour steps)'}
         ];
-        scope.currentConfig = {};
-        scope.refreshChart = function () {
-          scope.retrieveStats();
-        };
+        scope.currentConfig.timerange = 'hour';
+        scope.currentConfig.selectedKeys = [];
+        scope.currentConfig.availableKeys = [];
 
+        // get all keys from actionhero
+        $.get('/api/getStatsKeys', function (data) {
+          for(var a in data.statsKeys){
+            scope.currentConfig.availableKeys.push({id:[a], label:data.statsKeys[a]});
+            scope.currentConfig.selectedKeys.push({id:data.statsKeys[a]});
+          }
+
+          scope.retrieveStats();
+        });        
+        scope.toggleStreaming = function(){
+          if(!scope.streamingActive){
+            scope.streamingActive = true;
+            scope.streamInterval = $interval(scope.retrieveStats, 1000);
+          } else {
+            scope.streamingActive = false;
+            $interval.cancel(scope.streamInterval);
+            scope.streamInterval = undefined;
+          }
+        };
         scope.retrieveStats = function () {
-          if (!scope.currentConfig.timerange) {
-            scope.currentConfig.timerange = 'hour';
-          }
-          if(!scope.currentConfig.selectedKeys){
-            scope.currentConfig.selectedKeys = [];
-          }
+
           $.get('/api/getStats?timerange=' + scope.currentConfig.timerange, function (data) {
             scope.error = '';
             if(data.errorMessage){
@@ -50,8 +66,9 @@ define(['app',
                              '</div>';
             } else {
               var result = [];
+              var keyIds = _.pluck(scope.currentConfig.selectedKeys, 'id');
               _.each(data.timeseries, function (value, key) {
-                if (_.indexOf(scope.currentConfig.selectedKeys, key) != -1) {
+                if (_.indexOf(keyIds, key) != -1) {
                   for (var index in value) {
                     var resultObj = {y: value[index][2]};
                     resultObj[key] = value[index][1];
@@ -61,8 +78,8 @@ define(['app',
                 }
               });
               if (scope.chart) {
-                scope.chart.options.ykeys = scope.currentConfig.selectedKeys;
-                scope.chart.options.labels = scope.currentConfig.selectedKeys;
+                scope.chart.options.ykeys = keyIds;
+                scope.chart.options.labels = keyIds;
                 scope.chart.setData(result);
 
               } else {
@@ -72,8 +89,8 @@ define(['app',
                   resize: true,
                   data: result,
                   xkey: 'y',
-                  ykeys: scope.currentConfig.selectedKeys,
-                  labels: scope.currentConfig.selectedKeys,
+                  ykeys: keyIds,
+                  labels: keyIds,
                   hideHover: 'auto',
                   dateFormat: function (x) {
                     return new Date(x).toLocaleString();
@@ -82,7 +99,7 @@ define(['app',
               }
             }
           });
-        }
+        };
 
         scope.open = function (size) {
 
@@ -91,46 +108,21 @@ define(['app',
             controller: 'WidgetConfigController',
             resolve: {
               config: function () {
-                return {
-                  statsArr:scope.statsArr,
-                  stats:scope.currentConfig.stats,
-                  ranges: scope.ranges,
-                  timerange: scope.currentConfig.timerange
-                }
+                return scope.currentConfig;
               }
             }
           });
 
           modalInstance.result.then(function (config) {
             console.dir(config);
-            scope.currentConfig.timerange = config.timerange;
-            scope.currentConfig.selectedKeys = _.pluck(config.stats, 'id');
-            scope.currentConfig.stats = config.stats;
+            scope.currentConfig = config;
             scope.retrieveStats();
           }, function () {
             $log.info('Modal dismissed at: ' + new Date());
           });
         };
 
-        scope.dropdownSettings = {displayProp: 'label', idProp: 'label'};
-        $.get('/api/getStatsKeys', function (data) {
-          var id = 0;
-          scope.statsArr = [];
-          var tempLabels = [];
-          var tempIds = [];
-          for (var stat in data.statsKeys) {
-            scope.statsArr.push({id: id, label: data.statsKeys[stat]});
-            tempLabels.push({id: data.statsKeys[stat]});
-            tempIds.push(data.statsKeys[stat]);
-            id++;
-          }
-          if(scope.stats.length == 0){
-            scope.stats = tempLabels;
-          }
-          scope.currentConfig.selectedKeys = tempIds;
-          scope.currentConfig.stats = tempLabels;
-          scope.retrieveStats();
-        });
+
       }
     };
   });

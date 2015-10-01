@@ -11,7 +11,7 @@ define(['app'], function (app) {
         "        <div class=\"form-group\">\n" +
         "            <label for=\"widgetStats\" class=\"col-sm-3 control-label\">Stats</label>\n" +
         "            <div class=\"col-sm-9\">\n" +
-        "                <div ng-dropdown-multiselect=\"\" options=\"config.statsArr\" selected-model=\"config.stats\" extra-settings=\"dropdownSettings\"></div>" +
+        "                <div ng-dropdown-multiselect=\"\" options=\"config.availableKeys\" selected-model=\"config.selectedKeys\" extra-settings=\"dropdownSettings\"></div>" +
         "            </div>\n" +
         "        </div>\n" +
         "        <div class=\"form-group\">\n" +
