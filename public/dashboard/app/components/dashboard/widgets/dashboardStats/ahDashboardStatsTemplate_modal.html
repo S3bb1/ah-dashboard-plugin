@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
+  <h3>Widget Options for <small>{{title}}</small></h3>
+</div>
+
+<div class="modal-body">
+    <form name="form" novalidate class="form-horizontal">
+        <div class="form-group">
+            <label for="widgetStats" class="col-sm-3 control-label">Stats</label>
+            <div class="col-sm-9">
+                <div ng-dropdown-multiselect="" options="config.availableKeys" selected-model="config.selectedKeys" extra-settings="dropdownSettings"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="widgetStatsRange" class="col-sm-3 control-label">Time Range</label>
+            <div class="col-sm-9">
+                <select class="form-control" ng-model="config.timerange" name="widgetStatsRange" ng-options="range.value as range.label for range in config.ranges"></select>
+            </div>
+        </div>
+        <div ng-include="optionsTemplateUrl"></div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" ng-click="ok()">OK</button>
+</div>

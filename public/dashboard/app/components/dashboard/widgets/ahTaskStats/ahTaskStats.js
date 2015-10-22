@@ -1,20 +1,10 @@
 define(['app'], function(app){
-  app.directive('ahTasksstats', function ($interval, ahDashboardCommunicationService) {
+  app.directive('ahTaskstats', function ($interval, ahDashboardCommunicationService) {
     return {
       restrict: 'A',
       scope: true,
       replace: true,
-      template: '<div>'+
-                  '<div ng-bind-html="error"></div>'+
-                  '<ul class="list-group">'+
-                    '<a href="#/tasks" class="list-group-item list-group-item-warning">Running Jobs<span class="badge">{{runningJobs}}</span></a>'+
-                    '<a href="#/tasks" class="list-group-item list-group-item-info">Delayed Jobs<span class="badge">{{delayedJobs}}</span></a>'+
-                    '<a href="#/tasks" class="list-group-item list-group-item-danger">Failed Jobs<span class="badge">{{failedJobs}}</span></a>'+
-                  '</ul>'+
-                  '<ul class="list-group">'+
-                    '<li class="list-group-item" ng-repeat="(workerName, taskCount) in processedJobs">{{workerName}}<span class="badge">{{taskCount}}</span></li>'+
-                  '</ul>'+
-                '</div>',
+      templateUrl: 'app/components/dashboard/widgets/ahTaskStats/ahTaskStats.html',
       link: function (scope) {
         scope.error = '';
         ahDashboardCommunicationService.action('getAllRunningJobs', function (err, data) {

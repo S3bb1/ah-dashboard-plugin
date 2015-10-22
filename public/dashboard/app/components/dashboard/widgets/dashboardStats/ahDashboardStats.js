@@ -1,11 +1,8 @@
-define(['app', 
-        'components/dashboard/widgets/dashboardStats/ahDashboardStatsTemplate',
-        'components/dashboard/widgets/dashboardStats/ahDashboardStats-defaultWidgets-factory'], function (app) {
+define(['app'], function (app) {
   app.controller('WidgetConfigController', function($scope, $modalInstance, config){
     $scope.config = config;
     $scope.dropdownSettings = {displayProp: 'label', idProp: 'label'};
     $scope.ok = function () {
-
       $modalInstance.close($scope.config);
     };
 
@@ -44,7 +41,11 @@ define(['app',
           }
 
           scope.retrieveStats();
-        });        
+        });    
+        
+        /**
+         * toggle the streaming of stats 
+         */
         scope.toggleStreaming = function(){
           if(!scope.streamingActive){
             scope.streamingActive = true;
@@ -55,16 +56,24 @@ define(['app',
             scope.streamInterval = undefined;
           }
         };
+
+        /**
+         * get the current stats for the configured timerage
+         */
         scope.retrieveStats = function () {
 
+          // get the current stats for the timerange
           $.get('/api/getStats?timerange=' + scope.currentConfig.timerange, function (data) {
             scope.error = '';
+            // display error message if something is wrong
             if(data.errorMessage){
               scope.error = '<div class="callout callout-danger">'+
                              '  <h4>Error:</h4>'+
                              '  <p>'+data.errorMessage+'</p>'+
                              '</div>';
             } else {
+
+              // otherwise parse the timeseries of the retrieved stats
               var result = [];
               var keyIds = _.pluck(scope.currentConfig.selectedKeys, 'id');
               _.each(data.timeseries, function (value, key) {
@@ -77,13 +86,15 @@ define(['app',
                   }
                 }
               });
+
+              // if the chart is already rendered, update only the keys and values
               if (scope.chart) {
                 scope.chart.options.ykeys = keyIds;
                 scope.chart.options.labels = keyIds;
                 scope.chart.setData(result);
 
               } else {
-                // LINE CHART
+                // otherwise render a whole new chart
                 scope.chart = new Morris.Line({
                   element: scope.directiveId,
                   resize: true,
@@ -101,10 +112,14 @@ define(['app',
           });
         };
 
-        scope.open = function (size) {
+
+        /**
+         * open the config modal dialog
+         */
+        scope.open = function () {
 
           var modalInstance = $modal.open({
-            templateUrl: 'template/widget-settings-stats-template.html',
+            templateUrl: 'app/components/dashboard/widgets/dashboardStats/ahDashboardStatsTemplate_modal.html',
             controller: 'WidgetConfigController',
             resolve: {
               config: function () {
@@ -114,7 +129,6 @@ define(['app',
           });
 
           modalInstance.result.then(function (config) {
-            console.dir(config);
             scope.currentConfig = config;
             scope.retrieveStats();
           }, function () {
