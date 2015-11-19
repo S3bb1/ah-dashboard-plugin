@@ -31,7 +31,6 @@ action.run = function(api, data, next){
     data.response.timeseries = {};
     var now = new Date().getTime();
     api.redis.client.hkeys("stats:keys", function(err, stats) {
-      console.dir(stats);
       var timechunks = 5;
       var timeInterval = '1minute';
       switch(data.params.timerange){

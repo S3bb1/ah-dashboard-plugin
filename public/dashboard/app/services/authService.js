@@ -16,9 +16,12 @@ define(['app'], function (app) {
     };
   
     ahDashboardAuthService.logout = function () {
+      var deferred = $q.defer();
       ahDashboardCommunicationService.action('logout', function(err, response){
         ahDashboardSession.destroy();
+        deferred.resolve();
       });
+      return deferred.promise;
     };
 
     ahDashboardAuthService.isAuthenticated = function () {

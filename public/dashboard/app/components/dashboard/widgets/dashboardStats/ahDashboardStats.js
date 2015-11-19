@@ -57,6 +57,13 @@ define(['app'], function (app) {
           }
         };
 
+        // when the directive is destroyed, cancel the interval
+        scope.$on('$destroy', function() {
+          scope.streamingActive = false;
+          $interval.cancel(scope.streamInterval);
+          scope.streamInterval = undefined;
+        });
+
         /**
          * get the current stats for the configured timerage
          */
