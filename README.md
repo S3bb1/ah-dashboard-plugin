@@ -2,7 +2,6 @@ ActionHero Dashboard
 ===================
 
 ## Important Note!!!
-
 * ah-dashboard 0.5.* is compatible with actionHero v12 
 * ah-dashboard 0.4.* is compatible with actionHero v11
 * ah-dashboard 0.3.* is compatible with actionHero v10 
