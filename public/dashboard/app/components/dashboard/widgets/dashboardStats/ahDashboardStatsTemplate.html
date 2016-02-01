@@ -3,11 +3,11 @@
     <h3 class="box-title">Action Statistics</h3>
     <div class="box-tools pull-right">
     
-      <button ng-click="open()" class="btn btn-box-tool"><i class="fa fa-wrench"></i></button>
-      <button ng-click="retrieveStats();" class="btn btn-box-tool">
+      <button ng-click="open()" title="Open Settings" class="btn btn-box-tool"><i class="fa fa-wrench"></i></button>
+      <button ng-click="retrieveStats();" title="Refresh Stats" class="btn btn-box-tool">
         <i class="fa fa-refresh"></i>
       </button>
-      <button ng-click="toggleStreaming();" class="btn btn-box-tool">
+      <button ng-click="toggleStreaming();" title="Toggle AutoRefresh" class="btn btn-box-tool">
         <i class="fa fa-circle-o-notch" ng-class="{ 'fa-spin': streamingActive }"></i>
       </button>                 
     </div>

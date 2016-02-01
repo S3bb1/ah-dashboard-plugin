@@ -139,7 +139,6 @@ define(['app'], function (app) {
             scope.currentConfig = config;
             scope.retrieveStats();
           }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
           });
         };
 

@@ -2,7 +2,7 @@
   "author": "Sebastian Dechant <sebbis.iphone@googlemail.com>",
   "name": "ah-dashboard-plugin",
   "description": "Plugin for an ActionHero Dashboard with many functionalities",
-  "version": "0.3.1",
+  "version": "0.5.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/S3bb1/ah-dashboard-plugin.git"

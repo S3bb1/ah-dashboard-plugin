@@ -1,3 +1,12 @@
+## Version 0.4.0 (1-Feb-2016)
+* ActionHer V12 Support
+* Add New Version From AdminLTE
+* Remove drag/drop/add/remove Widget logic from Dashboard
+* Wired new Node-Resque Task Stats
+* Rewrite of ah-stats
+* First rudimentary Mobile Support
+
+
 ## Version 0.3.0 (26-Jan-2015)
 * ActionHero V10 Support
 * Bugfix issue with plugins page
