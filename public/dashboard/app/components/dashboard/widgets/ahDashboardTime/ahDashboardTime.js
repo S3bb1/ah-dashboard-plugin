@@ -4,7 +4,7 @@ define(['app'], function(app){
       restrict: 'A',
       scope: true,
       replace: true,
-      template: '<div><h3>{{time}}</h3></div>',
+      templateUrl: 'app/components/dashboard/widgets/ahDashboardTime/ahDashboardTime.html',
       link: function (scope) {
         function update() {
           scope.time = new Date().toLocaleString();

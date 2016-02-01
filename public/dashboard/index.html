@@ -12,7 +12,8 @@
     <!-- Ionicons -->
     <!-- <link href="bower_components/admin-lte/css/ionicons.min.css" rel="stylesheet" type="text/css" /> -->
     <!-- Theme style -->
-    <link href="bower_components/admin-lte/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+    <link href="bower_components/admin-lte/dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
+    <link href="bower_components/admin-lte/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
     <link href="bower_components/jQuery-contextMenu/src/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
     <!-- ngDialog CSS -->
     <link href="bower_components/ngDialog/css/ngDialog.min.css" rel="stylesheet" type="text/css" />
@@ -24,10 +25,11 @@
         .uname,.info,.content-header {
             text-transform: uppercase;
         }
+
+        .ng-hide{display:none !important}
     </style>
     <!-- Morris charts -->
     <link href="bower_components/morrisjs/morris.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/angular-ui-dashboard.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
     <link href="bower_components/fancytree/dist/skin-win8/ui.fancytree.min.css" rel="stylesheet" type="text/css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -38,64 +40,41 @@
     <![endif]-->
 </head>
 
-<body class="skin-blue">
-<!-- header logo: style can be found in header.less -->
-<header class="header">
+<body class="skin-blue sidebar-mini">
+    <div class="wrapper" ng-controller="ahDashboardMain">
 
-    <a href="index.html" class="logo">
-        <!-- Add the class icon to your logo image or logo icon to add the margining -->
-        ActionHero Admin Dashboard
-    </a>
-    <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top" role="navigation">
-        <div class="navbar-right">
-            <ul class="nav navbar-nav">
-                <li class="dropdown notifications-menu" ng-controller="ahDashboardAddWidgets" ng-show="isActive('/')">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-plus-square-o"></i>
-                        <span class="label label-success">{{widgetDefinitions.length}}</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="header">You can add {{widgetDefinitions.length}} different Widgets</li>
-                        <li>
-                            <!-- inner menu: contains the actual data -->
-                            <ul class="menu">
-                                <li ng-repeat="widget in widgetDefinitions">
-                                    <a  ng-click="addWidget($event, widget)" href="#">
-                                        <i class="ion ion-navicon-round info"></i>{{ widget.displayName }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="glyphicon glyphicon-flash"></i>
-                        <span>  BETA  </span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
-<div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="ahDashboardMain">
-    <!-- Left side column. contains the logo and sidebar -->
-    <aside class="left-side sidebar-offcanvas collapse-left" ng-class="{ 'collapse-left': !session.email, 'panelAnimate': session.email}" > 
+      <header class="main-header">
+        <!-- Logo -->
+        <a href="../index2.html" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>AH</b>B</span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><b>AH</b>Dashboard</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar ng-hide" ng-show="!isLoginPage()">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-            <!-- Sidebar user panel -->
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <img src="assets/img/avatar5.png" class="img-circle" alt="User Image" />
-                </div>
-                <div class="pull-left info">
-                    <p>Hello, {{session.firstName}}</p>
+          <!-- Sidebar user panel -->
+          <div class="user-panel">
+              <div class="pull-left image">
+                  <img src="assets/img/avatar5.png" class="img-circle" alt="User Image" />
+              </div>
+              <div class="pull-left info">
+                  <p>Hello, {{session.firstName}}</p>
 
-                    <a href="#" ng-click="logout()"><i class="fa fa-power-off"></i> Logout</a>
-                </div>
-            </div>
-            <!-- sidebar menu: : style can be found in sidebar.less -->
+                  <a href="#" ng-click="logout()"><i class="fa fa-power-off"></i> Logout</a>
+              </div>
+          </div>
+          <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li ng-class="{ 'active': $route.current.$$route === route}">
                     <a href="#/">
@@ -140,27 +119,43 @@
             </ul>
         </section>
         <!-- /.sidebar -->
-    </aside>
-
-    <!-- Right side column. Contains the navbar and content of the page -->
-    <aside class="right-side" ng-class="{ 'strech': !session.email}">
+      </aside>
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header)
+        <section class="content-header">
+          <h1>
+            Calendar
+            <small>Control panel</small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Calendar</li>
+          </ol>
+        </section> -->
 
         <!-- Main content -->
         <section class="content">
             <div ng-view="" ng-hide="session.authChecking"></div>
-        </section>
-        <!-- /.content -->
-    </aside>
-    <!-- /.right-side -->
-</div>
-<!-- ./wrapper -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
 
-<script src="bower_components/requirejs/require.js" data-main="app/main.js"></script>
+      <footer class="main-footer">
+        <div class="pull-right hidden-xs" style="margin-top:-10px">
+          <b>Version</b> 0.5.0 BETA
+        </div>
+      </footer>
+    </div><!-- ./wrapper -->
+    <script src="bower_components/requirejs/require.js" data-main="app/main.js"></script>
 <script type="text/javascript">
+    AdminLTEOptions = {
+      enableBSToppltip: false
+    }
     if(window.location.pathname == "/dashboard"){
         window.location.href = "/dashboard/";
     }
 </script>
-</body>
+  </body>
+
 
 </html>

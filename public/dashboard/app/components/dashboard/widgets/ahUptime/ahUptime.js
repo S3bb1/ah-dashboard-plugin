@@ -4,7 +4,7 @@ define(['app'], function (app) {
       restrict: 'A',
       scope: true,
       replace: true,
-      template: '<div><h3>{{time}}</h3></div>',
+      templateUrl: 'app/components/dashboard/widgets/ahUptime/ahUptime.html',
       link: function (scope) {
         scope.ahUptime = 0;
         function update() {

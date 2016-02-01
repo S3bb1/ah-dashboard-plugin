@@ -110,7 +110,7 @@ exports.currentUser = {
         data.response.email = user.email;
         data.response.firstName = user.firstName;
         data.response.lastName = user.lastName;
-        data.response.accountname = user.accountname;
+        data.response.username = user.username;
         data.response.fingerprint = data.connection.fingerprint;
         data.response.auth = true;
         next();

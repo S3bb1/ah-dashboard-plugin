@@ -27,21 +27,10 @@ action.run = function(api, data, next){
   // Check authentication for current Request
   api.ahDashboard.session.checkAuth(data, function(session){
     data.response.id = api.id;
-
-    // we cant process any timeseries if no scheduler runs... abort action with error
-    if(!api.resque.scheduler){
-      data.response.errorMessage = "No Scheduler running!";
-      next();
-      return;
-    }
     
     data.response.timeseries = {};
     var now = new Date().getTime();
-    api.stats.getAll(function(err, stats) {
-      // extract the stats from the configured key
-      var allStats = stats[api.config.stats.keys[0]];
-      var allStatsCount = _.size(allStats);
-      var curCount = 0;
+    api.redis.client.hkeys("stats:keys", function(err, stats) {
       var timechunks = 5;
       var timeInterval = '1minute';
       switch(data.params.timerange){
@@ -68,15 +57,14 @@ action.run = function(api, data, next){
         default:
 
       }
-      // now calculate the differences between the old stats value and the new Stats value
-      async.each(_.keys(allStats), function( stat, callback) {
+      // iterate through all available statistics and get their corresponding timeseries value
+      async.each(stats, function(stat, callback) {
         api.ahDashboard.timesSeries.getHits(stat, timeInterval, timechunks, function(err, res){
           for(var a in res){
             res[a].push(new Date((res[a][0]*1000)));
           }
           data.response.timeseries[stat] = res;
           callback();
-
         });
       }, function(err){
         // At the end return all calculated stats to the frontend

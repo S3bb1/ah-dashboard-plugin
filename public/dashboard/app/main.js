@@ -18,7 +18,8 @@ require.config({
     'angular-dashboard': 'angular-ui-dashboard',
     'fancytree' : '../bower_components/fancytree/dist/jquery.fancytree',
     'jqueryContextMenu' : '../bower_components/jQuery-contextMenu/src/jquery.contextMenu',
-    'ngDialog' : '../bower_components/ngDialog/js/ngDialog.min'
+    'ngDialog' : '../bower_components/ngDialog/js/ngDialog.min',
+    'adminLteApp': '../bower_components/admin-lte/dist/js/app.min'
 
 
   },
@@ -67,7 +68,10 @@ require.config({
     },
     'ngDialog': {
       deps: ['angular']
-    }
+    },
+    'adminLteApp': {
+      deps: ['jquery']
+    },
   }
 });
 
@@ -81,6 +85,7 @@ require([ 'app',
           'ngDialog',
           'raphael',
           'fancytree',
+          'adminLteApp',
           'jqueryContextMenu',
           'libs/jquery.fancytree.contextmenu',
           'components/actions/actions',
