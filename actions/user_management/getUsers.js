@@ -2,12 +2,11 @@ var action = {};
 
 /////////////////////////////////////////////////////////////////////
 // libraries
-var os  = require('os-utils');
 
 /////////////////////////////////////////////////////////////////////
 // metadata
-action.name = 'getCPUusage';
-action.description = 'I will return the current cpu usage';
+action.name = 'getUsers';
+action.description = 'This Action returns all current users';
 action.inputs = {};
 action.blockedConnectionTypes = [];
 action.outputExample = {
@@ -16,11 +15,15 @@ action.outputExample = {
 /////////////////////////////////////////////////////////////////////
 // functional
 action.run = function(api, data, next){
-  // Check authentication for current Request
   api.ahDashboard.session.checkAuth(data, function(session){
-    os.cpuUsage(function(usage){
-      data.response.cpuusage = usage;
-      next();
+    api.ahDashboard.users.getUsers(function(err, users){
+      if(err){
+        data.connection.error = err;
+        next();
+      } else {
+        data.response.users = users;
+        next();
+      }
     });
   }, next);
 };

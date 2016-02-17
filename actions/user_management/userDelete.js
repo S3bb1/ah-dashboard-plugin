@@ -2,13 +2,16 @@ var action = {};
 
 /////////////////////////////////////////////////////////////////////
 // libraries
-var os  = require('os-utils');
 
 /////////////////////////////////////////////////////////////////////
 // metadata
-action.name = 'getCPUusage';
-action.description = 'I will return the current cpu usage';
-action.inputs = {};
+action.name = 'userDelete';
+action.description = 'This Action deletes Users from Redis';
+action.inputs = {
+  "username": {
+    required: true
+  }
+};
 action.blockedConnectionTypes = [];
 action.outputExample = {
 };
@@ -18,8 +21,9 @@ action.outputExample = {
 action.run = function(api, data, next){
   // Check authentication for current Request
   api.ahDashboard.session.checkAuth(data, function(session){
-    os.cpuUsage(function(usage){
-      data.response.cpuusage = usage;
+    api.ahDashboard.users.deleteUser(data.params.username, function(err){
+      data.connection.error = err;
+      data.response.userdeleted = true;
       next();
     });
   }, next);
