@@ -15,6 +15,10 @@ ActionHero Dashboard
 
 - `npm install ah-dashboard-plugin --save`
 
+**ONLY FOR ACTIONHERO v12.X or lower**
+- add the dashboard to your plugins (config/plugins.js) config:
+  `plugins: ["ah-dashboard-plugin"]`
+
 
 ## Configuration
 
