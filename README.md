@@ -24,7 +24,9 @@ ActionHero Dashboard
 
 To use full functionalities, make sure a task scheduler is running!
 
-Also make sure api.config.task's minTaskProcessors and maxTaskProcessors is set to some value greater than 0.
+Also...
+  Make sure api.config.task's minTaskProcessors and maxTaskProcessors is set to some value greater than 0.
+  Ensure 'simpleRouting' and 'queryRouting' are true in config/servers/web.js
 
 ## Running
 
