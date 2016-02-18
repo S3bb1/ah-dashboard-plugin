@@ -24,7 +24,6 @@
     "redis": "^0.12.1",
     "redis-timeseries": "^0.4.0",
     "underscore": "^1.6.0",
-    "bower" : "latest",
     "markdown" : "0.5.0"
   },
   "devDependencies": {},
@@ -33,6 +32,6 @@
     "test": "test/markdown/"
   },
   "scripts":{
-    "postinstall": "node node_modules/bower/bin/bower install"
+    "postinstall": "npm install bower;node node_modules/bower/bin/bower install"
   }
 }
