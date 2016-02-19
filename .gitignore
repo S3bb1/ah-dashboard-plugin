@@ -1,7 +1,5 @@
 node_modules/*
 /node_modules
-public/dashboard/bower_components/*
-/public/dashboard/bower_components
 .settings/
 *.db
 .project
