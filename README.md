@@ -15,12 +15,18 @@ ActionHero Dashboard
 
 - `npm install ah-dashboard-plugin --save`
 
+**ONLY FOR ACTIONHERO v12.X or lower**
+- add the dashboard to your plugins (config/plugins.js) config:
+  `plugins: ["ah-dashboard-plugin"]`
+
 
 ## Configuration
 
 To use full functionalities, make sure a task scheduler is running!
 
-Also make sure api.config.task's minTaskProcessors and maxTaskProcessors is set to some value greater than 0.
+Also...
+  Make sure api.config.task's minTaskProcessors and maxTaskProcessors is set to some value greater than 0.
+  Ensure 'simpleRouting' and 'queryRouting' are true in config/servers/web.js
 
 ## Running
 
