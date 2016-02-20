@@ -1,4 +1,11 @@
-## Version 0.4.0 (1-Feb-2016)
+## Version 0.6.0 (20-Feb-2016)
+* ActionHero V13 Support
+* change the plugin retrieval logic, because in AH v13 the plugins are linked dynamically
+* add all bower components to the plugin, so that no "bower install" is needed anymore
+* "remove index2.html because it does not exists!!" (THX @Zougi)
+
+
+## Version 0.5.0 (1-Feb-2016)
 * ActionHer V12 Support
 * Add New Version From AdminLTE
 * Remove drag/drop/add/remove Widget logic from Dashboard
@@ -6,6 +13,8 @@
 * Rewrite of ah-stats
 * First rudimentary Mobile Support
 
+## Version 0.4.0 (1-Feb-2016)
+* ActionHero V11 Support
 
 ## Version 0.3.0 (26-Jan-2015)
 * ActionHero V10 Support

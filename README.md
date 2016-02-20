@@ -2,6 +2,7 @@ ActionHero Dashboard
 ===================
 
 ## Important Note!!!
+* ah-dashboard 0.6.* is compatible with actionHero v13
 * ah-dashboard 0.5.* is compatible with actionHero v12 
 * ah-dashboard 0.4.* is compatible with actionHero v11
 * ah-dashboard 0.3.* is compatible with actionHero v10 
@@ -14,6 +15,9 @@ ActionHero Dashboard
 ## Install
 
 - `npm install ah-dashboard-plugin --save`
+
+**ONLY FOR ACTIONHERO v13.X**
+run `actionhero link --name=ah-dashboard-plugin` to register the Dashboard in ActionHero v13
 
 **ONLY FOR ACTIONHERO v12.X or lower**
 - add the dashboard to your plugins (config/plugins.js) config:
