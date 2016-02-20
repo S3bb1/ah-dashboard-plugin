@@ -7,6 +7,7 @@
     "type": "git",
     "url": "git://github.com/S3bb1/ah-dashboard-plugin.git"
   },
+  "license" : "MIT",
   "keywords": [
     "dashboard",
     "actionhero",
