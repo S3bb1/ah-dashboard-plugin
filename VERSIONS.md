@@ -1,3 +1,8 @@
+## Version 0.6.1 (20-Feb-2016)
+* Added License information
+* Removed Files which were falsly published
+
+
 ## Version 0.6.0 (20-Feb-2016)
 * ActionHero V13 Support
 * change the plugin retrieval logic, because in AH v13 the plugins are linked dynamically
