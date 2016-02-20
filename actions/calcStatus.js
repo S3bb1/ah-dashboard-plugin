@@ -63,7 +63,6 @@ action.run = function(api, data, next){
       // iterate through all available statistics and get their corresponding timeseries value
       async.each(stats, function(stat, callback) {
         api.ahDashboard.timesSeries.getHits(stat, timeInterval, timechunks, function(err, res){
-          console.dir(res);
           for(var a in res){
             res[a].push(new Date((res[a][0]*1000)));
           }
