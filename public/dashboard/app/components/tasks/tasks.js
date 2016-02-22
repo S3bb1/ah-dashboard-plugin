@@ -1,30 +1,9 @@
 define(['app'], function (app) {
   app.controller('ahDashboardTasks', function ($scope, ahDashboardCommunicationService) {
     $scope.error = '';
-    function loadRunningTasks() {
-      $scope.runningJobsLoadingDone = false;
-      ahDashboardCommunicationService.action('getAllRunningJobs', function(err, data){
-        if(data.errorMessage){
-              $scope.error = '<div class="callout callout-danger">'+
-                             '  <h4>Error:</h4>'+
-                             '  <p>'+data.errorMessage+'</p>'+
-                             '</div>';
-        } 
-        $scope.runningJobs = [];
-        for (var runningJob in data.runningJobs) {
-          $scope.runningJobs.push(data.runningJobs[runningJob]);
-        }
-        $scope.runningJobsLoadingDone = true;
-        $scope.$apply();
-      });
-    }
-    loadRunningTasks();
-    $scope.reloadRunningTasks = function () {
-      loadRunningTasks();
-    };
-    function loadDelayedTasks(){
-      $scope.delayedJobsLoadingDone = false;
-      ahDashboardCommunicationService.action('getDelayedJobs', function(err, data){
+    $scope.loadingDone = false;
+    function loadResqueStatus(){
+      ahDashboardCommunicationService.action('getResqueStatus', function(err, data){
         if(data.errorMessage){
               $scope.error = '<div class="callout callout-danger">'+
                              '  <h4>Error:</h4>'+
@@ -32,47 +11,39 @@ define(['app'], function (app) {
                              '</div>';
         } 
         $scope.delayedJobs = [];
-        for (var delayedJob in data.delayedJobs) {
-          $scope.delayedJobs.push(data.delayedJobs[delayedJob]);
-        }
-        $scope.delayedJobsLoadingDone = true;
-        $scope.$apply();
-      });
-    }
-    loadDelayedTasks();
-    $scope.reloadDelayedTasks = function () {
-      loadDelayedTasks();
-    };
-    $scope.reloadAllTasks = function () {
-      $scope.reloadDelayedTasks();
-      $scope.reloadFailedTasks();
-      $scope.reloadRunningTasks();
-    };
-    function loadFailedTasks(){
-      $scope.failedTasksLoadingDone = false;
-      ahDashboardCommunicationService.action('getAllFailedJobs', function(err, data){
-        if(data.errorMessage){
-              $scope.error = '<div class="callout callout-danger">'+
-                             '  <h4>Error:</h4>'+
-                             '  <p>'+data.errorMessage+'</p>'+
-                             '</div>';
-        } 
-        $scope.failedJobs = [];
-        for (var failedJob in data.failedJobs) {
-          var tempFailedJob = JSON.parse(data.failedJobs[failedJob]);
-          tempFailedJob.plain = data.failedJobs[failedJob];
-          tempFailedJob.failed_at = new Date(Date.parse(tempFailedJob.failed_at)).getTime();
-          $scope.failedJobs.push(tempFailedJob);
-        }
-        $scope.failedTasksLoadingDone = true;
-        $scope.$apply();
-      });
-    }
-    loadFailedTasks();
-    $scope.reloadFailedTasks = function () {
-      loadFailedTasks();
-    };
+        for (var a in data.delayed) {
+          var delayedJobsAt = data.delayed[a];
+          for(var i=0; i<delayedJobsAt.length; i++){
+            var delayedJob = delayedJobsAt[i];
+            delayedJob.delayedAt = a;
+            $scope.delayedJobs.push(delayedJob);
+          }
 
+        }
+        $scope.loadingDone = true;
+
+        $scope.runningJobs = [];
+        for (var worker in data.details.workers) {
+          if(data.details.workers[worker].run_at){
+            var runningJob = data.details.workers[worker];
+            runningJob.worker = worker;
+            $scope.runningJobs.push(runningJob);    
+          }
+        }
+
+        $scope.failedJobs = [];
+        for (var j=0; j<data.failedJobs.length; j++) {
+          var failedJob = data.failedJobs[j];
+          $scope.failedJobs.push(failedJob);
+        }
+        $scope.$apply();
+      });
+    }
+
+    $scope.reloadAllTasks = function () {
+      loadResqueStatus();
+    };
+    $scope.reloadAllTasks();
     $scope.reEnqueueTask = function(taskDefinition){
       delete taskDefinition.failed_at_millis;
       $.ajax({
