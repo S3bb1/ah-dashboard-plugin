@@ -1,3 +1,8 @@
+## Version 0.6.2 (26-Feb-2016)
+* Fixes Logo Link (navigated to empty page instead of homepage) thx @Zougi
+* Replace Task Logic to implement current node-resque api
+* Enable Task statistics without running scheduler too
+
 ## Version 0.6.1 (20-Feb-2016)
 * Added License information
 * Removed Files which were falsly published
