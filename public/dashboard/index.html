@@ -116,6 +116,11 @@
                         <i class="fa fa-users"></i> <span>Users</span>
                     </a>
                 </li>
+                <li ng-class="{ 'active': $route.current.$$route === route}">
+                    <a href="#/architecture">
+                        <i class="fa fa-heartbeat"></i> <span>Architecture</span>
+                    </a>
+                </li>                
             </ul>
         </section>
         <!-- /.sidebar -->
@@ -142,7 +147,7 @@
 
       <footer class="main-footer">
         <div class="pull-right hidden-xs" style="margin-top:-10px">
-          <b>Version</b> 0.5.0 BETA
+          <b>Version</b> 0.6.3 BETA
         </div>
       </footer>
     </div><!-- ./wrapper -->

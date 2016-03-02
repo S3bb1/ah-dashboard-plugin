@@ -60,6 +60,10 @@ define([
         templateUrl: 'app/components/users/users.html',
         controller: 'ahDashboardUsers'
       })
+      .when('/architecture', {
+        templateUrl: 'app/components/architecture/architecture.html',
+        controller: 'ahDashboardArchitecture'
+      })
       .otherwise({
         redirectTo: '/'
       });

@@ -98,6 +98,7 @@ require([ 'app',
           'components/tasks/tasks',
           'components/userLogin/userLogin',
           'components/users/users',
+          'components/architecture/architecture',
           'services/services'
 ], function (app) {
   app.init();

@@ -45,16 +45,6 @@ define(['app'], function(app){
           });
         };
         loadResqueStatus();
-        ahDashboardCommunicationService.action('getTasksStatistics', function (err, data) {
-          if(data.errorMessage){
-            scope.error = '<div class="callout callout-danger">'+
-                           '  <h4>Error:</h4>'+
-                           '  <p>'+data.errorMessage+'</p>'+
-                           '</div>';
-          } else {          
-            scope.processedJobs = data.processedJobs;
-          }
-        });
       }
     };
   });
