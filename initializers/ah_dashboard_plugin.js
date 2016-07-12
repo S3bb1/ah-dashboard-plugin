@@ -5,9 +5,13 @@ module.exports = {
 
     // load needed plugins
     var TS = require('redis-timeseries');
-    var timeSeries = new TS(api.redis.client);
+    var timeSeries = new TS(api.redis.clients.client);
 
     api.ahDashboard = {};
+    api.ahDashboard.helloCluster = function(message, cback){
+      console.dir(arguments); 
+      cback();
+    };
     api.ahDashboard.timesSeries = timeSeries;
     api.ahDashboard.prevStats = {};
 
@@ -32,7 +36,7 @@ module.exports = {
         // after every action log a hit into timeseries
         api.ahDashboard.timesSeries.recordHit("actions:"+data.action, undefined, 1).exec();
         // add also the key to the statsKeys if it doesnt exists
-        api.redis.client.hmset("stats:keys", "actions:"+data.action, "", function(){
+        api.redis.clients.client.hmset("stats:keys", "actions:"+data.action, "", function(){
           next();
         });
       }

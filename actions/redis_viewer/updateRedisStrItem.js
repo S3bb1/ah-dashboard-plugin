@@ -21,8 +21,8 @@ action.outputExample = {
 action.run = function(api, data, next){
   // Check authentication for current Request
   api.ahDashboard.session.checkAuth(data, function(session){
-    api.redis.client.set(data.params.keyPath, data.params.value, function(err, res){
-      api.redis.client.get(data.params.keyPath, function (err, val) {
+    api.redis.clients.client.set(data.params.keyPath, data.params.value, function(err, res){
+      api.redis.clients.client.get(data.params.keyPath, function (err, val) {
         if (err) {
           api.log('updateRedisStrItem: ' + err, 'error');
         }

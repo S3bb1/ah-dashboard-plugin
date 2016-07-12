@@ -55,7 +55,7 @@ module.exports = {
      */
     api.ahDashboard.session.delete = function(data, next){
       var key = api.ahDashboard.session.connectionKey(data);
-      api.redis.client.del(api.cache.redisPrefix + key, function(err, count){
+      api.redis.clients.client.del(api.cache.redisPrefix + key, function(err, count){
         if(err){ 
           api.log(err, 'error'); 
         }

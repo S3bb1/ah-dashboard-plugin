@@ -21,8 +21,8 @@ action.outputExample = {
 action.run = function(api, data, next){
   // Check authentication for current Request
   api.ahDashboard.session.checkAuth(data, function(session){
-    api.redis.client.sadd(data.params.keyPath, data.params.item, function(err, res){
-      api.redis.client.smembers(data.params.keyPath, function (err, members) {
+    api.redis.clients.client.sadd(data.params.keyPath, data.params.item, function(err, res){
+      api.redis.clients.client.smembers(data.params.keyPath, function (err, members) {
         if (err) {
           api.log('addRedisSetItem: ' + err, 'error');
         }

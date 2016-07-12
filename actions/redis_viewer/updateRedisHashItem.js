@@ -24,8 +24,8 @@ action.outputExample = {
 action.run = function(api, data, next){
   // Check authentication for current Request
   api.ahDashboard.session.checkAuth(data, function(session){
-    api.redis.client.hset(data.params.keyPath, data.params.item, data.params.value, function(err, res){
-      api.redis.client.hgetall(data.params.keyPath, function (err, fieldsAndValues) {
+    api.redis.clients.client.hset(data.params.keyPath, data.params.item, data.params.value, function(err, res){
+      api.redis.clients.client.hgetall(data.params.keyPath, function (err, fieldsAndValues) {
         if (err) {
           api.log('updateRedisHashItem: ' + err, 'error');
         }

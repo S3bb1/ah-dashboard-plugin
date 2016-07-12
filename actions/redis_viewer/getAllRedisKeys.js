@@ -27,7 +27,7 @@ action.run = function(api, data, next){
     } else {
       query = '*';
     }
-    api.redis.client.keys(query, function (err, keys) {
+    api.redis.clients.client.keys(query, function (err, keys) {
       if (err) {
         api.log('getKeys', 'error', err);
       } else {
@@ -67,7 +67,7 @@ action.run = function(api, data, next){
 
         async.forEachLimit(reducedKeys, 10, function (keyData, callback) {
           if (keyData.leaf) {
-            api.redis.client.type(keyData.fullKey, function (err, type) {
+            api.redis.clients.client.type(keyData.fullKey, function (err, type) {
               if (err) {
                 return callback(err);
               }
@@ -82,11 +82,11 @@ action.run = function(api, data, next){
                 }
               };
               if (type == 'list') {
-                api.redis.client.llen(keyData.fullKey, sizeCallback);
+                api.redis.clients.client.llen(keyData.fullKey, sizeCallback);
               } else if (type == 'set') {
-                api.redis.client.scard(keyData.fullKey, sizeCallback);
+                api.redis.clients.client.scard(keyData.fullKey, sizeCallback);
               } else if (type == 'zset') {
-                api.redis.client.zcard(keyData.fullKey, sizeCallback);
+                api.redis.clients.client.zcard(keyData.fullKey, sizeCallback);
               } else {
                 callback();
               }

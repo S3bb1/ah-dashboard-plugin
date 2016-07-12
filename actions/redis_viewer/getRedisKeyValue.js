@@ -22,7 +22,7 @@ action.run = function(api, data, next){
   // Check authentication for current Request
   api.ahDashboard.session.checkAuth(data, function(session){
     var key = data.params.key;
-    api.redis.client.type(key, function (err, type) {
+    api.redis.clients.client.type(key, function (err, type) {
       if (err) {
         api.log('Redis Type Error: ' + err, 'error');
       }

@@ -113,9 +113,9 @@ module.exports = {
     };
 
     api.ahDashboard.users.getUsers = function(callback){
-      api.redis.client.keys(api.cache.redisPrefix + api.ahDashboard.users.redisPrefix+'*', function(err, users){
+      api.redis.clients.client.keys(api.cache.redisPrefix + api.ahDashboard.users.redisPrefix+'*', function(err, users){
         async.map(users, function(item, callback){
-          api.redis.client.get(item, function (err, user) {
+          api.redis.clients.client.get(item, function (err, user) {
             if (err) {
               api.log('cant read user: ' + err, 'error');
             }

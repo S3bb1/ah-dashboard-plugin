@@ -24,13 +24,13 @@ action.outputExample = {
 action.run = function(api, data, next){
   // Check authentication for current Request
   api.ahDashboard.session.checkAuth(data, function(session){
-    api.redis.client.zadd(data.params.keyPath, data.params.score, data.params.value, function(err, res){
+    api.redis.clients.client.zadd(data.params.keyPath, data.params.score, data.params.value, function(err, res){
       var startIdx = parseInt(data.params.index, 10);
       if (typeof(startIdx) == 'undefined' || isNaN(startIdx) || startIdx < 0) {
         startIdx = 0;
       }
       var endIdx = startIdx + 19;
-      api.redis.client.zrange(data.params.keyPath, startIdx, endIdx, 'WITHSCORES', function (err, items) {
+      api.redis.clients.client.zrange(data.params.keyPath, startIdx, endIdx, 'WITHSCORES', function (err, items) {
         if (err) {
           api.log('updateRedisZSetItem: ' + err, 'error');
         }
@@ -41,7 +41,7 @@ action.run = function(api, data, next){
         items.forEach(function (item) {
           item.number = i++;
         });
-        api.redis.client.zcount(data.params.keyPath, "-inf", "+inf", function (err, length) {
+        api.redis.clients.client.zcount(data.params.keyPath, "-inf", "+inf", function (err, length) {
           var details = {
             key: data.params.keyPath,
             type: 'zset',

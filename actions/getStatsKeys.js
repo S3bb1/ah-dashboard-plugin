@@ -15,7 +15,7 @@ action.run = function(api, data, next){
   // Check authentication for current Request
   api.ahDashboard.session.checkAuth(data, function(session){
   	// get all keys from the tracked stats
-    api.redis.client.hkeys("stats:keys", function(err, stats) {
+    api.redis.clients.client.hkeys("stats:keys", function(err, stats) {
       data.response.statsKeys = stats;
       next();
     });

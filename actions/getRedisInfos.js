@@ -18,6 +18,23 @@ action.outputExample = {
 action.run = function (api, data, next) {
   // Check authentication for current Request
   api.ahDashboard.session.checkAuth(data, function(session){
+
+
+
+    // To subscirbe to messages, add a callback for your `messageType`, IE:
+    api.redis.subscriptionHandlers['clusterResponse'] = function(message){
+      // do stuff
+      console.dir(arguments);
+      api.log(message.message, 'error');
+    }
+
+    // send a message
+    var payload = {
+      messageType: 'clusterResponse'
+    };
+    api.redis.doCluster('api.redis.publish', [payload], null, function(){
+      //done
+    })
     
     // Base response object
     var response = {
@@ -28,7 +45,11 @@ action.run = function (api, data, next) {
     };
 
     // require the configured redis package
-    var redisPackage = require('../../actionhero/node_modules/'+api.config.redis.pkg);
+    if(process.env.FAKEREDIS === 'false' || process.env.REDIS_HOST !== undefined){
+      var redisPackage = require('../../actionhero/node_modules/ioredis');
+    } else {
+      var redisPackage = require('../../actionhero/node_modules/fakeredis');
+    }
 
     // check if the config contains sentinel options
     if(api.config.redis.options && api.config.redis.options.sentinels){
@@ -67,7 +88,7 @@ action.run = function (api, data, next) {
           // when all sentinels were successfully parsed, get the info from the redis database      
           response.redisType = 'sentinel';
           response.redisMode = 'sentinel';
-          api.redis.client.info(function (err, res) {
+          api.redis.clients.client.info(function (err, res) {
             var info = {};
 
             var lines = res.split('\r\n');
@@ -84,13 +105,14 @@ action.run = function (api, data, next) {
             next();
           });
       });
-    } else if(api.config.redis.pkg === 'fakeredis'){
+    } else if(process.env.FAKEREDIS !== 'false'){
+      console.dir(process.env);
       // when fakeredis ... no infos are available :-/
       data.response.type="fakeredis";
       next();
     } else {
       // when normal redis client is configured, only get the redis info
-      api.redis.client.info(function (err, res) {
+      api.redis.clients.client.info(function (err, res) {
         // parse the info response
         var info = {};
 
