@@ -28,19 +28,19 @@ action.run = function(api, data, next){
       }
       switch (type) {
         case 'string':
-          getKeyDetailsString(key, api.redis.client, data, next);
+          getKeyDetailsString(key, api.redis.clients.client, data, next);
           break;
         case 'list':
-          getKeyDetailsList(key, api.redis.client, data, next);
+          getKeyDetailsList(key, api.redis.clients.client, data, next);
           break;
         case 'zset':
-          getKeyDetailsZSet(key, api.redis.client, data, next);
+          getKeyDetailsZSet(key, api.redis.clients.client, data, next);
           break;
         case 'hash':
-          getKeyDetailsHash(key, api.redis.client, data, next);
+          getKeyDetailsHash(key, api.redis.clients.client, data, next);
           break;
         case 'set':
-          getKeyDetailsSet(key, api.redis.client, data, next);
+          getKeyDetailsSet(key, api.redis.clients.client, data, next);
           break;
         default:
           var details = {
