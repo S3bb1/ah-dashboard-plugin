@@ -8,10 +8,6 @@ module.exports = {
     var timeSeries = new TS(api.redis.clients.client);
 
     api.ahDashboard = {};
-    api.ahDashboard.helloCluster = function(message, cback){
-      console.dir(arguments); 
-      cback();
-    };
     api.ahDashboard.timesSeries = timeSeries;
     api.ahDashboard.prevStats = {};
 
