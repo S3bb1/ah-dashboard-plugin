@@ -2,6 +2,7 @@ ActionHero Dashboard
 ===================
 
 ## Important Note!!!
+* ah-dashboard 0.7.* is compatible with actionHero v14/15/16
 * ah-dashboard 0.6.* is compatible with actionHero v13
 * ah-dashboard 0.5.* is compatible with actionHero v12 
 * ah-dashboard 0.4.* is compatible with actionHero v11
@@ -16,7 +17,7 @@ ActionHero Dashboard
 
 - `npm install ah-dashboard-plugin --save`
 
-**ONLY FOR ACTIONHERO v13.X**
+**FOR ACTIONHERO v13.X / v14.X / v15.X / v16.X**
 run `actionhero link --name=ah-dashboard-plugin` to register the Dashboard in ActionHero v13
 
 **ONLY FOR ACTIONHERO v12.X or lower**
@@ -68,7 +69,7 @@ Todos:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015 Sebastian Dechant
+Copyright (c) 2017 Sebastian Dechant
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
