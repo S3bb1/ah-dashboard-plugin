@@ -1,3 +1,7 @@
+## Version 0.7.0 (6-Jan-2017)
+* Check compatibility for AH V14/15/16
+* Fix Redis Viewer GET command
+
 ## Version 0.6.2 (26-Feb-2016)
 * Fixes Logo Link (navigated to empty page instead of homepage) thx @Zougi
 * Replace Task Logic to implement current node-resque api
